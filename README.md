@@ -1,132 +1,139 @@
-# Open World RPG Pixel Art — Pipeline Aset Karakter
+# Arga — Open World RPG Pixel Art (Medieval Fantasy · Side-view · Warrior)
 
-Proyek karakter pixel art side-view (medieval fantasy, warrior) untuk engine **Godot 4**.
+Game RPG aksi side-view **solo** dengan karakter pixel art "Arga, Young Warrior Knight",
+progres perjalanan yang bisa disimpan/dilanjutkan kapan saja, backend **C# (ASP.NET Core + SQLite)**,
+dan klien game **HTML5 Canvas** (nol dependency, jalan langsung di browser).
 
-Dokumen prompt & character bible ada di [`PROMPTS.md`](./PROMPTS.md) (dokumen 2 dari 3).
-Repo ini berisi bagian teknisnya: struktur folder, config karakter, dan tooling perakit
-spritesheet yang dipakai di bagian 5 PROMPTS.md.
+![Gameplay](docs/preview-gameplay.png)
+
+## Jalankan
+
+```bash
+bash scripts/setup.sh     # sekali saja: SDK .NET lokal, Pillow, sprite, build server
+bash scripts/dev.sh       # mulai game -> http://127.0.0.1:5080
+```
+
+`setup.sh` mengunduh SDK .NET 8 ke `./.dotnet` (project-local, tidak mengubah sistem),
+meng-install Pillow, meng-generate 23 frame karakter, dan mem-build server.
+
+| Kontrol | Aksi |
+|---|---|
+| `←` `→` / `A` `D` | jalan maju & mundur |
+| `Shift` | berlari |
+| `Spasi` / `W` / `↑` | lompat (crouch → naik → jatuh) |
+| `J` / `Z` | serang pedang |
+| `K` / `X` | skill **Aura Slash** (terbuka di level 3, butuh energi) |
+| `F` | simpan cepat ke slot aktif |
+| `Esc` | menu: simpan/muat slot, catatan perjalanan, keluar ke menu |
+
+## Fitur
+
+- **3 zona** (Greenwood Vale → Old Road → Reruntuhan Kuno), platform, gerbang antar zona,
+  api unggun sebagai checkpoint, dan boss **Ruin Warden** di akhir.
+- **Musuh dengan AI sendiri**: slime (patroli), kelelawar (mengejar dari udara),
+  boss (charge + kontak damage). Kill memberi XP, naik level menambah HP maksimum &
+  kekuatan serangan, dan membuka skill.
+- **Progresi**: XP/level, energi skill, HP, waktu bermain, jumlah kill & kematian.
+  Tumbang → respawn di checkpoint terakhir.
+- **Save perjalanan**: 3 slot per profil, autosave tiap 30 detik + saat checkpoint/zona/boss,
+  simpan & muat manual dari menu, plus simpan otomatis saat halaman ditutup.
+  Mendarat kembali ke posisi, level, HP, dan zona terakhir.
+- **Catatan perjalanan** (journey log): server mencatat otomatis tiap perubahan penting
+  (level up, checkpoint, pindah zona, boss kalah) sehingga "sampai mana" bisa dilihat kapan saja.
+
+| Catatan perjalanan | Simpan/muat slot |
+|---|---|
+| ![Journey](docs/preview-journey.png) | ![Save](docs/preview-save.png) |
 
 ## Struktur
 
 ```
-PROMPTS.md                              # character bible + 23 prompt frame
-requirements.txt                        # Pillow (dependency tool)
 assets/character/
-  character.json                        # palet, daftar 23 frame, fps/loop per animasi
-  reference/hero-reference.png          # ⬅ taruh reference image di sini (image-to-image)
-  frames/<nama>.png                     # ⬅ hasil generate + cleanup, mis. idle_1.png
-  build/arga_spritesheet.png            # hasil tool (generated)
-  build/arga_spritesheet.json           # metadata atlas (generated)
-  build/arga_frames.tres                # resource SpriteFrames Godot 4 (generated)
-tools/make_spritesheet.py               # perakit spritesheet
+  character.json                # palet + daftar 23 frame + animasi (fps/loop)
+  reference/hero-reference.png  # render referensi 4x (background magenta)
+  frames/*.png                  # 23 frame hasil generator prosedural
+  generated/anchor.json         # titik kaki sprite (dipakai klien & tool)
+  build/arga_spritesheet.png    # spritesheet + atlas JSON + .tres Godot 4
+tools/
+  generate_character_frames.py  # gambar karakter & animasinya (prosedural, konsisten)
+  make_spritesheet.py           # rakit frame -> spritesheet + atlas + SpriteFrames
+server/RpgServer/               # backend C#
+  Program.cs                    # minimal API + static hosting (game + aset)
+  GameDb.cs                     # SQLite: profil, slot save, catatan perjalanan
+  StateValidator.cs             # validasi & normalisasi payload save
+web/                            # klien game (HTML5 Canvas, tanpa bundler)
+  index.html, style.css
+  js/core.js                    # aturan game (murni, diuji headless)
+  js/atlas.js                   # loader spritesheet + animator
+  js/game.js                    # loop, render, HUD, menu, autosave
+  js/api.js                     # klien REST ke backend
+  test/                         # tes node: logika, kontrak API, browser headless
+scripts/                        # setup.sh, dev.sh, test-all.sh
 ```
 
-Folder `build/` boleh dihapus dan dibuat ulang kapan saja — semuanya generated.
+## Arsitektur
 
-## Alur kerja
+```
+Browser (HTML5 Canvas)                 C# ASP.NET Core (1 proses)          SQLite
+┌────────────────────────┐   REST     ┌───────────────────────────┐   ┌──────────────────┐
+│ core.js  (aturan game) │ ─────────► │ /api/profiles             │   │ profiles         │
+│ atlas.js (sprite)      │  save/load │ /api/profiles/{id}/slots  │──►│ save_slots       │
+│ game.js  (render/HUD)  │            │ /api/profiles/{id}/journey│   │ events           │
+└────────────────────────┘ ◄───────── │ static: /  /js  /assets   │   └──────────────────┘
+                                       └───────────────────────────┘
+```
 
-1. **Generate frame** — pakai prompt per frame di PROMPTS.md bagian 3 (attach
-   `reference/hero-reference.png` sebagai image-to-image, mis. Leonardo strength 0.35–0.5
-   atau SD img2img denoise 0.45–0.65 + ControlNet OpenPose).
-2. **Simpan** hasilnya ke `assets/character/frames/<nama>.png` dengan nama yang **persis**
-   sama dengan daftar di `character.json` (`idle_1.png`, `walk_1.png`, … `death_3.png`).
-3. **Cleanup manual** di Aseprite/Piskel: samakan tinggi badan, posisi kaki, dan palet
-   antar frame (wajib — hasil AI selalu ada jitter).
-4. **Rakit** sprite sheet:
-   ```bash
-   python3 -m pip install -r requirements.txt
-   python3 tools/make_spritesheet.py --target-height 64
-   ```
-   Tool akan melaporkan frame mana yang belum ada, jadi kamu bisa mengerjakan
-   bertahap: `run_4`, `jump_*`, `attack_*`, `skill_*`, `hurt_1`, `death_*`.
-5. **Import ke Godot 4** (lihat bawah).
+- Server menyajikan game **dan** API dalam satu port, jadi tidak ada CORS/masalah origin.
+- Progresi bersifat *client-authoritative* (game solo offline tanpa login); server tetap
+  memvalidasi bentuk & batas nilai payload agar database sehat dan tidak bisa asal ditimpa.
+- Semua frame sprite memakai region cell yang sama (`align: canvas`), jadi animasi tidak
+  jitter walau pose berbeda.
 
-## Perintah tools/make_spritesheet.py
+### API
+
+| Metode | Endpoint | Fungsi |
+|---|---|---|
+| `GET` | `/api/health` | status server + lokasi database |
+| `GET` `POST` | `/api/profiles` | daftar / buat profil (nama 1-24 karakter) |
+| `GET` `DELETE` | `/api/profiles/{id}` | detail / hapus profil |
+| `GET` | `/api/profiles/{id}/resume` | lanjutkan dari slot terakhir |
+| `GET` `PUT` `DELETE` | `/api/profiles/{id}/slots/{slot}` | muat / simpan / hapus slot (1-3) |
+| `GET` | `/api/profiles/{id}/journey` | profil + slot + catatan perjalanan |
+| `POST` | `/api/profiles/{id}/events` | catat event manual |
+
+## Pengembangan
 
 ```bash
-# default: baca assets/character/character.json, semua frame yang ada, tinggi badan 64px
-python3 tools/make_spritesheet.py
+bash scripts/test-all.sh              # build C# + 18 tes logika + 10 tes API + tes persistensi
+RUN_BROWSER=1 bash scripts/test-all.sh # + tes end-to-end di Chromium headless (butuh npm install di web/)
 
-# kerjakan hanya sebagian animasi (frame lain belum digenerate)
-python3 tools/make_spritesheet.py --only idle,walk,run --target-height 64
-
-# paksa ukuran cell & grid (mis. untuk tileset/sprite 64x64)
-python3 tools/make_spritesheet.py --cell 64x64 --columns 5
-
-# gagal kalau masih ada frame yang kurang (cocok untuk CI / build final)
-python3 tools/make_spritesheet.py --strict
-
-# tanpa resize, pakai frame apa adanya (kalau sudah digenerate di ukuran final)
-python3 tools/make_spritesheet.py --target-height 0
+python3 tools/generate_character_frames.py   # gambar ulang 23 frame karakter
+python3 tools/make_spritesheet.py            # rakit ulang spritesheet/atlas/.tres
+python3 tools/make_spritesheet.py --target-height 64   # skalakan ke tinggi badan 64px
 ```
 
-Opsi penting:
+Tes browser headless menjalankan game sungguhan: buat profil lewat form, gerak/lari/lompat
+(memastikan frame `jump_1/jump_2/jump_3` benar-benar tergambar), serang, cek skill terkunci di
+level 1 lalu aktif di level 3, simpan lewat menu pause, verifikasi isi database lewat HTTP,
+reload halaman, dan memastikan perjalanan lanjut dari titik tersimpan.
 
-| Opsi | Default | Fungsi |
-|------|---------|--------|
-| `--target-height` | `64` (dari config) | Tinggi badan pada frame acuan `scale_ref` (`idle_1`). `0` = tanpa resize. |
-| `--tolerance` | `48` | Toleransi jarak warna ke `#FF00FF` sebelum dianggap background. |
-| `--no-chroma-key` | off | Matikan penghapusan background magenta. |
-| `--no-despill` | off | Matikan pengurangan fringe magenta di tepi sprite. |
-| `--align` | `bottom-center` | Penempatan konten di cell: `bottom-center`, `bottom-left`, `center`. |
-| `--resample` | `auto` | `auto` = NEAREST saat memperbesar, BOX saat mengecilkan. |
-| `--padding` | `1` | Margin transparan di dalam cell (ruang untuk outline). |
-| `--only` | — | Batasi animasi, mis. `--only idle,walk`. |
-| `--strict` | off | Exit code ≠ 0 kalau ada frame hilang. |
+## Sprite & Godot 4
 
-### Anti-jitter (penting)
+Pipeline frame → spritesheet tetap kompatibel dengan dokumen prompt:
 
-- Semua frame diskalakan dengan **faktor yang sama**, dihitung dari frame acuan
-  (`scale_ref`, default `idle_1`), bukan per frame. Kalau tiap frame diskalakan sendiri,
-  tinggi badan berubah-ubah dan animasi terlihat goyang.
-- Setiap cell berukuran identik dan konten **rata bawah** di dalam cell, jadi kaki tetap
-  menapak di tanah pada semua frame (termasuk `jump_*` dan `death_2` yang rebah).
-- `--target-height` diukur dari tinggi *konten* frame acuan — pastikan `idle_1.png` adalah
-  pose berdiri penuh (seluruh badan terlihat) supaya skalanya benar.
-
-## Import ke Godot 4
-
-1. Copy folder `assets/` ke dalam project Godot (`res://assets/character/...`).
-2. Godot otomatis meng-import `arga_spritesheet.png` (pertahankan **Filter: off** dan
-   **Compress: Lossless** di tab Import supaya tetap tajam).
-3. `arga_frames.tres` sudah berupa resource `SpriteFrames`. Cara pakai:
-   - **AnimatedSprite2D** → Sprite Frames → Load → `arga_frames.tres`, animate otomatis
-     dari `Sprite Frames` inspector.
-   - Atau di node `AnimatedSprite2D` set `Animation = idle` di script:
-     ```gdscript
-     @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
-
-     func _physics_process(_delta: float) -> void:
-         anim.play("walk")            # idle, walk, run, jump, attack, skill, hurt, death
-         # menghadap kiri: cukup flip, tidak perlu frame terpisah
-         anim.flip_h = velocity.x < 0
-     ```
-4. Setiap region AtlasTexture memakai **rect cell penuh** (bukan rect konten), sehingga
-   semua frame berukuran sama dan `AnimatedSprite2D` tidak jitter. Karena itu set
-   `Offset`/pivot node ke titik kaki, mis. `offset = Vector2(0, -cell_h / 2)` dengan
-   `centered` disesuaikan kebutuhan.
-
-`arga_spritesheet.json` juga tersedia (berisi rect cell + rect konten per frame, ukuran
-sheet, dan daftar animasi) kalau kamu butuh memprosesnya di tool lain atau engine lain.
-
-## Status frame (23 frame, 1 arah — hadap kanan)
-
-| Animasi | Frame | fps | Loop |
-|---------|-------|-----|------|
-| idle | idle_1, idle_2 | 6 | ✅ |
-| walk | walk_1 … walk_4 | 10 | ✅ |
-| run | run_1, run_2, run_3, run_4 | 12 | ✅ |
-| jump | jump_1, jump_2, jump_3 | 10 | — |
-| attack | attack_1, attack_2, attack_3 | 12 | — |
-| skill | skill_1, skill_2, skill_3 | 10 | — |
-| hurt | hurt_1 | 12 | — |
-| death | death_1, death_2, death_3 | 6 | — |
-
-Untuk menghadap kiri cukup **flip horizontal** di engine — tidak perlu generate frame
-tambahan.
+1. `assets/character/character.json` menyimpan palet & daftar 23 frame.
+2. `tools/generate_character_frames.py` menggambar tiap frame (idle, walk, run, jump, attack,
+   skill, hurt, death) dari satu tabel pose + auto-plant kaki, jadi tinggi badan konsisten.
+3. `tools/make_spritesheet.py` menghasilkan:
+   - `arga_spritesheet.png` (PNG RGBA + atlas JSON)
+   - `arga_frames.tres` — resource `SpriteFrames` Godot 4 siap dipakai `AnimatedSprite2D`
+   - untuk menghadap kiri cukup `flip_h`, tidak perlu frame tambahan.
+4. `PROMPTS.md` (dokumen 2 dari 3) tetap bisa dipakai untuk membuat variasi gaya AI;
+   simpan hasilnya ke `assets/character/frames/` dengan nama yang sama lalu rakit ulang.
+   Kalau frame hasil AI punya margin berbeda-beda, pakai `align: bottom-center` (default)
+   alih-alih `canvas` di `character.json`.
 
 ## Catatan
 
-- Background magenta `#FF00FF` dihapus otomatis, termasuk fringe di tepi sprite.
-  Kalau hasil AI-nya punya gradien/bayangan, aktifkan cleanup manual dulu di Aseprite.
-- Edit `character.json` kalau mau ubah fps, urutan frame, palet, atau menambah animasi.
+- Tanpa autentikasi — dirancang untuk main solo di komputer sendiri (`RPG_HOST` untuk bind alamat lain).
+- Database ada di `server/data/rpg.db` (ubah lewat env `RPG_DB`). Port lewat `RPG_PORT` / `--port`.

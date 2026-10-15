@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+
+# .NET SDK lokal + artefak build
+.dotnet/
+.dotnet-home/
+server/**/bin/
+server/**/obj/
+
+# Database save game (dibuat saat runtime)
+server/data/
+
+# Node (dipakai hanya untuk tes browser)
+web/node_modules/
+
+# Hasil generate tools/*.py — bisa dibuat ulang:
+#   python3 tools/generate_character_frames.py && python3 tools/make_spritesheet.py
+assets/character/build/*
+!assets/character/build/.gitkeep

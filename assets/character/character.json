@@ -1,0 +1,137 @@
+{
+  "name": "arga",
+  "display_name": "Arga, Young Warrior Knight",
+  "reference": "assets/character/reference/hero-reference.png",
+  "frames_dir": "assets/character/frames",
+  "project_root": ".",
+  "chroma_key": "#FF00FF",
+  "scale_ref": "idle_1",
+  "target_height": 0,
+  "tolerance": 48,
+  "align": "canvas",
+  "padding": 0,
+  "resample": "auto",
+  "output": {
+    "sheet": "assets/character/build/arga_spritesheet.png",
+    "atlas": "assets/character/build/arga_spritesheet.json",
+    "godot": "assets/character/build/arga_frames.tres"
+  },
+  "character_bible": "Young warrior knight, athletic young man, short spiky brown hair, determined eyes, blue cloth tunic, silver metal shoulder pauldron on the front shoulder, brown leather belt with small pouch, brown boots, silver steel sword with simple crossguard.",
+  "style_block": "Classic 16-bit pixel art style, chunky clearly visible pixels, clean readable silhouette, limited color palette with dark outline shading, side view facing right, full body visible, flat solid pure magenta #FF00FF background, no text, no watermark, no shadow, no ground.",
+  "palette": {
+    "skin": {
+      "base": "#f2c9a0",
+      "shadow": "#d1a276",
+      "highlight": "#ffe4c4"
+    },
+    "hair": {
+      "base": "#7a4a26",
+      "shadow": "#5a3419",
+      "highlight": "#9c6534"
+    },
+    "tunic": {
+      "base": "#4a6fa5",
+      "shadow": "#35567d",
+      "highlight": "#6b93c9"
+    },
+    "armor": {
+      "base": "#b9c3cf",
+      "shadow": "#7f8b98",
+      "highlight": "#e2e8f0"
+    },
+    "leather": {
+      "base": "#8a5a30",
+      "shadow": "#5e3d20",
+      "highlight": "#a97845"
+    },
+    "sword": {
+      "base": "#dde4ec",
+      "shadow": "#a8b4c2",
+      "highlight": "#ffffff"
+    },
+    "outline": {
+      "base": "#20202e"
+    }
+  },
+  "animations": [
+    {
+      "name": "idle",
+      "fps": 6,
+      "loop": true,
+      "frames": [
+        "idle_1",
+        "idle_2"
+      ]
+    },
+    {
+      "name": "walk",
+      "fps": 10,
+      "loop": true,
+      "frames": [
+        "walk_1",
+        "walk_2",
+        "walk_3",
+        "walk_4"
+      ]
+    },
+    {
+      "name": "run",
+      "fps": 12,
+      "loop": true,
+      "frames": [
+        "run_1",
+        "run_2",
+        "run_3",
+        "run_4"
+      ]
+    },
+    {
+      "name": "jump",
+      "fps": 10,
+      "loop": false,
+      "frames": [
+        "jump_1",
+        "jump_2",
+        "jump_3"
+      ]
+    },
+    {
+      "name": "attack",
+      "fps": 12,
+      "loop": false,
+      "frames": [
+        "attack_1",
+        "attack_2",
+        "attack_3"
+      ]
+    },
+    {
+      "name": "skill",
+      "fps": 10,
+      "loop": false,
+      "frames": [
+        "skill_1",
+        "skill_2",
+        "skill_3"
+      ]
+    },
+    {
+      "name": "hurt",
+      "fps": 12,
+      "loop": false,
+      "frames": [
+        "hurt_1"
+      ]
+    },
+    {
+      "name": "death",
+      "fps": 6,
+      "loop": false,
+      "frames": [
+        "death_1",
+        "death_2",
+        "death_3"
+      ]
+    }
+  ]
+}

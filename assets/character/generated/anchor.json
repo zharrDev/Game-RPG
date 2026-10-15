@@ -1,0 +1,45 @@
+{
+  "character": "arga",
+  "unit": 2,
+  "cell": {
+    "w": 88,
+    "h": 96
+  },
+  "foot": {
+    "x": 40,
+    "y": 83
+  },
+  "stand_height": 68,
+  "idle_bbox": [
+    32,
+    18,
+    54,
+    86
+  ],
+  "frames": 23,
+  "order": [
+    "idle_1",
+    "idle_2",
+    "walk_1",
+    "walk_2",
+    "walk_3",
+    "walk_4",
+    "run_1",
+    "run_2",
+    "run_3",
+    "run_4",
+    "jump_1",
+    "jump_2",
+    "jump_3",
+    "attack_1",
+    "attack_2",
+    "attack_3",
+    "skill_1",
+    "skill_2",
+    "skill_3",
+    "hurt_1",
+    "death_1",
+    "death_2",
+    "death_3"
+  ]
+}
