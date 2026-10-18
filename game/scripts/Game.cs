@@ -24,6 +24,9 @@ public sealed partial class Game : Node2D
 
     public readonly List<Mob> Mobs = new();
     public readonly List<Npc> Npcs = new();
+    public EventBus Bus { get; private set; } = null!;
+    public ProgressSystem Progress { get; private set; } = null!;
+    public SpawnSystem Spawn { get; private set; } = null!;
     private readonly List<string> _dialog = new();
     private Npc? _dialogNpc;
     private int _dialogIndex;
@@ -86,6 +89,9 @@ public sealed partial class Game : Node2D
         Hud.EnsurePixelFont();   // sebelum BuildWorld: NPC memakai font pixel untuk penanda "!"
         SetupInput();
         _save = new SaveSystem(this);
+        Bus = new EventBus();
+        Progress = new ProgressSystem(this);
+        Spawn = new SpawnSystem(this);
         BuildWorld();
 
         // pipeline FX (asap, bloom, grading) + heat haze di tiap titik api
@@ -209,7 +215,7 @@ public sealed partial class Game : Node2D
         Player.State.Zone = data.SpawnZone;
         Player.State.Checkpoint = data.Checkpoints.Count > 0 ? data.Checkpoints[0].Id : "village_square";
         Player.Strike += ApplyStrike;
-        Player.LeveledUp += OnLevelUp;
+        Player.LeveledUp += Progress.OnLevelUp;
         World.Root.AddChild(Player);
 
         _cameraRig.Build(Player, data.PixelSize);
@@ -219,8 +225,8 @@ public sealed partial class Game : Node2D
         Feel.Configure();
         World.Root.AddChild(Feel);
 
-        SpawnMobs();
-        SpawnNpcs();
+        Spawn.SpawnMobs();
+        Spawn.SpawnNpcs();
         UpdateZone(true);
     }
 
@@ -237,69 +243,13 @@ public sealed partial class Game : Node2D
             Fx.AttachHeat(heatRoot, pos, size, phase);
     }
 
-    private void SpawnNpcs()
-    {
-        if (World is null) return;
-        foreach (var info in World.Data.Npcs)
-        {
-            var npc = new Npc(World, info);
-            Npcs.Add(npc);
-            World.Root.AddChild(npc);
-        }
-        RefreshNpcMarkers();
-    }
-
     /// <summary>True kalau NPC ini punya quest yang belum selesai (penanda "!").</summary>
-    public bool QuestPending(NpcInfo info)
-    {
-        var quest = info.Quest;
-        if (quest is null || quest.Flag.Length == 0 || Player is null) return false;
-        return !Player.State.Flags.GetValueOrDefault(quest.Flag);
-    }
+    public bool QuestPending(NpcInfo info) => Progress.QuestPending(info);
 
-    private void RefreshNpcMarkers()
-    {
-        if (Player is null) return;
-        foreach (var npc in Npcs) npc.SetQuestPending(QuestPending(npc.Info));
-    }
-
-    private void SpawnMobs()
-    {
-        if (World is null) return;
-        var id = 0;
-        foreach (var spawn in World.Data.Enemies)
-        {
-            var mob = new Mob(World, spawn, id++);
-            mob.Removed += OnMobRemoved;
-            Mobs.Add(mob);
-            World.Root.AddChild(mob);
-        }
-    }
+    private void RefreshNpcMarkers() => Spawn.RefreshNpcMarkers();
 
     /// <summary>Catat peristiwa ke catatan perjalanan (dilakukan server, bukan client).</summary>
     public void LogEvent(string kind, string detail) => _save.LogEvent(kind, detail);
-
-    private void OnMobRemoved(Mob mob)
-    {
-        Mobs.Remove(mob);
-        Player!.State.Defeated[mob.Stats.Id] = Player.State.Defeated.GetValueOrDefault(mob.Stats.Id) + 1;
-        Player.State.Kills++;
-        Player.AddXp(mob.Stats.Xp);
-        Hud?.Toast($"{mob.Stats.Display} tumbang  ·  +{mob.Stats.Xp} XP");
-        if (mob.Stats.Boss)
-        {
-            Hud?.Toast($"{mob.Stats.Display} dikalahkan!");
-            LogEvent("boss_defeated", mob.Stats.Display);
-            Autosave("boss kalah");
-        }
-    }
-
-    private void OnLevelUp(int level)
-    {
-        Sfx?.Play("levelup");
-        Hud?.Toast($"Naik level {level}! HP penuh, skill Aura Slash siap.");
-        LogEvent("level_up", $"level {level}");
-    }
 
     // ------------------------------------------------------------------ update
 
@@ -413,11 +363,7 @@ public sealed partial class Game : Node2D
         }
 
         // warga mondar-mandir singkat (tahap 2f, murni visual); berhenti saat dialog/menu/hit-stop
-        foreach (var npc in Npcs)
-        {
-            if (!IsInstanceValid(npc)) continue;
-            npc.Tick(delta, !playing || frozen || DialogOpen || !Player.Alive);
-        }
+        Spawn.TickNpcs(delta, !playing || frozen || DialogOpen || !Player.Alive);
 
         if (playing && !Player.Alive && Player.DeathTimer >= Rules.DeathDuration)
             Respawn();
@@ -629,13 +575,7 @@ public sealed partial class Game : Node2D
 
     private void GrantQuestReward(NpcQuestSpec quest, NpcInfo giver)
     {
-        if (Player is null) return;
-        Player.State.Flags[quest.Flag] = true;
-        Sfx?.Play("quest");
-        Player.AddXp(quest.RewardXp);
-        Hud?.Toast($"Quest selesai: {giver.Name} — +{quest.RewardXp} XP");
-        LogEvent("quest", quest.Flag);
-        Autosave("quest selesai");
+        Progress.CompleteQuest(quest, giver);
         RefreshNpcMarkers();
     }
 
