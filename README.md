@@ -35,6 +35,15 @@ bash scripts/dev.sh       # nyalakan backend save, lalu buka jendela game Godot
 
 > Butuh layar (bukan headless). Untuk hanya menyalakan backend: `SERVER_ONLY=1 bash scripts/dev.sh`.
 
+### Pratinjau & screenshot
+
+```bash
+python3 tools/preview_stages.py                       # SEBELUM/SESUDAH tiap tahap visual (deterministik)
+bash scripts/shot.sh docs/shot-village.png            # screenshot asli dari jendela game (butuh layar)
+bash scripts/shot.sh docs/shot-asap.png --shot-ash=0.45 --shot-delay=2
+bash scripts/shot.sh docs/shot-malam.png --time=0.05 --shot-ash=0.3
+```
+
 ### Kontrol
 
 | Tombol | Aksi |
@@ -110,18 +119,25 @@ game/                      proyek Godot 4 (.NET)
     LocalSave.cs           simpanan offline user://save_offline.json kalau server mati
     Audio.cs               parser WAV + pemutar 8 suara & 1 kanal musik
     Hud.cs                 HUD pixel + menu pause/profil + kotak dialog + minimap
+    Fx.cs                  pipeline FX: asap, bloom tipis, color grading, heat haze
+    Lighting.cs            siklus siang/malam + PointLight2D hangat di titik api
+    Particles.cs           pooling partikel: nyala 4-frame, bara, abu, tunas pulih
     Assets.cs / Data.cs    pemuat PNG & parser JSON aset
     HeadlessTest.cs        tes yang menjalankan kode game sungguhan
-  assets/                  hasil generate (tileset, peta, atlas hero & musuh)
+  assets/                  hasil generate (tileset, peta, atlas) + tekstur FX + shader
 
 server/RpgServer/          ASP.NET Core + SQLite (profil, 3 slot save, resume, journey)
 tools/                     generator aset + verifikator
-   generate_tileset.py     175 tile / 187 cell: rumput, jalan (autotile 16), cobble,
-                           air + tepi, tebing, pohon, rumah, atap, jembatan, sumur, gua…
+   generate_tileset.py     194 tile / 206 cell: rumput, jalan (autotile 16), cobble,
+                           air + tepi, tebing, pohon, rumah, atap, jembatan, sumur, gua,
+                           tanah hangus (3 varian untuk zona bekas terbakar)…
    generate_world_map.py   susun peta 96x72 tile + NPC + preview + grid walkability
    generate_topdown_frames.py  40 frame hero 4 arah (idle/walk/run)
    generate_pixel_font.py  font bitmap 5x7 (BMFont) untuk HUD
    generate_audio.py       9 SFX + 2 musik chiptune (WAV PCM, disintesis sendiri)
+   generate_fx.py          tekstur FX: noise asap tileable, cahaya radial, titik glow,
+                           lembar nyala 4 frame & tunas zona terbakar
+   preview_stages.py       pratinjau SEBELUM/SESUDAH tiap tahap visual -> docs/
    build_hero_sprites.py   gabung frame prosedural + frame AI (attack/skill/hurt/death/jump)
    build_enemy_sprites.py  slime & bat prosedural + boss dari frame AI
    build_npc_sprites.py    3 warga desa (generator sama, palet berbeda)
@@ -134,7 +150,8 @@ tests/                     tes HTTP backend (node --test), tanpa browser
    api-persistence.test.mjs  dibuktikan setelah server direstart (SQLite)
 game/assets/font/          pixel.png + pixel.fnt (font HUD, ikut diekspor lewat
                            include_filter di game/export_presets.cfg)
-docs/                      pratinjau (tileset, peta, hero, musuh, NPC) — bisa dibuka di
+docs/                      pratinjau (tileset, peta, hero, musuh, NPC, tahap visual
+                           preview-stage-*) — bisa dibuka di
                            http://127.0.0.1:5080/preview/preview-world.png
 ```
 
@@ -148,8 +165,9 @@ tools/*.py  ->  game/assets/{tiles,world,character}/*.{png,json}
 ```
 
 Peta direpresentasikan sebagai data: `overworld.json` memuat tile ground per sel
-(hasil autotile), daftar prop, **grid walkability**, zona, checkpoint, dan titik spawn
-musuh. `CollisionGrid` memakai grid itu untuk tabrakan (per-sumbu), jadi gerak pemain
+(hasil autotile), daftar prop, **grid walkability**, zona, checkpoint, titik spawn
+musuh, dan **zona bekas terbakar** (dekoratif — abu & tunas, bukan gameplay).
+`CollisionGrid` memakai grid itu untuk tabrakan (per-sumbu), jadi gerak pemain
 deterministik dan bisa diuji tanpa physics engine.
 
 ---
@@ -162,15 +180,17 @@ bash scripts/test-all.sh
 
 Yang dijalankan:
 
-1. **generate aset** (idempoten) lalu **`tools/verify_assets.py`** — 76 pemeriksaan
+1. **generate aset** (idempoten) lalu **`tools/verify_assets.py`** — 97 pemeriksaan
    artefak: tidak ada tile saling menimpa/keluar atlas, tidak ada tile kosong,
    alpha biner (tanpa anti-aliasing), palet terbatas, collision cell cocok, grid
    walkable konsisten dengan terrain + prop, spawn/checkpoint/musuh/NPC di tile yang bisa
    dipijak, sungai benar-benar terpisah kecuali lewat jembatan, semua frame sprite di
    dalam atlas, kaki sejajar garis tanah, animasi tidak ada yang kosong, font pixel
    lengkap & hard-edged, tiap NPC punya palet sendiri, peti padat tapi bisa dicapai,
-   audio PCM 16-bit yang benar-benar berisi suara, dan `include_filter` ekspor
-   mencakup semua aset mentah yang dibaca game.
+   audio PCM 16-bit yang benar-benar berisi suara, tekstur FX (noise tileable, cahaya
+   radial, nyala 4 frame & tunas ber-alpha biner, shader termuat, uniform `night`),
+   tanah hangus (3 varian, gelap), zona bekas terbakar (di dalam peta + cukup tile
+   walkable), dan `include_filter` ekspor mencakup semua aset mentah yang dibaca game.
 2. **build backend C#** dan **build game Godot C#**.
 3. **tes API** (`tests/api.test.mjs`) + **persistensi setelah server direstart**
    (`tests/api-persistence.test.mjs`). Termasuk penjaga bahwa server tidak lagi
@@ -182,9 +202,16 @@ Yang dijalankan:
    sampai mati → kill/XP/level, deteksi 4 zona & checkpoint, menyeberang sungai lewat
    jembatan (dan tidak bisa menembus air), serta save/load lewat backend sungguhan.
    Plus NPC: dialog terbuka/tertutup, baris quest, hadiah XP, flag quest tersimpan,
-   penanda "!" hilang setelah selesai; font pixel termuat; simpanan offline; dan
-   bayangan ambient/obor yang berkedip terpasang. Keluar dengan exit code ≠ 0 kalau ada
-   yang gagal.
+   penanda "!" hilang setelah selesai; font pixel termuat; simpanan offline; bayangan
+   ambient/obor yang berkedip terpasang; pipeline FX (asap, bloom, grading, heat haze
+   yang mengikuti 9 titik api) terpasang dengan uniform yang benar; lighting:
+   9 PointLight2D di titik api, ambient siang terang / malam kebiruan, jam berputar &
+   membungkus, serta uniform `night` grading ikut siklus; dan ambience api: nyala
+   4-frame per titik api, bara yang kembali ke pool, abu hanya saat kamera di zona
+   terbakar (+boost asap), tunas tumbuh lalu kembali ke pool; tanah hangus (overlay
+   tilemap dekoratif di 3 zona terbakar — tepi ragged, hanya menimpa grass/meadow
+   sehingga jalan & air tetap bersih) dan riak air per sel (offset fase dari hash,
+   tidak pop serentak). Keluar dengan exit code ≠ 0 kalau ada yang gagal.
 
 ---
 
@@ -199,9 +226,29 @@ Yang dijalankan:
   `user://save_offline.json` (tombol/menu sama). Saat server hidup lagi, profil lokal
   itu **otomatis dipindah** ke server (nama yang sama dilewati) dan file lokal
   dihapus setelah kosong.
-* Visual: air memakai 16 tile fase-2 (`water_<mask>_b`) yang ditukar tiap 0,6 detik,
+* Visual: air memakai 16 tile fase-2 (`water_<mask>_b`) + 3 varian air dalam;
+  fase tiap sel di-offset dari hash koordinat (`World._waterOffset`), jadi riak
+  menjalar dari sel ke sel alih-alih seluruh sungai "pop" serentak (tiap 0,6 detik),
   obor/lentera berkedip, ada bayangan ambient di bawah pohon/bangunan, dan minimap di
   kanan bawah HUD.
+* Pipeline FX (tahap visual "Api & Asap") berjalan di `CanvasLayer` sendiri (layer 5,
+  di bawah HUD): asap dua lapis dari noise tileable + color grading/vignette + bloom
+  tipis + heat haze di 9 titik api (obor, lentera, api unggun). Semuanya dekoratif —
+  tidak mengubah gameplay. Tekstur FX di `assets/fx/` sengaja **bukan** pixel-art
+  biner (alpha halus untuk partikel), di luar cek alpha biner tileset. Pratinjau
+  sebelum/sesudah: `python3 tools/preview_stages.py`; screenshot asli yang dirender:
+  `bash scripts/shot.sh docs/shot.png` (butuh layar).
+* Siklus siang/malam (`Lighting.cs`): satu hari penuh 5 menit — `CanvasModulate`
+  menggelapkan dunia perlahan (malam kebiruan), `PointLight2D` hangat berkedip di
+  9 titik api dan makin terang saat malam, grading ikut menyesuaikan. HUD & menu tidak
+  ikut digelapkan. Mulai di jam tertentu: `--time=0..1` (0 = tengah malam,
+  0.5 = tengah hari), atur kecepatan: `--day-length=detik`.
+* Ambience api (`Particles.cs`, punya sendiri: pooling, tanpa alokasi saat main):
+  nyala api 4 frame beranimasi di tiap titik api, bara naik terbawa angin lembut,
+  dan di 3 **zona bekas terbakar** (data `markers.burnt`) ada abu beterbangan + asap
+  sedikit menebal saat kamera di zona itu, plus tunas hijau tumbuh-memudar (hutan
+  pulih) di atas tanah hangus (overlay `Scorched`, `World.cs`). Semuanya dekoratif —
+  walkable, damage, dan AI tidak berubah.
 * Audio: 9 SFX (langkah, pedang, kena, tumbang, level, quest, istirahat, skill) +
   2 musik loop (desa & padang liar) — semuanya disintesis `tools/generate_audio.py`.
 * Menutup jendela game atau menekan "Keluar" memicu autosave terlebih dahulu.

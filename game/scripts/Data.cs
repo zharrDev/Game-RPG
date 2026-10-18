@@ -99,6 +99,16 @@ public sealed class ChestInfo
     public int Col, Row, Gold;
 }
 
+/// <summary>Bekas terbakar (dekoratif): di dalamnya ada abu beterbangan + tunas tumbuh.</summary>
+public sealed class BurntZoneInfo
+{
+    public string Id = "", Name = "";
+    public int X, Y, W, H;
+
+    /// <summary>Batas zona dalam piksel dunia (untuk culling partikel & cek kamera).</summary>
+    public Rect2 RectPx(int tile) => new(X * tile, Y * tile, W * tile, H * tile);
+}
+
 public sealed class NpcQuestSpec
 {
     public string Type = "kill";
@@ -132,6 +142,7 @@ public sealed class WorldData
     public readonly List<EnemySpawnInfo> Enemies = new();
     public readonly List<NpcInfo> Npcs = new();
     public readonly List<ChestInfo> Chests = new();
+    public readonly List<BurntZoneInfo> BurntZones = new();
 
     public Vector2 PixelSize => new(Width * TileSize, Height * TileSize);
 
@@ -193,6 +204,20 @@ public sealed class WorldData
                 Col = cp.GetProperty("col").GetInt32(),
                 Row = cp.GetProperty("row").GetInt32(),
             });
+        }
+
+        if (markers.TryGetProperty("burnt", out var burntArray) && burntArray.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var zone in burntArray.EnumerateArray())
+            {
+                var rect = zone.GetProperty("rect").EnumerateArray().Select(v => v.GetInt32()).ToArray();
+                data.BurntZones.Add(new BurntZoneInfo
+                {
+                    Id = zone.GetProperty("id").GetString() ?? "",
+                    Name = zone.GetProperty("name").GetString() ?? "",
+                    X = rect[0], Y = rect[1], W = rect[2], H = rect[3],
+                });
+            }
         }
 
         foreach (var mob in markers.GetProperty("enemies").EnumerateArray())

@@ -26,12 +26,13 @@ if [[ ! -x "$ROOT/.dotnet/dotnet" ]]; then
   exit 1
 fi
 
-[[ -f game/assets/world/overworld.json && -f game/assets/font/pixel.fnt && -f game/assets/audio/audio.json ]] || {
+[[ -f game/assets/world/overworld.json && -f game/assets/font/pixel.fnt && -f game/assets/audio/audio.json && -f game/assets/fx/fx_noise.png ]] || {
   echo "Aset game belum ada. Menjalankan generator..." >&2
   PY="$(rpg_python "$ROOT")" || { echo "Pillow belum ada — jalankan: bash scripts/setup.sh" >&2; exit 1; }
   "$PY" tools/generate_tileset.py >/dev/null
   "$PY" tools/generate_pixel_font.py >/dev/null
   "$PY" tools/generate_audio.py >/dev/null
+  "$PY" tools/generate_fx.py >/dev/null
   "$PY" tools/generate_world_map.py >/dev/null
   "$PY" tools/build_hero_sprites.py >/dev/null
   "$PY" tools/build_enemy_sprites.py >/dev/null

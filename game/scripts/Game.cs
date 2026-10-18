@@ -15,6 +15,9 @@ public sealed partial class Game : Node2D
     public World? World { get; private set; }
     public Player? Player { get; private set; }
     public Hud? Hud { get; private set; }
+    public Fx? Fx { get; private set; }
+    public Lighting? Lighting { get; private set; }
+    public FireAmbience? Ambience { get; private set; }
     public AudioPlayer? Sfx { get; private set; }
     public SaveApi? Api { get; private set; }
 
@@ -41,6 +44,13 @@ public sealed partial class Game : Node2D
     private bool _testPending;
     private double _waterTimer;
     private double _stepTimer;
+    private string? _shotPath;
+    private double _shotDelay = 1.5;
+    private double _shotTimer;
+    private float _shotAsh = -1f;
+    private float _startTime = 0.5f;
+    private float _dayLength = 300f;
+    private float _ashBase = 0.20f;
 
     /// <summary>Waktu bermain (detik) — disimpan ke stats.playtime.</summary>
     public double Playtime { get; set; }
@@ -54,12 +64,41 @@ public sealed partial class Game : Node2D
             if (arg.StartsWith("--server=")) _serverUrl = arg["--server=".Length..];
             else if (arg.StartsWith("--profile=")) ProfileId = arg["--profile=".Length..];
             else if (arg.StartsWith("--slot=") && int.TryParse(arg["--slot=".Length..], out var slot)) CurrentSlot = slot;
+            else if (arg.StartsWith("--shot=")) _shotPath = arg["--shot=".Length..];
+            else if (arg.StartsWith("--shot-delay=") &&
+                     double.TryParse(arg["--shot-delay=".Length..], System.Globalization.NumberStyles.Float,
+                         System.Globalization.CultureInfo.InvariantCulture, out var shotDelay)) _shotDelay = shotDelay;
+            else if (arg.StartsWith("--shot-ash=") &&
+                     float.TryParse(arg["--shot-ash=".Length..], System.Globalization.NumberStyles.Float,
+                         System.Globalization.CultureInfo.InvariantCulture, out var shotAsh)) _shotAsh = shotAsh;
+            else if (arg.StartsWith("--time=") &&
+                     float.TryParse(arg["--time=".Length..], System.Globalization.NumberStyles.Float,
+                         System.Globalization.CultureInfo.InvariantCulture, out var startTime)) _startTime = startTime;
+            else if (arg.StartsWith("--day-length=") &&
+                     float.TryParse(arg["--day-length=".Length..], System.Globalization.NumberStyles.Float,
+                         System.Globalization.CultureInfo.InvariantCulture, out var dayLength)) _dayLength = dayLength;
             else if (arg == "--test") TestMode = true;
         }
 
         Hud.EnsurePixelFont();   // sebelum BuildWorld: NPC memakai font pixel untuk penanda "!"
         SetupInput();
         BuildWorld();
+
+        // pipeline FX (asap, bloom, grading) + heat haze di tiap titik api
+        Fx = new Fx();
+        AddChild(Fx);
+        AttachFireFx();
+
+        // siklus siang/malam + cahaya hangat di tiap titik api
+        Lighting = new Lighting { DayLength = _dayLength };
+        World.Root.AddChild(Lighting);
+        Lighting.Configure(World.HeatSources, Assets.LoadTexture(Assets.FxLightSoftPng), Fx);
+        Lighting.SetTimeOfDay(_startTime);
+
+        // ambience api & pemulihan: nyala 4-frame, bara, abu, tunas (murni visual)
+        Ambience = new FireAmbience();
+        World.Root.AddChild(Ambience);
+        Ambience.Configure(World);
 
         Api = new SaveApi(_serverUrl);
         var version = "";
@@ -102,9 +141,19 @@ public sealed partial class Game : Node2D
                 Hud.Toast($"{imported} profil dari simpanan offline dipindahkan ke server.");
         }
 
+        if (_shotAsh >= 0f) _ashBase = Math.Clamp(_shotAsh, 0f, 0.75f);
+        if (Fx is not null) Fx.AshDensity = _ashBase;
+
         if (TestMode)
         {
             _testPending = true;
+            return;
+        }
+
+        if (_shotPath is not null)
+        {
+            // mode screenshot: dunia tampil apa adanya (tanpa menu profil), lalu disimpan
+            GD.Print($"[shot] menunggu {_shotDelay:0.0} dtk lalu menyimpan ke {_shotPath}");
             return;
         }
 
@@ -174,6 +223,19 @@ public sealed partial class Game : Node2D
         SpawnMobs();
         SpawnNpcs();
         UpdateZone(true);
+    }
+
+    /// <summary>
+    /// Pasang heat haze di semua titik api dunia. Quad-nya ditaruh di node
+    /// terpisah yang tidak ikut y-sort supaya shimmer selalu di depan sprite.
+    /// </summary>
+    private void AttachFireFx()
+    {
+        if (World is null || Fx is null) return;
+        var heatRoot = new Node2D { Name = "HeatHaze", YSortEnabled = false };
+        World.Root.AddChild(heatRoot);
+        foreach (var (pos, phase, size) in World.HeatSources)
+            Fx.AttachHeat(heatRoot, pos, size, phase);
     }
 
     private void SpawnNpcs()
@@ -263,7 +325,27 @@ public sealed partial class Game : Node2D
             }
             return;
         }
+
+        if (_shotPath is not null)
+        {
+            _shotTimer += delta;
+            if (_shotTimer >= _shotDelay)
+            {
+                CaptureShot();
+                return;
+            }
+        }
+
         if (World is null || Player is null || Hud is null) return;
+        // asap yang menempel di dunia: ikut titik tengah kamera (termasuk smoothing)
+        var camCenter = _camera.GetScreenCenterPosition();
+        Fx?.SetCameraCenter(camCenter);
+        // jam dunia berjalan (ambient + kedip cahaya api); Fx.NightAmount ikut terisi
+        Lighting?.Advance(delta);
+        // ambience api: nyala, bara, abu zona terbakar, tunas (murni visual)
+        Ambience?.SetCameraCenter(camCenter);
+        Ambience?.Advance(delta);
+        if (Fx is not null && Ambience is not null) Fx.AshDensity = _ashBase + Ambience.AshBoost;
 
         var menuPressed = Input.IsActionJustPressed("menu");
         if (menuPressed)
@@ -342,6 +424,26 @@ public sealed partial class Game : Node2D
 
         Hud.UpdateStats(Player.State, Player.Energy, Playtime, ZoneName, Player.State.Checkpoint);
         Hud.UpdateMinimap(Player.Position, World.Data.PixelSize);
+    }
+
+    /// <summary>
+    /// Simpan satu frame viewport ke PNG (mode `--shot=`, butuh layar — headless
+    /// tidak merender). Dipakai untuk dokumentasi tahap visual ke docs/.
+    /// </summary>
+    private void CaptureShot()
+    {
+        var image = GetViewport().GetTexture().GetImage();
+        var error = image.SavePng(_shotPath!);
+        if (error == Error.Ok)
+        {
+            GD.Print($"[shot] tersimpan {_shotPath} ({image.GetWidth()}x{image.GetHeight()})");
+            GetTree().Quit(0);
+        }
+        else
+        {
+            GD.PrintErr($"[shot] gagal menyimpan {_shotPath}: {error} (headless tidak merender)");
+            GetTree().Quit(1);
+        }
     }
 
     private InputState ReadInput() => new()

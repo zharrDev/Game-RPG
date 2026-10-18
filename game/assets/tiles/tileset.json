@@ -2,8 +2,8 @@
   "tile_size": 16,
   "columns": 16,
   "rows": 14,
-  "tile_count": 191,
-  "cell_count": 203,
+  "tile_count": 194,
+  "cell_count": 206,
   "source": "tools/generate_tileset.py",
   "palette_note": "muted earthy, palet sama dengan karakter Arga (PROMPTS.md)",
   "tiles": {
@@ -250,11 +250,65 @@
         "flower"
       ]
     },
-    "dirt_0": {
+    "scorched_1": {
       "x": 224,
       "y": 0,
       "col": 14,
       "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "ground",
+        "scorched"
+      ]
+    },
+    "scorched_2": {
+      "x": 240,
+      "y": 0,
+      "col": 15,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "ground",
+        "scorched"
+      ]
+    },
+    "scorched_3": {
+      "x": 0,
+      "y": 16,
+      "col": 0,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "ground",
+        "scorched"
+      ]
+    },
+    "dirt_0": {
+      "x": 16,
+      "y": 16,
+      "col": 1,
+      "row": 1,
       "w": 1,
       "h": 1,
       "solid": false,
@@ -269,10 +323,10 @@
       ]
     },
     "dirt_1": {
-      "x": 240,
-      "y": 0,
-      "col": 15,
-      "row": 0,
+      "x": 32,
+      "y": 16,
+      "col": 2,
+      "row": 1,
       "w": 1,
       "h": 1,
       "solid": false,
@@ -287,9 +341,9 @@
       ]
     },
     "dirt_2": {
-      "x": 0,
+      "x": 48,
       "y": 16,
-      "col": 0,
+      "col": 3,
       "row": 1,
       "w": 1,
       "h": 1,
@@ -305,9 +359,9 @@
       ]
     },
     "dirt_3": {
-      "x": 16,
+      "x": 64,
       "y": 16,
-      "col": 1,
+      "col": 4,
       "row": 1,
       "w": 1,
       "h": 1,
@@ -323,9 +377,9 @@
       ]
     },
     "dirt_4": {
-      "x": 32,
+      "x": 80,
       "y": 16,
-      "col": 2,
+      "col": 5,
       "row": 1,
       "w": 1,
       "h": 1,
@@ -341,9 +395,9 @@
       ]
     },
     "dirt_5": {
-      "x": 48,
+      "x": 96,
       "y": 16,
-      "col": 3,
+      "col": 6,
       "row": 1,
       "w": 1,
       "h": 1,
@@ -359,9 +413,9 @@
       ]
     },
     "dirt_6": {
-      "x": 64,
+      "x": 112,
       "y": 16,
-      "col": 4,
+      "col": 7,
       "row": 1,
       "w": 1,
       "h": 1,
@@ -377,9 +431,9 @@
       ]
     },
     "dirt_7": {
-      "x": 80,
+      "x": 128,
       "y": 16,
-      "col": 5,
+      "col": 8,
       "row": 1,
       "w": 1,
       "h": 1,
@@ -395,9 +449,9 @@
       ]
     },
     "dirt_8": {
-      "x": 96,
+      "x": 144,
       "y": 16,
-      "col": 6,
+      "col": 9,
       "row": 1,
       "w": 1,
       "h": 1,
@@ -413,9 +467,9 @@
       ]
     },
     "dirt_9": {
-      "x": 112,
+      "x": 160,
       "y": 16,
-      "col": 7,
+      "col": 10,
       "row": 1,
       "w": 1,
       "h": 1,
@@ -431,9 +485,9 @@
       ]
     },
     "dirt_10": {
-      "x": 128,
+      "x": 176,
       "y": 16,
-      "col": 8,
+      "col": 11,
       "row": 1,
       "w": 1,
       "h": 1,
@@ -449,9 +503,9 @@
       ]
     },
     "dirt_11": {
-      "x": 144,
+      "x": 192,
       "y": 16,
-      "col": 9,
+      "col": 12,
       "row": 1,
       "w": 1,
       "h": 1,
@@ -467,9 +521,9 @@
       ]
     },
     "dirt_12": {
-      "x": 160,
+      "x": 208,
       "y": 16,
-      "col": 10,
+      "col": 13,
       "row": 1,
       "w": 1,
       "h": 1,
@@ -485,9 +539,9 @@
       ]
     },
     "dirt_13": {
-      "x": 176,
+      "x": 224,
       "y": 16,
-      "col": 11,
+      "col": 14,
       "row": 1,
       "w": 1,
       "h": 1,
@@ -503,9 +557,9 @@
       ]
     },
     "dirt_14": {
-      "x": 192,
+      "x": 240,
       "y": 16,
-      "col": 12,
+      "col": 15,
       "row": 1,
       "w": 1,
       "h": 1,
@@ -521,10 +575,10 @@
       ]
     },
     "dirt_15": {
-      "x": 208,
-      "y": 16,
-      "col": 13,
-      "row": 1,
+      "x": 0,
+      "y": 32,
+      "col": 0,
+      "row": 2,
       "w": 1,
       "h": 1,
       "solid": false,
@@ -539,10 +593,10 @@
       ]
     },
     "cobble_0": {
-      "x": 224,
-      "y": 16,
-      "col": 14,
-      "row": 1,
+      "x": 16,
+      "y": 32,
+      "col": 1,
+      "row": 2,
       "w": 1,
       "h": 1,
       "solid": false,
@@ -557,10 +611,10 @@
       ]
     },
     "cobble_1": {
-      "x": 240,
-      "y": 16,
-      "col": 15,
-      "row": 1,
+      "x": 32,
+      "y": 32,
+      "col": 2,
+      "row": 2,
       "w": 1,
       "h": 1,
       "solid": false,
@@ -575,9 +629,9 @@
       ]
     },
     "cobble_2": {
-      "x": 0,
+      "x": 48,
       "y": 32,
-      "col": 0,
+      "col": 3,
       "row": 2,
       "w": 1,
       "h": 1,
@@ -593,9 +647,9 @@
       ]
     },
     "cobble_3": {
-      "x": 16,
+      "x": 64,
       "y": 32,
-      "col": 1,
+      "col": 4,
       "row": 2,
       "w": 1,
       "h": 1,
@@ -611,9 +665,9 @@
       ]
     },
     "cobble_4": {
-      "x": 32,
+      "x": 80,
       "y": 32,
-      "col": 2,
+      "col": 5,
       "row": 2,
       "w": 1,
       "h": 1,
@@ -629,9 +683,9 @@
       ]
     },
     "cobble_5": {
-      "x": 48,
+      "x": 96,
       "y": 32,
-      "col": 3,
+      "col": 6,
       "row": 2,
       "w": 1,
       "h": 1,
@@ -647,9 +701,9 @@
       ]
     },
     "cobble_6": {
-      "x": 64,
+      "x": 112,
       "y": 32,
-      "col": 4,
+      "col": 7,
       "row": 2,
       "w": 1,
       "h": 1,
@@ -665,60 +719,6 @@
       ]
     },
     "cobble_7": {
-      "x": 80,
-      "y": 32,
-      "col": 5,
-      "row": 2,
-      "w": 1,
-      "h": 1,
-      "solid": false,
-      "solid_cells": [],
-      "above": false,
-      "base_row": 0,
-      "sort_y": 16,
-      "kind": "road",
-      "tags": [
-        "autotile",
-        "cobble"
-      ]
-    },
-    "cobble_8": {
-      "x": 96,
-      "y": 32,
-      "col": 6,
-      "row": 2,
-      "w": 1,
-      "h": 1,
-      "solid": false,
-      "solid_cells": [],
-      "above": false,
-      "base_row": 0,
-      "sort_y": 16,
-      "kind": "road",
-      "tags": [
-        "autotile",
-        "cobble"
-      ]
-    },
-    "cobble_9": {
-      "x": 112,
-      "y": 32,
-      "col": 7,
-      "row": 2,
-      "w": 1,
-      "h": 1,
-      "solid": false,
-      "solid_cells": [],
-      "above": false,
-      "base_row": 0,
-      "sort_y": 16,
-      "kind": "road",
-      "tags": [
-        "autotile",
-        "cobble"
-      ]
-    },
-    "cobble_10": {
       "x": 128,
       "y": 32,
       "col": 8,
@@ -736,7 +736,7 @@
         "cobble"
       ]
     },
-    "cobble_11": {
+    "cobble_8": {
       "x": 144,
       "y": 32,
       "col": 9,
@@ -754,7 +754,7 @@
         "cobble"
       ]
     },
-    "cobble_12": {
+    "cobble_9": {
       "x": 160,
       "y": 32,
       "col": 10,
@@ -772,7 +772,7 @@
         "cobble"
       ]
     },
-    "cobble_13": {
+    "cobble_10": {
       "x": 176,
       "y": 32,
       "col": 11,
@@ -790,7 +790,7 @@
         "cobble"
       ]
     },
-    "cobble_14": {
+    "cobble_11": {
       "x": 192,
       "y": 32,
       "col": 12,
@@ -808,7 +808,7 @@
         "cobble"
       ]
     },
-    "cobble_15": {
+    "cobble_12": {
       "x": 208,
       "y": 32,
       "col": 13,
@@ -826,7 +826,7 @@
         "cobble"
       ]
     },
-    "sand_0": {
+    "cobble_13": {
       "x": 224,
       "y": 32,
       "col": 14,
@@ -838,13 +838,13 @@
       "above": false,
       "base_row": 0,
       "sort_y": 16,
-      "kind": "sand",
+      "kind": "road",
       "tags": [
         "autotile",
-        "sand"
+        "cobble"
       ]
     },
-    "sand_1": {
+    "cobble_14": {
       "x": 240,
       "y": 32,
       "col": 15,
@@ -856,13 +856,13 @@
       "above": false,
       "base_row": 0,
       "sort_y": 16,
-      "kind": "sand",
+      "kind": "road",
       "tags": [
         "autotile",
-        "sand"
+        "cobble"
       ]
     },
-    "sand_2": {
+    "cobble_15": {
       "x": 0,
       "y": 48,
       "col": 0,
@@ -874,13 +874,13 @@
       "above": false,
       "base_row": 0,
       "sort_y": 16,
-      "kind": "sand",
+      "kind": "road",
       "tags": [
         "autotile",
-        "sand"
+        "cobble"
       ]
     },
-    "sand_3": {
+    "sand_0": {
       "x": 16,
       "y": 48,
       "col": 1,
@@ -898,7 +898,7 @@
         "sand"
       ]
     },
-    "sand_4": {
+    "sand_1": {
       "x": 32,
       "y": 48,
       "col": 2,
@@ -916,7 +916,7 @@
         "sand"
       ]
     },
-    "sand_5": {
+    "sand_2": {
       "x": 48,
       "y": 48,
       "col": 3,
@@ -934,7 +934,7 @@
         "sand"
       ]
     },
-    "sand_6": {
+    "sand_3": {
       "x": 64,
       "y": 48,
       "col": 4,
@@ -952,7 +952,7 @@
         "sand"
       ]
     },
-    "sand_7": {
+    "sand_4": {
       "x": 80,
       "y": 48,
       "col": 5,
@@ -970,7 +970,7 @@
         "sand"
       ]
     },
-    "sand_8": {
+    "sand_5": {
       "x": 96,
       "y": 48,
       "col": 6,
@@ -988,7 +988,7 @@
         "sand"
       ]
     },
-    "sand_9": {
+    "sand_6": {
       "x": 112,
       "y": 48,
       "col": 7,
@@ -1006,7 +1006,7 @@
         "sand"
       ]
     },
-    "sand_10": {
+    "sand_7": {
       "x": 128,
       "y": 48,
       "col": 8,
@@ -1024,7 +1024,7 @@
         "sand"
       ]
     },
-    "sand_11": {
+    "sand_8": {
       "x": 144,
       "y": 48,
       "col": 9,
@@ -1042,7 +1042,7 @@
         "sand"
       ]
     },
-    "sand_12": {
+    "sand_9": {
       "x": 160,
       "y": 48,
       "col": 10,
@@ -1060,7 +1060,7 @@
         "sand"
       ]
     },
-    "sand_13": {
+    "sand_10": {
       "x": 176,
       "y": 48,
       "col": 11,
@@ -1078,7 +1078,7 @@
         "sand"
       ]
     },
-    "sand_14": {
+    "sand_11": {
       "x": 192,
       "y": 48,
       "col": 12,
@@ -1096,7 +1096,7 @@
         "sand"
       ]
     },
-    "sand_15": {
+    "sand_12": {
       "x": 208,
       "y": 48,
       "col": 13,
@@ -1114,7 +1114,7 @@
         "sand"
       ]
     },
-    "stone_floor_1": {
+    "sand_13": {
       "x": 224,
       "y": 48,
       "col": 14,
@@ -1126,12 +1126,13 @@
       "above": false,
       "base_row": 0,
       "sort_y": 16,
-      "kind": "floor",
+      "kind": "sand",
       "tags": [
-        "floor"
+        "autotile",
+        "sand"
       ]
     },
-    "stone_floor_2": {
+    "sand_14": {
       "x": 240,
       "y": 48,
       "col": 15,
@@ -1143,12 +1144,13 @@
       "above": false,
       "base_row": 0,
       "sort_y": 16,
-      "kind": "floor",
+      "kind": "sand",
       "tags": [
-        "floor"
+        "autotile",
+        "sand"
       ]
     },
-    "stone_floor_3": {
+    "sand_15": {
       "x": 0,
       "y": 64,
       "col": 0,
@@ -1160,12 +1162,13 @@
       "above": false,
       "base_row": 0,
       "sort_y": 16,
-      "kind": "floor",
+      "kind": "sand",
       "tags": [
-        "floor"
+        "autotile",
+        "sand"
       ]
     },
-    "stone_floor_4": {
+    "stone_floor_1": {
       "x": 16,
       "y": 64,
       "col": 1,
@@ -1182,7 +1185,7 @@
         "floor"
       ]
     },
-    "stone_floor_cracked": {
+    "stone_floor_2": {
       "x": 32,
       "y": 64,
       "col": 2,
@@ -1199,10 +1202,61 @@
         "floor"
       ]
     },
-    "water_0": {
+    "stone_floor_3": {
       "x": 48,
       "y": 64,
       "col": 3,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "floor",
+      "tags": [
+        "floor"
+      ]
+    },
+    "stone_floor_4": {
+      "x": 64,
+      "y": 64,
+      "col": 4,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "floor",
+      "tags": [
+        "floor"
+      ]
+    },
+    "stone_floor_cracked": {
+      "x": 80,
+      "y": 64,
+      "col": 5,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "floor",
+      "tags": [
+        "floor"
+      ]
+    },
+    "water_0": {
+      "x": 96,
+      "y": 64,
+      "col": 6,
       "row": 4,
       "w": 1,
       "h": 1,
@@ -1223,9 +1277,9 @@
       ]
     },
     "water_0_b": {
-      "x": 64,
+      "x": 112,
       "y": 64,
-      "col": 4,
+      "col": 7,
       "row": 4,
       "w": 1,
       "h": 1,
@@ -1247,9 +1301,9 @@
       ]
     },
     "water_1": {
-      "x": 80,
+      "x": 128,
       "y": 64,
-      "col": 5,
+      "col": 8,
       "row": 4,
       "w": 1,
       "h": 1,
@@ -1270,9 +1324,9 @@
       ]
     },
     "water_1_b": {
-      "x": 96,
+      "x": 144,
       "y": 64,
-      "col": 6,
+      "col": 9,
       "row": 4,
       "w": 1,
       "h": 1,
@@ -1294,9 +1348,9 @@
       ]
     },
     "water_2": {
-      "x": 112,
+      "x": 160,
       "y": 64,
-      "col": 7,
+      "col": 10,
       "row": 4,
       "w": 1,
       "h": 1,
@@ -1317,9 +1371,9 @@
       ]
     },
     "water_2_b": {
-      "x": 128,
+      "x": 176,
       "y": 64,
-      "col": 8,
+      "col": 11,
       "row": 4,
       "w": 1,
       "h": 1,
@@ -1341,9 +1395,9 @@
       ]
     },
     "water_3": {
-      "x": 144,
+      "x": 192,
       "y": 64,
-      "col": 9,
+      "col": 12,
       "row": 4,
       "w": 1,
       "h": 1,
@@ -1364,9 +1418,9 @@
       ]
     },
     "water_3_b": {
-      "x": 160,
+      "x": 208,
       "y": 64,
-      "col": 10,
+      "col": 13,
       "row": 4,
       "w": 1,
       "h": 1,
@@ -1388,9 +1442,9 @@
       ]
     },
     "water_4": {
-      "x": 176,
+      "x": 224,
       "y": 64,
-      "col": 11,
+      "col": 14,
       "row": 4,
       "w": 1,
       "h": 1,
@@ -1411,9 +1465,9 @@
       ]
     },
     "water_4_b": {
-      "x": 192,
+      "x": 240,
       "y": 64,
-      "col": 12,
+      "col": 15,
       "row": 4,
       "w": 1,
       "h": 1,
@@ -1435,10 +1489,10 @@
       ]
     },
     "water_5": {
-      "x": 208,
-      "y": 64,
-      "col": 13,
-      "row": 4,
+      "x": 0,
+      "y": 80,
+      "col": 0,
+      "row": 5,
       "w": 1,
       "h": 1,
       "solid": true,
@@ -1458,10 +1512,10 @@
       ]
     },
     "water_5_b": {
-      "x": 224,
-      "y": 64,
-      "col": 14,
-      "row": 4,
+      "x": 16,
+      "y": 80,
+      "col": 1,
+      "row": 5,
       "w": 1,
       "h": 1,
       "solid": true,
@@ -1482,10 +1536,10 @@
       ]
     },
     "water_6": {
-      "x": 240,
-      "y": 64,
-      "col": 15,
-      "row": 4,
+      "x": 32,
+      "y": 80,
+      "col": 2,
+      "row": 5,
       "w": 1,
       "h": 1,
       "solid": true,
@@ -1505,9 +1559,9 @@
       ]
     },
     "water_6_b": {
-      "x": 0,
+      "x": 48,
       "y": 80,
-      "col": 0,
+      "col": 3,
       "row": 5,
       "w": 1,
       "h": 1,
@@ -1529,9 +1583,9 @@
       ]
     },
     "water_7": {
-      "x": 16,
+      "x": 64,
       "y": 80,
-      "col": 1,
+      "col": 4,
       "row": 5,
       "w": 1,
       "h": 1,
@@ -1552,9 +1606,9 @@
       ]
     },
     "water_7_b": {
-      "x": 32,
+      "x": 80,
       "y": 80,
-      "col": 2,
+      "col": 5,
       "row": 5,
       "w": 1,
       "h": 1,
@@ -1576,9 +1630,9 @@
       ]
     },
     "water_8": {
-      "x": 48,
+      "x": 96,
       "y": 80,
-      "col": 3,
+      "col": 6,
       "row": 5,
       "w": 1,
       "h": 1,
@@ -1599,9 +1653,9 @@
       ]
     },
     "water_8_b": {
-      "x": 64,
+      "x": 112,
       "y": 80,
-      "col": 4,
+      "col": 7,
       "row": 5,
       "w": 1,
       "h": 1,
@@ -1623,9 +1677,9 @@
       ]
     },
     "water_9": {
-      "x": 80,
+      "x": 128,
       "y": 80,
-      "col": 5,
+      "col": 8,
       "row": 5,
       "w": 1,
       "h": 1,
@@ -1646,9 +1700,9 @@
       ]
     },
     "water_9_b": {
-      "x": 96,
+      "x": 144,
       "y": 80,
-      "col": 6,
+      "col": 9,
       "row": 5,
       "w": 1,
       "h": 1,
@@ -1670,9 +1724,9 @@
       ]
     },
     "water_10": {
-      "x": 112,
+      "x": 160,
       "y": 80,
-      "col": 7,
+      "col": 10,
       "row": 5,
       "w": 1,
       "h": 1,
@@ -1693,9 +1747,9 @@
       ]
     },
     "water_10_b": {
-      "x": 128,
+      "x": 176,
       "y": 80,
-      "col": 8,
+      "col": 11,
       "row": 5,
       "w": 1,
       "h": 1,
@@ -1717,9 +1771,9 @@
       ]
     },
     "water_11": {
-      "x": 144,
+      "x": 192,
       "y": 80,
-      "col": 9,
+      "col": 12,
       "row": 5,
       "w": 1,
       "h": 1,
@@ -1740,9 +1794,9 @@
       ]
     },
     "water_11_b": {
-      "x": 160,
+      "x": 208,
       "y": 80,
-      "col": 10,
+      "col": 13,
       "row": 5,
       "w": 1,
       "h": 1,
@@ -1764,9 +1818,9 @@
       ]
     },
     "water_12": {
-      "x": 176,
+      "x": 224,
       "y": 80,
-      "col": 11,
+      "col": 14,
       "row": 5,
       "w": 1,
       "h": 1,
@@ -1787,9 +1841,9 @@
       ]
     },
     "water_12_b": {
-      "x": 192,
+      "x": 240,
       "y": 80,
-      "col": 12,
+      "col": 15,
       "row": 5,
       "w": 1,
       "h": 1,
@@ -1811,10 +1865,10 @@
       ]
     },
     "water_13": {
-      "x": 208,
-      "y": 80,
-      "col": 13,
-      "row": 5,
+      "x": 0,
+      "y": 96,
+      "col": 0,
+      "row": 6,
       "w": 1,
       "h": 1,
       "solid": true,
@@ -1834,10 +1888,10 @@
       ]
     },
     "water_13_b": {
-      "x": 224,
-      "y": 80,
-      "col": 14,
-      "row": 5,
+      "x": 16,
+      "y": 96,
+      "col": 1,
+      "row": 6,
       "w": 1,
       "h": 1,
       "solid": true,
@@ -1858,10 +1912,10 @@
       ]
     },
     "water_14": {
-      "x": 240,
-      "y": 80,
-      "col": 15,
-      "row": 5,
+      "x": 32,
+      "y": 96,
+      "col": 2,
+      "row": 6,
       "w": 1,
       "h": 1,
       "solid": true,
@@ -1881,9 +1935,9 @@
       ]
     },
     "water_14_b": {
-      "x": 0,
+      "x": 48,
       "y": 96,
-      "col": 0,
+      "col": 3,
       "row": 6,
       "w": 1,
       "h": 1,
@@ -1905,9 +1959,9 @@
       ]
     },
     "water_15": {
-      "x": 16,
+      "x": 64,
       "y": 96,
-      "col": 1,
+      "col": 4,
       "row": 6,
       "w": 1,
       "h": 1,
@@ -1928,9 +1982,9 @@
       ]
     },
     "water_15_b": {
-      "x": 32,
+      "x": 80,
       "y": 96,
-      "col": 2,
+      "col": 5,
       "row": 6,
       "w": 1,
       "h": 1,
@@ -1952,9 +2006,9 @@
       ]
     },
     "water_deep_0": {
-      "x": 48,
+      "x": 96,
       "y": 96,
-      "col": 3,
+      "col": 6,
       "row": 6,
       "w": 1,
       "h": 1,
@@ -1975,9 +2029,9 @@
       ]
     },
     "water_deep_1": {
-      "x": 64,
+      "x": 112,
       "y": 96,
-      "col": 4,
+      "col": 7,
       "row": 6,
       "w": 1,
       "h": 1,
@@ -1998,9 +2052,9 @@
       ]
     },
     "water_deep_2": {
-      "x": 80,
+      "x": 128,
       "y": 96,
-      "col": 5,
+      "col": 8,
       "row": 6,
       "w": 1,
       "h": 1,
@@ -2021,66 +2075,6 @@
       ]
     },
     "cliff_top": {
-      "x": 96,
-      "y": 96,
-      "col": 6,
-      "row": 6,
-      "w": 1,
-      "h": 1,
-      "solid": true,
-      "solid_cells": [
-        [
-          0,
-          0
-        ]
-      ],
-      "above": false,
-      "base_row": 0,
-      "sort_y": 16,
-      "kind": "cliff",
-      "tags": []
-    },
-    "cliff_top_l": {
-      "x": 112,
-      "y": 96,
-      "col": 7,
-      "row": 6,
-      "w": 1,
-      "h": 1,
-      "solid": true,
-      "solid_cells": [
-        [
-          0,
-          0
-        ]
-      ],
-      "above": false,
-      "base_row": 0,
-      "sort_y": 16,
-      "kind": "cliff",
-      "tags": []
-    },
-    "cliff_top_r": {
-      "x": 128,
-      "y": 96,
-      "col": 8,
-      "row": 6,
-      "w": 1,
-      "h": 1,
-      "solid": true,
-      "solid_cells": [
-        [
-          0,
-          0
-        ]
-      ],
-      "above": false,
-      "base_row": 0,
-      "sort_y": 16,
-      "kind": "cliff",
-      "tags": []
-    },
-    "cliff_top_m": {
       "x": 144,
       "y": 96,
       "col": 9,
@@ -2100,7 +2094,7 @@
       "kind": "cliff",
       "tags": []
     },
-    "cliff_face": {
+    "cliff_top_l": {
       "x": 160,
       "y": 96,
       "col": 10,
@@ -2120,7 +2114,7 @@
       "kind": "cliff",
       "tags": []
     },
-    "cliff_face_l": {
+    "cliff_top_r": {
       "x": 176,
       "y": 96,
       "col": 11,
@@ -2140,7 +2134,7 @@
       "kind": "cliff",
       "tags": []
     },
-    "cliff_face_r": {
+    "cliff_top_m": {
       "x": 192,
       "y": 96,
       "col": 12,
@@ -2160,7 +2154,7 @@
       "kind": "cliff",
       "tags": []
     },
-    "cliff_face_m": {
+    "cliff_face": {
       "x": 208,
       "y": 96,
       "col": 13,
@@ -2180,7 +2174,7 @@
       "kind": "cliff",
       "tags": []
     },
-    "cliff_base": {
+    "cliff_face_l": {
       "x": 224,
       "y": 96,
       "col": 14,
@@ -2200,11 +2194,71 @@
       "kind": "cliff",
       "tags": []
     },
-    "cave_floor": {
+    "cliff_face_r": {
       "x": 240,
       "y": 96,
       "col": 15,
       "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "cliff",
+      "tags": []
+    },
+    "cliff_face_m": {
+      "x": 0,
+      "y": 112,
+      "col": 0,
+      "row": 7,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "cliff",
+      "tags": []
+    },
+    "cliff_base": {
+      "x": 16,
+      "y": 112,
+      "col": 1,
+      "row": 7,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "cliff",
+      "tags": []
+    },
+    "cave_floor": {
+      "x": 32,
+      "y": 112,
+      "col": 2,
+      "row": 7,
       "w": 1,
       "h": 1,
       "solid": false,
@@ -2216,9 +2270,9 @@
       "tags": []
     },
     "cave_void": {
-      "x": 0,
+      "x": 48,
       "y": 112,
-      "col": 0,
+      "col": 3,
       "row": 7,
       "w": 1,
       "h": 1,
@@ -2236,9 +2290,9 @@
       "tags": []
     },
     "cave_wall": {
-      "x": 16,
+      "x": 64,
       "y": 112,
-      "col": 1,
+      "col": 4,
       "row": 7,
       "w": 1,
       "h": 1,
@@ -2256,9 +2310,9 @@
       "tags": []
     },
     "oak_small": {
-      "x": 32,
+      "x": 80,
       "y": 112,
-      "col": 2,
+      "col": 5,
       "row": 7,
       "w": 1,
       "h": 1,
@@ -2278,9 +2332,9 @@
       ]
     },
     "oak_large": {
-      "x": 48,
+      "x": 96,
       "y": 112,
-      "col": 3,
+      "col": 6,
       "row": 7,
       "w": 2,
       "h": 2,
@@ -2304,9 +2358,9 @@
       ]
     },
     "pine_small": {
-      "x": 80,
+      "x": 128,
       "y": 112,
-      "col": 5,
+      "col": 8,
       "row": 7,
       "w": 1,
       "h": 1,
@@ -2326,9 +2380,9 @@
       ]
     },
     "pine_large": {
-      "x": 96,
+      "x": 144,
       "y": 112,
-      "col": 6,
+      "col": 9,
       "row": 7,
       "w": 2,
       "h": 2,
@@ -2352,9 +2406,9 @@
       ]
     },
     "bush_1": {
-      "x": 128,
+      "x": 176,
       "y": 112,
-      "col": 8,
+      "col": 11,
       "row": 7,
       "w": 1,
       "h": 1,
@@ -2374,9 +2428,9 @@
       ]
     },
     "bush_2": {
-      "x": 144,
+      "x": 192,
       "y": 112,
-      "col": 9,
+      "col": 12,
       "row": 7,
       "w": 1,
       "h": 1,
@@ -2396,9 +2450,9 @@
       ]
     },
     "bush_flowers": {
-      "x": 160,
+      "x": 208,
       "y": 112,
-      "col": 10,
+      "col": 13,
       "row": 7,
       "w": 1,
       "h": 1,
@@ -2418,9 +2472,9 @@
       ]
     },
     "bush_berry": {
-      "x": 176,
+      "x": 224,
       "y": 112,
-      "col": 11,
+      "col": 14,
       "row": 7,
       "w": 1,
       "h": 1,
@@ -2440,9 +2494,9 @@
       ]
     },
     "boulder_1": {
-      "x": 192,
+      "x": 240,
       "y": 112,
-      "col": 12,
+      "col": 15,
       "row": 7,
       "w": 1,
       "h": 1,
@@ -2462,10 +2516,10 @@
       ]
     },
     "boulder_2": {
-      "x": 208,
-      "y": 112,
-      "col": 13,
-      "row": 7,
+      "x": 0,
+      "y": 128,
+      "col": 0,
+      "row": 8,
       "w": 1,
       "h": 1,
       "solid": true,
@@ -2484,10 +2538,10 @@
       ]
     },
     "rock_small": {
-      "x": 224,
-      "y": 112,
-      "col": 14,
-      "row": 7,
+      "x": 16,
+      "y": 128,
+      "col": 1,
+      "row": 8,
       "w": 1,
       "h": 1,
       "solid": false,
@@ -2501,10 +2555,10 @@
       ]
     },
     "pebbles": {
-      "x": 240,
-      "y": 112,
-      "col": 15,
-      "row": 7,
+      "x": 32,
+      "y": 128,
+      "col": 2,
+      "row": 8,
       "w": 1,
       "h": 1,
       "solid": false,
@@ -2518,9 +2572,9 @@
       ]
     },
     "stump": {
-      "x": 0,
+      "x": 48,
       "y": 128,
-      "col": 0,
+      "col": 3,
       "row": 8,
       "w": 1,
       "h": 1,
@@ -2540,9 +2594,9 @@
       ]
     },
     "log": {
-      "x": 16,
+      "x": 64,
       "y": 128,
-      "col": 1,
+      "col": 4,
       "row": 8,
       "w": 1,
       "h": 1,
@@ -2562,9 +2616,9 @@
       ]
     },
     "fence_h": {
-      "x": 32,
+      "x": 80,
       "y": 128,
-      "col": 2,
+      "col": 5,
       "row": 8,
       "w": 1,
       "h": 1,
@@ -2584,9 +2638,9 @@
       ]
     },
     "fence_v": {
-      "x": 80,
+      "x": 128,
       "y": 128,
-      "col": 5,
+      "col": 8,
       "row": 8,
       "w": 1,
       "h": 1,
@@ -2606,9 +2660,9 @@
       ]
     },
     "fence_post": {
-      "x": 128,
+      "x": 176,
       "y": 128,
-      "col": 8,
+      "col": 11,
       "row": 8,
       "w": 1,
       "h": 1,
@@ -2628,9 +2682,9 @@
       ]
     },
     "gate_closed": {
-      "x": 144,
+      "x": 192,
       "y": 128,
-      "col": 9,
+      "col": 12,
       "row": 8,
       "w": 1,
       "h": 1,
@@ -2650,9 +2704,9 @@
       ]
     },
     "gate_open": {
-      "x": 160,
+      "x": 208,
       "y": 128,
-      "col": 10,
+      "col": 13,
       "row": 8,
       "w": 1,
       "h": 1,
@@ -2667,9 +2721,9 @@
       ]
     },
     "signpost": {
-      "x": 176,
+      "x": 224,
       "y": 128,
-      "col": 11,
+      "col": 14,
       "row": 8,
       "w": 1,
       "h": 1,
@@ -2689,9 +2743,9 @@
       ]
     },
     "signpost_r": {
-      "x": 192,
+      "x": 240,
       "y": 128,
-      "col": 12,
+      "col": 15,
       "row": 8,
       "w": 1,
       "h": 1,
@@ -2706,10 +2760,10 @@
       ]
     },
     "wall_wood": {
-      "x": 208,
-      "y": 128,
-      "col": 13,
-      "row": 8,
+      "x": 0,
+      "y": 144,
+      "col": 0,
+      "row": 9,
       "w": 1,
       "h": 1,
       "solid": true,
@@ -2726,10 +2780,10 @@
       "tags": []
     },
     "wall_wood_window": {
-      "x": 224,
-      "y": 128,
-      "col": 14,
-      "row": 8,
+      "x": 16,
+      "y": 144,
+      "col": 1,
+      "row": 9,
       "w": 1,
       "h": 1,
       "solid": true,
@@ -2746,10 +2800,10 @@
       "tags": []
     },
     "wall_wood_door": {
-      "x": 240,
-      "y": 128,
-      "col": 15,
-      "row": 8,
+      "x": 32,
+      "y": 144,
+      "col": 2,
+      "row": 9,
       "w": 1,
       "h": 1,
       "solid": true,
@@ -2766,9 +2820,9 @@
       "tags": []
     },
     "wall_stone": {
-      "x": 0,
+      "x": 48,
       "y": 144,
-      "col": 0,
+      "col": 3,
       "row": 9,
       "w": 1,
       "h": 1,
@@ -2786,9 +2840,9 @@
       "tags": []
     },
     "wall_stone_window": {
-      "x": 16,
+      "x": 64,
       "y": 144,
-      "col": 1,
+      "col": 4,
       "row": 9,
       "w": 1,
       "h": 1,
@@ -2806,9 +2860,9 @@
       "tags": []
     },
     "wall_plaster": {
-      "x": 32,
+      "x": 80,
       "y": 144,
-      "col": 2,
+      "col": 5,
       "row": 9,
       "w": 1,
       "h": 1,
@@ -2826,9 +2880,9 @@
       "tags": []
     },
     "wall_plaster_window": {
-      "x": 48,
+      "x": 96,
       "y": 144,
-      "col": 3,
+      "col": 6,
       "row": 9,
       "w": 1,
       "h": 1,
@@ -2846,51 +2900,6 @@
       "tags": []
     },
     "roof_thatch_ridge_l": {
-      "x": 64,
-      "y": 144,
-      "col": 4,
-      "row": 9,
-      "w": 1,
-      "h": 1,
-      "solid": false,
-      "solid_cells": [],
-      "above": false,
-      "base_row": 0,
-      "sort_y": 16,
-      "kind": "roof",
-      "tags": []
-    },
-    "roof_thatch_ridge_m": {
-      "x": 80,
-      "y": 144,
-      "col": 5,
-      "row": 9,
-      "w": 1,
-      "h": 1,
-      "solid": false,
-      "solid_cells": [],
-      "above": false,
-      "base_row": 0,
-      "sort_y": 16,
-      "kind": "roof",
-      "tags": []
-    },
-    "roof_thatch_ridge_r": {
-      "x": 96,
-      "y": 144,
-      "col": 6,
-      "row": 9,
-      "w": 1,
-      "h": 1,
-      "solid": false,
-      "solid_cells": [],
-      "above": false,
-      "base_row": 0,
-      "sort_y": 16,
-      "kind": "roof",
-      "tags": []
-    },
-    "roof_thatch_mid_l": {
       "x": 112,
       "y": 144,
       "col": 7,
@@ -2905,7 +2914,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_thatch_mid_m": {
+    "roof_thatch_ridge_m": {
       "x": 128,
       "y": 144,
       "col": 8,
@@ -2920,7 +2929,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_thatch_mid_r": {
+    "roof_thatch_ridge_r": {
       "x": 144,
       "y": 144,
       "col": 9,
@@ -2935,7 +2944,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_thatch_eave_l": {
+    "roof_thatch_mid_l": {
       "x": 160,
       "y": 144,
       "col": 10,
@@ -2950,7 +2959,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_thatch_eave_m": {
+    "roof_thatch_mid_m": {
       "x": 176,
       "y": 144,
       "col": 11,
@@ -2965,7 +2974,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_thatch_eave_r": {
+    "roof_thatch_mid_r": {
       "x": 192,
       "y": 144,
       "col": 12,
@@ -2980,7 +2989,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_thatch_edge_l": {
+    "roof_thatch_eave_l": {
       "x": 208,
       "y": 144,
       "col": 13,
@@ -2995,7 +3004,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_thatch_edge_r": {
+    "roof_thatch_eave_m": {
       "x": 224,
       "y": 144,
       "col": 14,
@@ -3010,7 +3019,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_slate_ridge_l": {
+    "roof_thatch_eave_r": {
       "x": 240,
       "y": 144,
       "col": 15,
@@ -3025,7 +3034,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_slate_ridge_m": {
+    "roof_thatch_edge_l": {
       "x": 0,
       "y": 160,
       "col": 0,
@@ -3040,7 +3049,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_slate_ridge_r": {
+    "roof_thatch_edge_r": {
       "x": 16,
       "y": 160,
       "col": 1,
@@ -3055,7 +3064,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_slate_mid_l": {
+    "roof_slate_ridge_l": {
       "x": 32,
       "y": 160,
       "col": 2,
@@ -3070,7 +3079,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_slate_mid_m": {
+    "roof_slate_ridge_m": {
       "x": 48,
       "y": 160,
       "col": 3,
@@ -3085,7 +3094,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_slate_mid_r": {
+    "roof_slate_ridge_r": {
       "x": 64,
       "y": 160,
       "col": 4,
@@ -3100,7 +3109,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_slate_eave_l": {
+    "roof_slate_mid_l": {
       "x": 80,
       "y": 160,
       "col": 5,
@@ -3115,7 +3124,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_slate_eave_m": {
+    "roof_slate_mid_m": {
       "x": 96,
       "y": 160,
       "col": 6,
@@ -3130,7 +3139,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_slate_eave_r": {
+    "roof_slate_mid_r": {
       "x": 112,
       "y": 160,
       "col": 7,
@@ -3145,7 +3154,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_slate_edge_l": {
+    "roof_slate_eave_l": {
       "x": 128,
       "y": 160,
       "col": 8,
@@ -3160,7 +3169,7 @@
       "kind": "roof",
       "tags": []
     },
-    "roof_slate_edge_r": {
+    "roof_slate_eave_m": {
       "x": 144,
       "y": 160,
       "col": 9,
@@ -3175,10 +3184,55 @@
       "kind": "roof",
       "tags": []
     },
-    "chimney_top": {
+    "roof_slate_eave_r": {
       "x": 160,
       "y": 160,
       "col": 10,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_slate_edge_l": {
+      "x": 176,
+      "y": 160,
+      "col": 11,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_slate_edge_r": {
+      "x": 192,
+      "y": 160,
+      "col": 12,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "chimney_top": {
+      "x": 208,
+      "y": 160,
+      "col": 13,
       "row": 10,
       "w": 1,
       "h": 1,
@@ -3198,9 +3252,9 @@
       ]
     },
     "chimney_body": {
-      "x": 176,
+      "x": 224,
       "y": 160,
-      "col": 11,
+      "col": 14,
       "row": 10,
       "w": 1,
       "h": 1,
@@ -3220,9 +3274,9 @@
       ]
     },
     "stair_stone": {
-      "x": 192,
+      "x": 240,
       "y": 160,
-      "col": 12,
+      "col": 15,
       "row": 10,
       "w": 1,
       "h": 1,
@@ -3237,10 +3291,10 @@
       ]
     },
     "stair_wood": {
-      "x": 208,
-      "y": 160,
-      "col": 13,
-      "row": 10,
+      "x": 0,
+      "y": 176,
+      "col": 0,
+      "row": 11,
       "w": 1,
       "h": 1,
       "solid": false,
@@ -3254,57 +3308,6 @@
       ]
     },
     "bridge_deck_l": {
-      "x": 224,
-      "y": 160,
-      "col": 14,
-      "row": 10,
-      "w": 1,
-      "h": 1,
-      "solid": false,
-      "solid_cells": [],
-      "above": false,
-      "base_row": 0,
-      "sort_y": 16,
-      "kind": "bridge",
-      "tags": [
-        "bridge"
-      ]
-    },
-    "bridge_deck_m": {
-      "x": 240,
-      "y": 160,
-      "col": 15,
-      "row": 10,
-      "w": 1,
-      "h": 1,
-      "solid": false,
-      "solid_cells": [],
-      "above": false,
-      "base_row": 0,
-      "sort_y": 16,
-      "kind": "bridge",
-      "tags": [
-        "bridge"
-      ]
-    },
-    "bridge_deck_r": {
-      "x": 0,
-      "y": 176,
-      "col": 0,
-      "row": 11,
-      "w": 1,
-      "h": 1,
-      "solid": false,
-      "solid_cells": [],
-      "above": false,
-      "base_row": 0,
-      "sort_y": 16,
-      "kind": "bridge",
-      "tags": [
-        "bridge"
-      ]
-    },
-    "bridge_rail_l": {
       "x": 16,
       "y": 176,
       "col": 1,
@@ -3321,7 +3324,7 @@
         "bridge"
       ]
     },
-    "bridge_rail_m": {
+    "bridge_deck_m": {
       "x": 32,
       "y": 176,
       "col": 2,
@@ -3338,7 +3341,7 @@
         "bridge"
       ]
     },
-    "bridge_rail_r": {
+    "bridge_deck_r": {
       "x": 48,
       "y": 176,
       "col": 3,
@@ -3355,7 +3358,7 @@
         "bridge"
       ]
     },
-    "bridge_v": {
+    "bridge_rail_l": {
       "x": 64,
       "y": 176,
       "col": 4,
@@ -3372,7 +3375,7 @@
         "bridge"
       ]
     },
-    "bridge_v_end": {
+    "bridge_rail_m": {
       "x": 80,
       "y": 176,
       "col": 5,
@@ -3389,10 +3392,61 @@
         "bridge"
       ]
     },
-    "well": {
+    "bridge_rail_r": {
       "x": 96,
       "y": 176,
       "col": 6,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    "bridge_v": {
+      "x": 112,
+      "y": 176,
+      "col": 7,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    "bridge_v_end": {
+      "x": 128,
+      "y": 176,
+      "col": 8,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    "well": {
+      "x": 144,
+      "y": 176,
+      "col": 9,
       "row": 11,
       "w": 2,
       "h": 2,
@@ -3416,72 +3470,6 @@
       ]
     },
     "barrel": {
-      "x": 128,
-      "y": 176,
-      "col": 8,
-      "row": 11,
-      "w": 1,
-      "h": 1,
-      "solid": true,
-      "solid_cells": [
-        [
-          0,
-          0
-        ]
-      ],
-      "above": true,
-      "base_row": 0,
-      "sort_y": 16,
-      "kind": "prop",
-      "tags": [
-        "prop"
-      ]
-    },
-    "crate": {
-      "x": 144,
-      "y": 176,
-      "col": 9,
-      "row": 11,
-      "w": 1,
-      "h": 1,
-      "solid": true,
-      "solid_cells": [
-        [
-          0,
-          0
-        ]
-      ],
-      "above": true,
-      "base_row": 0,
-      "sort_y": 16,
-      "kind": "prop",
-      "tags": [
-        "prop"
-      ]
-    },
-    "crate_stack": {
-      "x": 160,
-      "y": 176,
-      "col": 10,
-      "row": 11,
-      "w": 1,
-      "h": 1,
-      "solid": true,
-      "solid_cells": [
-        [
-          0,
-          0
-        ]
-      ],
-      "above": true,
-      "base_row": 0,
-      "sort_y": 16,
-      "kind": "prop",
-      "tags": [
-        "prop"
-      ]
-    },
-    "chest_closed": {
       "x": 176,
       "y": 176,
       "col": 11,
@@ -3503,15 +3491,20 @@
         "prop"
       ]
     },
-    "chest_open": {
+    "crate": {
       "x": 192,
       "y": 176,
       "col": 12,
       "row": 11,
       "w": 1,
       "h": 1,
-      "solid": false,
-      "solid_cells": [],
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
       "above": true,
       "base_row": 0,
       "sort_y": 16,
@@ -3520,7 +3513,7 @@
         "prop"
       ]
     },
-    "lantern": {
+    "crate_stack": {
       "x": 208,
       "y": 176,
       "col": 13,
@@ -3539,10 +3532,10 @@
       "sort_y": 16,
       "kind": "prop",
       "tags": [
-        "light"
+        "prop"
       ]
     },
-    "torch": {
+    "chest_closed": {
       "x": 224,
       "y": 176,
       "col": 14,
@@ -3561,10 +3554,10 @@
       "sort_y": 16,
       "kind": "prop",
       "tags": [
-        "light"
+        "prop"
       ]
     },
-    "campfire_1": {
+    "chest_open": {
       "x": 240,
       "y": 176,
       "col": 15,
@@ -3578,29 +3571,32 @@
       "sort_y": 16,
       "kind": "prop",
       "tags": [
-        "light",
-        "animated"
+        "prop"
       ]
     },
-    "campfire_2": {
+    "lantern": {
       "x": 0,
       "y": 192,
       "col": 0,
       "row": 12,
       "w": 1,
       "h": 1,
-      "solid": false,
-      "solid_cells": [],
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
       "above": true,
       "base_row": 0,
       "sort_y": 16,
       "kind": "prop",
       "tags": [
-        "light",
-        "animated"
+        "light"
       ]
     },
-    "campfire_off": {
+    "torch": {
       "x": 16,
       "y": 192,
       "col": 1,
@@ -3619,54 +3615,46 @@
       "sort_y": 16,
       "kind": "prop",
       "tags": [
-        "prop"
+        "light"
       ]
     },
-    "haystack": {
+    "campfire_1": {
       "x": 32,
       "y": 192,
       "col": 2,
       "row": 12,
       "w": 1,
       "h": 1,
-      "solid": true,
-      "solid_cells": [
-        [
-          0,
-          0
-        ]
-      ],
+      "solid": false,
+      "solid_cells": [],
       "above": true,
       "base_row": 0,
       "sort_y": 16,
       "kind": "prop",
       "tags": [
-        "prop"
+        "light",
+        "animated"
       ]
     },
-    "pot": {
+    "campfire_2": {
       "x": 48,
       "y": 192,
       "col": 3,
       "row": 12,
       "w": 1,
       "h": 1,
-      "solid": true,
-      "solid_cells": [
-        [
-          0,
-          0
-        ]
-      ],
+      "solid": false,
+      "solid_cells": [],
       "above": true,
       "base_row": 0,
       "sort_y": 16,
       "kind": "prop",
       "tags": [
-        "prop"
+        "light",
+        "animated"
       ]
     },
-    "market_stall": {
+    "campfire_off": {
       "x": 64,
       "y": 192,
       "col": 4,
@@ -3688,10 +3676,76 @@
         "prop"
       ]
     },
-    "cave_entrance": {
-      "x": 128,
+    "haystack": {
+      "x": 80,
       "y": 192,
-      "col": 8,
+      "col": 5,
+      "row": 12,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    "pot": {
+      "x": 96,
+      "y": 192,
+      "col": 6,
+      "row": 12,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    "market_stall": {
+      "x": 112,
+      "y": 192,
+      "col": 7,
+      "row": 12,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    "cave_entrance": {
+      "x": 176,
+      "y": 192,
+      "col": 11,
       "row": 12,
       "w": 2,
       "h": 2,
@@ -4016,8 +4070,8 @@
       ]
     },
     {
-      "name": "dirt_0__0_0",
-      "group": "dirt_0",
+      "name": "scorched_1__0_0",
+      "group": "scorched_1",
       "dx": 0,
       "dy": 0,
       "col": 14,
@@ -4025,6 +4079,72 @@
       "rect": [
         224,
         0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "ground",
+        "scorched"
+      ]
+    },
+    {
+      "name": "scorched_2__0_0",
+      "group": "scorched_2",
+      "dx": 0,
+      "dy": 0,
+      "col": 15,
+      "row": 0,
+      "rect": [
+        240,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "ground",
+        "scorched"
+      ]
+    },
+    {
+      "name": "scorched_3__0_0",
+      "group": "scorched_3",
+      "dx": 0,
+      "dy": 0,
+      "col": 0,
+      "row": 1,
+      "rect": [
+        0,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "ground",
+        "scorched"
+      ]
+    },
+    {
+      "name": "dirt_0__0_0",
+      "group": "dirt_0",
+      "dx": 0,
+      "dy": 0,
+      "col": 1,
+      "row": 1,
+      "rect": [
+        16,
+        16,
         16,
         16
       ],
@@ -4042,11 +4162,11 @@
       "group": "dirt_1",
       "dx": 0,
       "dy": 0,
-      "col": 15,
-      "row": 0,
+      "col": 2,
+      "row": 1,
       "rect": [
-        240,
-        0,
+        32,
+        16,
         16,
         16
       ],
@@ -4064,10 +4184,10 @@
       "group": "dirt_2",
       "dx": 0,
       "dy": 0,
-      "col": 0,
+      "col": 3,
       "row": 1,
       "rect": [
-        0,
+        48,
         16,
         16,
         16
@@ -4086,10 +4206,10 @@
       "group": "dirt_3",
       "dx": 0,
       "dy": 0,
-      "col": 1,
+      "col": 4,
       "row": 1,
       "rect": [
-        16,
+        64,
         16,
         16,
         16
@@ -4108,10 +4228,10 @@
       "group": "dirt_4",
       "dx": 0,
       "dy": 0,
-      "col": 2,
+      "col": 5,
       "row": 1,
       "rect": [
-        32,
+        80,
         16,
         16,
         16
@@ -4130,10 +4250,10 @@
       "group": "dirt_5",
       "dx": 0,
       "dy": 0,
-      "col": 3,
+      "col": 6,
       "row": 1,
       "rect": [
-        48,
+        96,
         16,
         16,
         16
@@ -4152,10 +4272,10 @@
       "group": "dirt_6",
       "dx": 0,
       "dy": 0,
-      "col": 4,
+      "col": 7,
       "row": 1,
       "rect": [
-        64,
+        112,
         16,
         16,
         16
@@ -4174,10 +4294,10 @@
       "group": "dirt_7",
       "dx": 0,
       "dy": 0,
-      "col": 5,
+      "col": 8,
       "row": 1,
       "rect": [
-        80,
+        128,
         16,
         16,
         16
@@ -4196,10 +4316,10 @@
       "group": "dirt_8",
       "dx": 0,
       "dy": 0,
-      "col": 6,
+      "col": 9,
       "row": 1,
       "rect": [
-        96,
+        144,
         16,
         16,
         16
@@ -4218,10 +4338,10 @@
       "group": "dirt_9",
       "dx": 0,
       "dy": 0,
-      "col": 7,
+      "col": 10,
       "row": 1,
       "rect": [
-        112,
+        160,
         16,
         16,
         16
@@ -4240,10 +4360,10 @@
       "group": "dirt_10",
       "dx": 0,
       "dy": 0,
-      "col": 8,
+      "col": 11,
       "row": 1,
       "rect": [
-        128,
+        176,
         16,
         16,
         16
@@ -4262,10 +4382,10 @@
       "group": "dirt_11",
       "dx": 0,
       "dy": 0,
-      "col": 9,
+      "col": 12,
       "row": 1,
       "rect": [
-        144,
+        192,
         16,
         16,
         16
@@ -4284,10 +4404,10 @@
       "group": "dirt_12",
       "dx": 0,
       "dy": 0,
-      "col": 10,
+      "col": 13,
       "row": 1,
       "rect": [
-        160,
+        208,
         16,
         16,
         16
@@ -4306,10 +4426,10 @@
       "group": "dirt_13",
       "dx": 0,
       "dy": 0,
-      "col": 11,
+      "col": 14,
       "row": 1,
       "rect": [
-        176,
+        224,
         16,
         16,
         16
@@ -4328,10 +4448,10 @@
       "group": "dirt_14",
       "dx": 0,
       "dy": 0,
-      "col": 12,
+      "col": 15,
       "row": 1,
       "rect": [
-        192,
+        240,
         16,
         16,
         16
@@ -4350,11 +4470,11 @@
       "group": "dirt_15",
       "dx": 0,
       "dy": 0,
-      "col": 13,
-      "row": 1,
+      "col": 0,
+      "row": 2,
       "rect": [
-        208,
-        16,
+        0,
+        32,
         16,
         16
       ],
@@ -4372,11 +4492,11 @@
       "group": "cobble_0",
       "dx": 0,
       "dy": 0,
-      "col": 14,
-      "row": 1,
+      "col": 1,
+      "row": 2,
       "rect": [
-        224,
         16,
+        32,
         16,
         16
       ],
@@ -4394,11 +4514,11 @@
       "group": "cobble_1",
       "dx": 0,
       "dy": 0,
-      "col": 15,
-      "row": 1,
+      "col": 2,
+      "row": 2,
       "rect": [
-        240,
-        16,
+        32,
+        32,
         16,
         16
       ],
@@ -4416,10 +4536,10 @@
       "group": "cobble_2",
       "dx": 0,
       "dy": 0,
-      "col": 0,
+      "col": 3,
       "row": 2,
       "rect": [
-        0,
+        48,
         32,
         16,
         16
@@ -4438,10 +4558,10 @@
       "group": "cobble_3",
       "dx": 0,
       "dy": 0,
-      "col": 1,
+      "col": 4,
       "row": 2,
       "rect": [
-        16,
+        64,
         32,
         16,
         16
@@ -4460,10 +4580,10 @@
       "group": "cobble_4",
       "dx": 0,
       "dy": 0,
-      "col": 2,
+      "col": 5,
       "row": 2,
       "rect": [
-        32,
+        80,
         32,
         16,
         16
@@ -4482,10 +4602,10 @@
       "group": "cobble_5",
       "dx": 0,
       "dy": 0,
-      "col": 3,
+      "col": 6,
       "row": 2,
       "rect": [
-        48,
+        96,
         32,
         16,
         16
@@ -4504,10 +4624,10 @@
       "group": "cobble_6",
       "dx": 0,
       "dy": 0,
-      "col": 4,
+      "col": 7,
       "row": 2,
       "rect": [
-        64,
+        112,
         32,
         16,
         16
@@ -4526,10 +4646,10 @@
       "group": "cobble_7",
       "dx": 0,
       "dy": 0,
-      "col": 5,
+      "col": 8,
       "row": 2,
       "rect": [
-        80,
+        128,
         32,
         16,
         16
@@ -4548,72 +4668,6 @@
       "group": "cobble_8",
       "dx": 0,
       "dy": 0,
-      "col": 6,
-      "row": 2,
-      "rect": [
-        96,
-        32,
-        16,
-        16
-      ],
-      "solid": false,
-      "sort_y": 16,
-      "above": false,
-      "kind": "road",
-      "tags": [
-        "autotile",
-        "cobble"
-      ]
-    },
-    {
-      "name": "cobble_9__0_0",
-      "group": "cobble_9",
-      "dx": 0,
-      "dy": 0,
-      "col": 7,
-      "row": 2,
-      "rect": [
-        112,
-        32,
-        16,
-        16
-      ],
-      "solid": false,
-      "sort_y": 16,
-      "above": false,
-      "kind": "road",
-      "tags": [
-        "autotile",
-        "cobble"
-      ]
-    },
-    {
-      "name": "cobble_10__0_0",
-      "group": "cobble_10",
-      "dx": 0,
-      "dy": 0,
-      "col": 8,
-      "row": 2,
-      "rect": [
-        128,
-        32,
-        16,
-        16
-      ],
-      "solid": false,
-      "sort_y": 16,
-      "above": false,
-      "kind": "road",
-      "tags": [
-        "autotile",
-        "cobble"
-      ]
-    },
-    {
-      "name": "cobble_11__0_0",
-      "group": "cobble_11",
-      "dx": 0,
-      "dy": 0,
       "col": 9,
       "row": 2,
       "rect": [
@@ -4632,8 +4686,8 @@
       ]
     },
     {
-      "name": "cobble_12__0_0",
-      "group": "cobble_12",
+      "name": "cobble_9__0_0",
+      "group": "cobble_9",
       "dx": 0,
       "dy": 0,
       "col": 10,
@@ -4654,8 +4708,8 @@
       ]
     },
     {
-      "name": "cobble_13__0_0",
-      "group": "cobble_13",
+      "name": "cobble_10__0_0",
+      "group": "cobble_10",
       "dx": 0,
       "dy": 0,
       "col": 11,
@@ -4676,8 +4730,8 @@
       ]
     },
     {
-      "name": "cobble_14__0_0",
-      "group": "cobble_14",
+      "name": "cobble_11__0_0",
+      "group": "cobble_11",
       "dx": 0,
       "dy": 0,
       "col": 12,
@@ -4698,8 +4752,8 @@
       ]
     },
     {
-      "name": "cobble_15__0_0",
-      "group": "cobble_15",
+      "name": "cobble_12__0_0",
+      "group": "cobble_12",
       "dx": 0,
       "dy": 0,
       "col": 13,
@@ -4720,8 +4774,8 @@
       ]
     },
     {
-      "name": "sand_0__0_0",
-      "group": "sand_0",
+      "name": "cobble_13__0_0",
+      "group": "cobble_13",
       "dx": 0,
       "dy": 0,
       "col": 14,
@@ -4735,15 +4789,15 @@
       "solid": false,
       "sort_y": 16,
       "above": false,
-      "kind": "sand",
+      "kind": "road",
       "tags": [
         "autotile",
-        "sand"
+        "cobble"
       ]
     },
     {
-      "name": "sand_1__0_0",
-      "group": "sand_1",
+      "name": "cobble_14__0_0",
+      "group": "cobble_14",
       "dx": 0,
       "dy": 0,
       "col": 15,
@@ -4757,15 +4811,15 @@
       "solid": false,
       "sort_y": 16,
       "above": false,
-      "kind": "sand",
+      "kind": "road",
       "tags": [
         "autotile",
-        "sand"
+        "cobble"
       ]
     },
     {
-      "name": "sand_2__0_0",
-      "group": "sand_2",
+      "name": "cobble_15__0_0",
+      "group": "cobble_15",
       "dx": 0,
       "dy": 0,
       "col": 0,
@@ -4779,15 +4833,15 @@
       "solid": false,
       "sort_y": 16,
       "above": false,
-      "kind": "sand",
+      "kind": "road",
       "tags": [
         "autotile",
-        "sand"
+        "cobble"
       ]
     },
     {
-      "name": "sand_3__0_0",
-      "group": "sand_3",
+      "name": "sand_0__0_0",
+      "group": "sand_0",
       "dx": 0,
       "dy": 0,
       "col": 1,
@@ -4808,8 +4862,8 @@
       ]
     },
     {
-      "name": "sand_4__0_0",
-      "group": "sand_4",
+      "name": "sand_1__0_0",
+      "group": "sand_1",
       "dx": 0,
       "dy": 0,
       "col": 2,
@@ -4830,8 +4884,8 @@
       ]
     },
     {
-      "name": "sand_5__0_0",
-      "group": "sand_5",
+      "name": "sand_2__0_0",
+      "group": "sand_2",
       "dx": 0,
       "dy": 0,
       "col": 3,
@@ -4852,8 +4906,8 @@
       ]
     },
     {
-      "name": "sand_6__0_0",
-      "group": "sand_6",
+      "name": "sand_3__0_0",
+      "group": "sand_3",
       "dx": 0,
       "dy": 0,
       "col": 4,
@@ -4874,8 +4928,8 @@
       ]
     },
     {
-      "name": "sand_7__0_0",
-      "group": "sand_7",
+      "name": "sand_4__0_0",
+      "group": "sand_4",
       "dx": 0,
       "dy": 0,
       "col": 5,
@@ -4896,8 +4950,8 @@
       ]
     },
     {
-      "name": "sand_8__0_0",
-      "group": "sand_8",
+      "name": "sand_5__0_0",
+      "group": "sand_5",
       "dx": 0,
       "dy": 0,
       "col": 6,
@@ -4918,8 +4972,8 @@
       ]
     },
     {
-      "name": "sand_9__0_0",
-      "group": "sand_9",
+      "name": "sand_6__0_0",
+      "group": "sand_6",
       "dx": 0,
       "dy": 0,
       "col": 7,
@@ -4940,8 +4994,8 @@
       ]
     },
     {
-      "name": "sand_10__0_0",
-      "group": "sand_10",
+      "name": "sand_7__0_0",
+      "group": "sand_7",
       "dx": 0,
       "dy": 0,
       "col": 8,
@@ -4962,8 +5016,8 @@
       ]
     },
     {
-      "name": "sand_11__0_0",
-      "group": "sand_11",
+      "name": "sand_8__0_0",
+      "group": "sand_8",
       "dx": 0,
       "dy": 0,
       "col": 9,
@@ -4984,8 +5038,8 @@
       ]
     },
     {
-      "name": "sand_12__0_0",
-      "group": "sand_12",
+      "name": "sand_9__0_0",
+      "group": "sand_9",
       "dx": 0,
       "dy": 0,
       "col": 10,
@@ -5006,8 +5060,8 @@
       ]
     },
     {
-      "name": "sand_13__0_0",
-      "group": "sand_13",
+      "name": "sand_10__0_0",
+      "group": "sand_10",
       "dx": 0,
       "dy": 0,
       "col": 11,
@@ -5028,8 +5082,8 @@
       ]
     },
     {
-      "name": "sand_14__0_0",
-      "group": "sand_14",
+      "name": "sand_11__0_0",
+      "group": "sand_11",
       "dx": 0,
       "dy": 0,
       "col": 12,
@@ -5050,8 +5104,8 @@
       ]
     },
     {
-      "name": "sand_15__0_0",
-      "group": "sand_15",
+      "name": "sand_12__0_0",
+      "group": "sand_12",
       "dx": 0,
       "dy": 0,
       "col": 13,
@@ -5072,8 +5126,8 @@
       ]
     },
     {
-      "name": "stone_floor_1__0_0",
-      "group": "stone_floor_1",
+      "name": "sand_13__0_0",
+      "group": "sand_13",
       "dx": 0,
       "dy": 0,
       "col": 14,
@@ -5087,14 +5141,15 @@
       "solid": false,
       "sort_y": 16,
       "above": false,
-      "kind": "floor",
+      "kind": "sand",
       "tags": [
-        "floor"
+        "autotile",
+        "sand"
       ]
     },
     {
-      "name": "stone_floor_2__0_0",
-      "group": "stone_floor_2",
+      "name": "sand_14__0_0",
+      "group": "sand_14",
       "dx": 0,
       "dy": 0,
       "col": 15,
@@ -5108,14 +5163,15 @@
       "solid": false,
       "sort_y": 16,
       "above": false,
-      "kind": "floor",
+      "kind": "sand",
       "tags": [
-        "floor"
+        "autotile",
+        "sand"
       ]
     },
     {
-      "name": "stone_floor_3__0_0",
-      "group": "stone_floor_3",
+      "name": "sand_15__0_0",
+      "group": "sand_15",
       "dx": 0,
       "dy": 0,
       "col": 0,
@@ -5129,14 +5185,15 @@
       "solid": false,
       "sort_y": 16,
       "above": false,
-      "kind": "floor",
+      "kind": "sand",
       "tags": [
-        "floor"
+        "autotile",
+        "sand"
       ]
     },
     {
-      "name": "stone_floor_4__0_0",
-      "group": "stone_floor_4",
+      "name": "stone_floor_1__0_0",
+      "group": "stone_floor_1",
       "dx": 0,
       "dy": 0,
       "col": 1,
@@ -5156,8 +5213,8 @@
       ]
     },
     {
-      "name": "stone_floor_cracked__0_0",
-      "group": "stone_floor_cracked",
+      "name": "stone_floor_2__0_0",
+      "group": "stone_floor_2",
       "dx": 0,
       "dy": 0,
       "col": 2,
@@ -5177,14 +5234,77 @@
       ]
     },
     {
-      "name": "water_0__0_0",
-      "group": "water_0",
+      "name": "stone_floor_3__0_0",
+      "group": "stone_floor_3",
       "dx": 0,
       "dy": 0,
       "col": 3,
       "row": 4,
       "rect": [
         48,
+        64,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "floor",
+      "tags": [
+        "floor"
+      ]
+    },
+    {
+      "name": "stone_floor_4__0_0",
+      "group": "stone_floor_4",
+      "dx": 0,
+      "dy": 0,
+      "col": 4,
+      "row": 4,
+      "rect": [
+        64,
+        64,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "floor",
+      "tags": [
+        "floor"
+      ]
+    },
+    {
+      "name": "stone_floor_cracked__0_0",
+      "group": "stone_floor_cracked",
+      "dx": 0,
+      "dy": 0,
+      "col": 5,
+      "row": 4,
+      "rect": [
+        80,
+        64,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "floor",
+      "tags": [
+        "floor"
+      ]
+    },
+    {
+      "name": "water_0__0_0",
+      "group": "water_0",
+      "dx": 0,
+      "dy": 0,
+      "col": 6,
+      "row": 4,
+      "rect": [
+        96,
         64,
         16,
         16
@@ -5203,10 +5323,10 @@
       "group": "water_0_b",
       "dx": 0,
       "dy": 0,
-      "col": 4,
+      "col": 7,
       "row": 4,
       "rect": [
-        64,
+        112,
         64,
         16,
         16
@@ -5226,10 +5346,10 @@
       "group": "water_1",
       "dx": 0,
       "dy": 0,
-      "col": 5,
+      "col": 8,
       "row": 4,
       "rect": [
-        80,
+        128,
         64,
         16,
         16
@@ -5248,10 +5368,10 @@
       "group": "water_1_b",
       "dx": 0,
       "dy": 0,
-      "col": 6,
+      "col": 9,
       "row": 4,
       "rect": [
-        96,
+        144,
         64,
         16,
         16
@@ -5271,10 +5391,10 @@
       "group": "water_2",
       "dx": 0,
       "dy": 0,
-      "col": 7,
+      "col": 10,
       "row": 4,
       "rect": [
-        112,
+        160,
         64,
         16,
         16
@@ -5293,10 +5413,10 @@
       "group": "water_2_b",
       "dx": 0,
       "dy": 0,
-      "col": 8,
+      "col": 11,
       "row": 4,
       "rect": [
-        128,
+        176,
         64,
         16,
         16
@@ -5316,10 +5436,10 @@
       "group": "water_3",
       "dx": 0,
       "dy": 0,
-      "col": 9,
+      "col": 12,
       "row": 4,
       "rect": [
-        144,
+        192,
         64,
         16,
         16
@@ -5338,10 +5458,10 @@
       "group": "water_3_b",
       "dx": 0,
       "dy": 0,
-      "col": 10,
+      "col": 13,
       "row": 4,
       "rect": [
-        160,
+        208,
         64,
         16,
         16
@@ -5361,10 +5481,10 @@
       "group": "water_4",
       "dx": 0,
       "dy": 0,
-      "col": 11,
+      "col": 14,
       "row": 4,
       "rect": [
-        176,
+        224,
         64,
         16,
         16
@@ -5383,10 +5503,10 @@
       "group": "water_4_b",
       "dx": 0,
       "dy": 0,
-      "col": 12,
+      "col": 15,
       "row": 4,
       "rect": [
-        192,
+        240,
         64,
         16,
         16
@@ -5406,11 +5526,11 @@
       "group": "water_5",
       "dx": 0,
       "dy": 0,
-      "col": 13,
-      "row": 4,
+      "col": 0,
+      "row": 5,
       "rect": [
-        208,
-        64,
+        0,
+        80,
         16,
         16
       ],
@@ -5428,11 +5548,11 @@
       "group": "water_5_b",
       "dx": 0,
       "dy": 0,
-      "col": 14,
-      "row": 4,
+      "col": 1,
+      "row": 5,
       "rect": [
-        224,
-        64,
+        16,
+        80,
         16,
         16
       ],
@@ -5451,11 +5571,11 @@
       "group": "water_6",
       "dx": 0,
       "dy": 0,
-      "col": 15,
-      "row": 4,
+      "col": 2,
+      "row": 5,
       "rect": [
-        240,
-        64,
+        32,
+        80,
         16,
         16
       ],
@@ -5473,10 +5593,10 @@
       "group": "water_6_b",
       "dx": 0,
       "dy": 0,
-      "col": 0,
+      "col": 3,
       "row": 5,
       "rect": [
-        0,
+        48,
         80,
         16,
         16
@@ -5496,10 +5616,10 @@
       "group": "water_7",
       "dx": 0,
       "dy": 0,
-      "col": 1,
+      "col": 4,
       "row": 5,
       "rect": [
-        16,
+        64,
         80,
         16,
         16
@@ -5518,10 +5638,10 @@
       "group": "water_7_b",
       "dx": 0,
       "dy": 0,
-      "col": 2,
+      "col": 5,
       "row": 5,
       "rect": [
-        32,
+        80,
         80,
         16,
         16
@@ -5541,10 +5661,10 @@
       "group": "water_8",
       "dx": 0,
       "dy": 0,
-      "col": 3,
+      "col": 6,
       "row": 5,
       "rect": [
-        48,
+        96,
         80,
         16,
         16
@@ -5563,10 +5683,10 @@
       "group": "water_8_b",
       "dx": 0,
       "dy": 0,
-      "col": 4,
+      "col": 7,
       "row": 5,
       "rect": [
-        64,
+        112,
         80,
         16,
         16
@@ -5586,10 +5706,10 @@
       "group": "water_9",
       "dx": 0,
       "dy": 0,
-      "col": 5,
+      "col": 8,
       "row": 5,
       "rect": [
-        80,
+        128,
         80,
         16,
         16
@@ -5608,10 +5728,10 @@
       "group": "water_9_b",
       "dx": 0,
       "dy": 0,
-      "col": 6,
+      "col": 9,
       "row": 5,
       "rect": [
-        96,
+        144,
         80,
         16,
         16
@@ -5631,10 +5751,10 @@
       "group": "water_10",
       "dx": 0,
       "dy": 0,
-      "col": 7,
+      "col": 10,
       "row": 5,
       "rect": [
-        112,
+        160,
         80,
         16,
         16
@@ -5653,10 +5773,10 @@
       "group": "water_10_b",
       "dx": 0,
       "dy": 0,
-      "col": 8,
+      "col": 11,
       "row": 5,
       "rect": [
-        128,
+        176,
         80,
         16,
         16
@@ -5676,10 +5796,10 @@
       "group": "water_11",
       "dx": 0,
       "dy": 0,
-      "col": 9,
+      "col": 12,
       "row": 5,
       "rect": [
-        144,
+        192,
         80,
         16,
         16
@@ -5698,10 +5818,10 @@
       "group": "water_11_b",
       "dx": 0,
       "dy": 0,
-      "col": 10,
+      "col": 13,
       "row": 5,
       "rect": [
-        160,
+        208,
         80,
         16,
         16
@@ -5721,10 +5841,10 @@
       "group": "water_12",
       "dx": 0,
       "dy": 0,
-      "col": 11,
+      "col": 14,
       "row": 5,
       "rect": [
-        176,
+        224,
         80,
         16,
         16
@@ -5743,10 +5863,10 @@
       "group": "water_12_b",
       "dx": 0,
       "dy": 0,
-      "col": 12,
+      "col": 15,
       "row": 5,
       "rect": [
-        192,
+        240,
         80,
         16,
         16
@@ -5766,11 +5886,11 @@
       "group": "water_13",
       "dx": 0,
       "dy": 0,
-      "col": 13,
-      "row": 5,
+      "col": 0,
+      "row": 6,
       "rect": [
-        208,
-        80,
+        0,
+        96,
         16,
         16
       ],
@@ -5788,11 +5908,11 @@
       "group": "water_13_b",
       "dx": 0,
       "dy": 0,
-      "col": 14,
-      "row": 5,
+      "col": 1,
+      "row": 6,
       "rect": [
-        224,
-        80,
+        16,
+        96,
         16,
         16
       ],
@@ -5811,11 +5931,11 @@
       "group": "water_14",
       "dx": 0,
       "dy": 0,
-      "col": 15,
-      "row": 5,
+      "col": 2,
+      "row": 6,
       "rect": [
-        240,
-        80,
+        32,
+        96,
         16,
         16
       ],
@@ -5833,10 +5953,10 @@
       "group": "water_14_b",
       "dx": 0,
       "dy": 0,
-      "col": 0,
+      "col": 3,
       "row": 6,
       "rect": [
-        0,
+        48,
         96,
         16,
         16
@@ -5856,10 +5976,10 @@
       "group": "water_15",
       "dx": 0,
       "dy": 0,
-      "col": 1,
+      "col": 4,
       "row": 6,
       "rect": [
-        16,
+        64,
         96,
         16,
         16
@@ -5878,10 +5998,10 @@
       "group": "water_15_b",
       "dx": 0,
       "dy": 0,
-      "col": 2,
+      "col": 5,
       "row": 6,
       "rect": [
-        32,
+        80,
         96,
         16,
         16
@@ -5901,10 +6021,10 @@
       "group": "water_deep_0",
       "dx": 0,
       "dy": 0,
-      "col": 3,
+      "col": 6,
       "row": 6,
       "rect": [
-        48,
+        96,
         96,
         16,
         16
@@ -5923,10 +6043,10 @@
       "group": "water_deep_1",
       "dx": 0,
       "dy": 0,
-      "col": 4,
+      "col": 7,
       "row": 6,
       "rect": [
-        64,
+        112,
         96,
         16,
         16
@@ -5945,10 +6065,10 @@
       "group": "water_deep_2",
       "dx": 0,
       "dy": 0,
-      "col": 5,
+      "col": 8,
       "row": 6,
       "rect": [
-        80,
+        128,
         96,
         16,
         16
@@ -5967,63 +6087,6 @@
       "group": "cliff_top",
       "dx": 0,
       "dy": 0,
-      "col": 6,
-      "row": 6,
-      "rect": [
-        96,
-        96,
-        16,
-        16
-      ],
-      "solid": true,
-      "sort_y": 16,
-      "above": false,
-      "kind": "cliff",
-      "tags": []
-    },
-    {
-      "name": "cliff_top_l__0_0",
-      "group": "cliff_top_l",
-      "dx": 0,
-      "dy": 0,
-      "col": 7,
-      "row": 6,
-      "rect": [
-        112,
-        96,
-        16,
-        16
-      ],
-      "solid": true,
-      "sort_y": 16,
-      "above": false,
-      "kind": "cliff",
-      "tags": []
-    },
-    {
-      "name": "cliff_top_r__0_0",
-      "group": "cliff_top_r",
-      "dx": 0,
-      "dy": 0,
-      "col": 8,
-      "row": 6,
-      "rect": [
-        128,
-        96,
-        16,
-        16
-      ],
-      "solid": true,
-      "sort_y": 16,
-      "above": false,
-      "kind": "cliff",
-      "tags": []
-    },
-    {
-      "name": "cliff_top_m__0_0",
-      "group": "cliff_top_m",
-      "dx": 0,
-      "dy": 0,
       "col": 9,
       "row": 6,
       "rect": [
@@ -6039,8 +6102,8 @@
       "tags": []
     },
     {
-      "name": "cliff_face__0_0",
-      "group": "cliff_face",
+      "name": "cliff_top_l__0_0",
+      "group": "cliff_top_l",
       "dx": 0,
       "dy": 0,
       "col": 10,
@@ -6058,8 +6121,8 @@
       "tags": []
     },
     {
-      "name": "cliff_face_l__0_0",
-      "group": "cliff_face_l",
+      "name": "cliff_top_r__0_0",
+      "group": "cliff_top_r",
       "dx": 0,
       "dy": 0,
       "col": 11,
@@ -6077,8 +6140,8 @@
       "tags": []
     },
     {
-      "name": "cliff_face_r__0_0",
-      "group": "cliff_face_r",
+      "name": "cliff_top_m__0_0",
+      "group": "cliff_top_m",
       "dx": 0,
       "dy": 0,
       "col": 12,
@@ -6096,8 +6159,8 @@
       "tags": []
     },
     {
-      "name": "cliff_face_m__0_0",
-      "group": "cliff_face_m",
+      "name": "cliff_face__0_0",
+      "group": "cliff_face",
       "dx": 0,
       "dy": 0,
       "col": 13,
@@ -6115,8 +6178,8 @@
       "tags": []
     },
     {
-      "name": "cliff_base__0_0",
-      "group": "cliff_base",
+      "name": "cliff_face_l__0_0",
+      "group": "cliff_face_l",
       "dx": 0,
       "dy": 0,
       "col": 14,
@@ -6134,8 +6197,8 @@
       "tags": []
     },
     {
-      "name": "cave_floor__0_0",
-      "group": "cave_floor",
+      "name": "cliff_face_r__0_0",
+      "group": "cliff_face_r",
       "dx": 0,
       "dy": 0,
       "col": 15,
@@ -6143,6 +6206,63 @@
       "rect": [
         240,
         96,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "cliff",
+      "tags": []
+    },
+    {
+      "name": "cliff_face_m__0_0",
+      "group": "cliff_face_m",
+      "dx": 0,
+      "dy": 0,
+      "col": 0,
+      "row": 7,
+      "rect": [
+        0,
+        112,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "cliff",
+      "tags": []
+    },
+    {
+      "name": "cliff_base__0_0",
+      "group": "cliff_base",
+      "dx": 0,
+      "dy": 0,
+      "col": 1,
+      "row": 7,
+      "rect": [
+        16,
+        112,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "cliff",
+      "tags": []
+    },
+    {
+      "name": "cave_floor__0_0",
+      "group": "cave_floor",
+      "dx": 0,
+      "dy": 0,
+      "col": 2,
+      "row": 7,
+      "rect": [
+        32,
+        112,
         16,
         16
       ],
@@ -6157,10 +6277,10 @@
       "group": "cave_void",
       "dx": 0,
       "dy": 0,
-      "col": 0,
+      "col": 3,
       "row": 7,
       "rect": [
-        0,
+        48,
         112,
         16,
         16
@@ -6176,10 +6296,10 @@
       "group": "cave_wall",
       "dx": 0,
       "dy": 0,
-      "col": 1,
+      "col": 4,
       "row": 7,
       "rect": [
-        16,
+        64,
         112,
         16,
         16
@@ -6195,10 +6315,10 @@
       "group": "oak_small",
       "dx": 0,
       "dy": 0,
-      "col": 2,
+      "col": 5,
       "row": 7,
       "rect": [
-        32,
+        80,
         112,
         16,
         16
@@ -6216,10 +6336,10 @@
       "group": "oak_large",
       "dx": 0,
       "dy": 0,
-      "col": 3,
+      "col": 6,
       "row": 7,
       "rect": [
-        48,
+        96,
         112,
         16,
         16
@@ -6237,10 +6357,10 @@
       "group": "oak_large",
       "dx": 1,
       "dy": 0,
-      "col": 4,
+      "col": 7,
       "row": 7,
       "rect": [
-        64,
+        112,
         112,
         16,
         16
@@ -6258,10 +6378,10 @@
       "group": "oak_large",
       "dx": 0,
       "dy": 1,
-      "col": 3,
+      "col": 6,
       "row": 8,
       "rect": [
-        48,
+        96,
         128,
         16,
         16
@@ -6279,10 +6399,10 @@
       "group": "oak_large",
       "dx": 1,
       "dy": 1,
-      "col": 4,
+      "col": 7,
       "row": 8,
       "rect": [
-        64,
+        112,
         128,
         16,
         16
@@ -6300,10 +6420,10 @@
       "group": "pine_small",
       "dx": 0,
       "dy": 0,
-      "col": 5,
+      "col": 8,
       "row": 7,
       "rect": [
-        80,
+        128,
         112,
         16,
         16
@@ -6321,10 +6441,10 @@
       "group": "pine_large",
       "dx": 0,
       "dy": 0,
-      "col": 6,
+      "col": 9,
       "row": 7,
       "rect": [
-        96,
+        144,
         112,
         16,
         16
@@ -6342,10 +6462,10 @@
       "group": "pine_large",
       "dx": 1,
       "dy": 0,
-      "col": 7,
+      "col": 10,
       "row": 7,
       "rect": [
-        112,
+        160,
         112,
         16,
         16
@@ -6363,10 +6483,10 @@
       "group": "pine_large",
       "dx": 0,
       "dy": 1,
-      "col": 6,
+      "col": 9,
       "row": 8,
       "rect": [
-        96,
+        144,
         128,
         16,
         16
@@ -6384,10 +6504,10 @@
       "group": "pine_large",
       "dx": 1,
       "dy": 1,
-      "col": 7,
+      "col": 10,
       "row": 8,
       "rect": [
-        112,
+        160,
         128,
         16,
         16
@@ -6405,10 +6525,10 @@
       "group": "bush_1",
       "dx": 0,
       "dy": 0,
-      "col": 8,
+      "col": 11,
       "row": 7,
       "rect": [
-        128,
+        176,
         112,
         16,
         16
@@ -6426,10 +6546,10 @@
       "group": "bush_2",
       "dx": 0,
       "dy": 0,
-      "col": 9,
+      "col": 12,
       "row": 7,
       "rect": [
-        144,
+        192,
         112,
         16,
         16
@@ -6447,10 +6567,10 @@
       "group": "bush_flowers",
       "dx": 0,
       "dy": 0,
-      "col": 10,
+      "col": 13,
       "row": 7,
       "rect": [
-        160,
+        208,
         112,
         16,
         16
@@ -6468,10 +6588,10 @@
       "group": "bush_berry",
       "dx": 0,
       "dy": 0,
-      "col": 11,
+      "col": 14,
       "row": 7,
       "rect": [
-        176,
+        224,
         112,
         16,
         16
@@ -6489,10 +6609,10 @@
       "group": "boulder_1",
       "dx": 0,
       "dy": 0,
-      "col": 12,
+      "col": 15,
       "row": 7,
       "rect": [
-        192,
+        240,
         112,
         16,
         16
@@ -6510,11 +6630,11 @@
       "group": "boulder_2",
       "dx": 0,
       "dy": 0,
-      "col": 13,
-      "row": 7,
+      "col": 0,
+      "row": 8,
       "rect": [
-        208,
-        112,
+        0,
+        128,
         16,
         16
       ],
@@ -6531,11 +6651,11 @@
       "group": "rock_small",
       "dx": 0,
       "dy": 0,
-      "col": 14,
-      "row": 7,
+      "col": 1,
+      "row": 8,
       "rect": [
-        224,
-        112,
+        16,
+        128,
         16,
         16
       ],
@@ -6552,11 +6672,11 @@
       "group": "pebbles",
       "dx": 0,
       "dy": 0,
-      "col": 15,
-      "row": 7,
+      "col": 2,
+      "row": 8,
       "rect": [
-        240,
-        112,
+        32,
+        128,
         16,
         16
       ],
@@ -6573,10 +6693,10 @@
       "group": "stump",
       "dx": 0,
       "dy": 0,
-      "col": 0,
+      "col": 3,
       "row": 8,
       "rect": [
-        0,
+        48,
         128,
         16,
         16
@@ -6594,10 +6714,10 @@
       "group": "log",
       "dx": 0,
       "dy": 0,
-      "col": 1,
+      "col": 4,
       "row": 8,
       "rect": [
-        16,
+        64,
         128,
         16,
         16
@@ -6615,10 +6735,10 @@
       "group": "fence_h",
       "dx": 0,
       "dy": 0,
-      "col": 2,
+      "col": 5,
       "row": 8,
       "rect": [
-        32,
+        80,
         128,
         16,
         16
@@ -6636,10 +6756,10 @@
       "group": "fence_v",
       "dx": 0,
       "dy": 0,
-      "col": 5,
+      "col": 8,
       "row": 8,
       "rect": [
-        80,
+        128,
         128,
         16,
         16
@@ -6657,10 +6777,10 @@
       "group": "fence_post",
       "dx": 0,
       "dy": 0,
-      "col": 8,
+      "col": 11,
       "row": 8,
       "rect": [
-        128,
+        176,
         128,
         16,
         16
@@ -6678,10 +6798,10 @@
       "group": "gate_closed",
       "dx": 0,
       "dy": 0,
-      "col": 9,
+      "col": 12,
       "row": 8,
       "rect": [
-        144,
+        192,
         128,
         16,
         16
@@ -6699,10 +6819,10 @@
       "group": "gate_open",
       "dx": 0,
       "dy": 0,
-      "col": 10,
+      "col": 13,
       "row": 8,
       "rect": [
-        160,
+        208,
         128,
         16,
         16
@@ -6720,10 +6840,10 @@
       "group": "signpost",
       "dx": 0,
       "dy": 0,
-      "col": 11,
+      "col": 14,
       "row": 8,
       "rect": [
-        176,
+        224,
         128,
         16,
         16
@@ -6741,10 +6861,10 @@
       "group": "signpost_r",
       "dx": 0,
       "dy": 0,
-      "col": 12,
+      "col": 15,
       "row": 8,
       "rect": [
-        192,
+        240,
         128,
         16,
         16
@@ -6762,63 +6882,6 @@
       "group": "wall_wood",
       "dx": 0,
       "dy": 0,
-      "col": 13,
-      "row": 8,
-      "rect": [
-        208,
-        128,
-        16,
-        16
-      ],
-      "solid": true,
-      "sort_y": 16,
-      "above": false,
-      "kind": "wall",
-      "tags": []
-    },
-    {
-      "name": "wall_wood_window__0_0",
-      "group": "wall_wood_window",
-      "dx": 0,
-      "dy": 0,
-      "col": 14,
-      "row": 8,
-      "rect": [
-        224,
-        128,
-        16,
-        16
-      ],
-      "solid": true,
-      "sort_y": 16,
-      "above": false,
-      "kind": "wall",
-      "tags": []
-    },
-    {
-      "name": "wall_wood_door__0_0",
-      "group": "wall_wood_door",
-      "dx": 0,
-      "dy": 0,
-      "col": 15,
-      "row": 8,
-      "rect": [
-        240,
-        128,
-        16,
-        16
-      ],
-      "solid": true,
-      "sort_y": 16,
-      "above": false,
-      "kind": "wall",
-      "tags": []
-    },
-    {
-      "name": "wall_stone__0_0",
-      "group": "wall_stone",
-      "dx": 0,
-      "dy": 0,
       "col": 0,
       "row": 9,
       "rect": [
@@ -6834,8 +6897,8 @@
       "tags": []
     },
     {
-      "name": "wall_stone_window__0_0",
-      "group": "wall_stone_window",
+      "name": "wall_wood_window__0_0",
+      "group": "wall_wood_window",
       "dx": 0,
       "dy": 0,
       "col": 1,
@@ -6853,8 +6916,8 @@
       "tags": []
     },
     {
-      "name": "wall_plaster__0_0",
-      "group": "wall_plaster",
+      "name": "wall_wood_door__0_0",
+      "group": "wall_wood_door",
       "dx": 0,
       "dy": 0,
       "col": 2,
@@ -6872,8 +6935,8 @@
       "tags": []
     },
     {
-      "name": "wall_plaster_window__0_0",
-      "group": "wall_plaster_window",
+      "name": "wall_stone__0_0",
+      "group": "wall_stone",
       "dx": 0,
       "dy": 0,
       "col": 3,
@@ -6891,8 +6954,8 @@
       "tags": []
     },
     {
-      "name": "roof_thatch_ridge_l__0_0",
-      "group": "roof_thatch_ridge_l",
+      "name": "wall_stone_window__0_0",
+      "group": "wall_stone_window",
       "dx": 0,
       "dy": 0,
       "col": 4,
@@ -6903,15 +6966,15 @@
         16,
         16
       ],
-      "solid": false,
+      "solid": true,
       "sort_y": 16,
       "above": false,
-      "kind": "roof",
+      "kind": "wall",
       "tags": []
     },
     {
-      "name": "roof_thatch_ridge_m__0_0",
-      "group": "roof_thatch_ridge_m",
+      "name": "wall_plaster__0_0",
+      "group": "wall_plaster",
       "dx": 0,
       "dy": 0,
       "col": 5,
@@ -6922,15 +6985,15 @@
         16,
         16
       ],
-      "solid": false,
+      "solid": true,
       "sort_y": 16,
       "above": false,
-      "kind": "roof",
+      "kind": "wall",
       "tags": []
     },
     {
-      "name": "roof_thatch_ridge_r__0_0",
-      "group": "roof_thatch_ridge_r",
+      "name": "wall_plaster_window__0_0",
+      "group": "wall_plaster_window",
       "dx": 0,
       "dy": 0,
       "col": 6,
@@ -6941,15 +7004,15 @@
         16,
         16
       ],
-      "solid": false,
+      "solid": true,
       "sort_y": 16,
       "above": false,
-      "kind": "roof",
+      "kind": "wall",
       "tags": []
     },
     {
-      "name": "roof_thatch_mid_l__0_0",
-      "group": "roof_thatch_mid_l",
+      "name": "roof_thatch_ridge_l__0_0",
+      "group": "roof_thatch_ridge_l",
       "dx": 0,
       "dy": 0,
       "col": 7,
@@ -6967,8 +7030,8 @@
       "tags": []
     },
     {
-      "name": "roof_thatch_mid_m__0_0",
-      "group": "roof_thatch_mid_m",
+      "name": "roof_thatch_ridge_m__0_0",
+      "group": "roof_thatch_ridge_m",
       "dx": 0,
       "dy": 0,
       "col": 8,
@@ -6986,8 +7049,8 @@
       "tags": []
     },
     {
-      "name": "roof_thatch_mid_r__0_0",
-      "group": "roof_thatch_mid_r",
+      "name": "roof_thatch_ridge_r__0_0",
+      "group": "roof_thatch_ridge_r",
       "dx": 0,
       "dy": 0,
       "col": 9,
@@ -7005,8 +7068,8 @@
       "tags": []
     },
     {
-      "name": "roof_thatch_eave_l__0_0",
-      "group": "roof_thatch_eave_l",
+      "name": "roof_thatch_mid_l__0_0",
+      "group": "roof_thatch_mid_l",
       "dx": 0,
       "dy": 0,
       "col": 10,
@@ -7024,8 +7087,8 @@
       "tags": []
     },
     {
-      "name": "roof_thatch_eave_m__0_0",
-      "group": "roof_thatch_eave_m",
+      "name": "roof_thatch_mid_m__0_0",
+      "group": "roof_thatch_mid_m",
       "dx": 0,
       "dy": 0,
       "col": 11,
@@ -7043,8 +7106,8 @@
       "tags": []
     },
     {
-      "name": "roof_thatch_eave_r__0_0",
-      "group": "roof_thatch_eave_r",
+      "name": "roof_thatch_mid_r__0_0",
+      "group": "roof_thatch_mid_r",
       "dx": 0,
       "dy": 0,
       "col": 12,
@@ -7062,8 +7125,8 @@
       "tags": []
     },
     {
-      "name": "roof_thatch_edge_l__0_0",
-      "group": "roof_thatch_edge_l",
+      "name": "roof_thatch_eave_l__0_0",
+      "group": "roof_thatch_eave_l",
       "dx": 0,
       "dy": 0,
       "col": 13,
@@ -7081,8 +7144,8 @@
       "tags": []
     },
     {
-      "name": "roof_thatch_edge_r__0_0",
-      "group": "roof_thatch_edge_r",
+      "name": "roof_thatch_eave_m__0_0",
+      "group": "roof_thatch_eave_m",
       "dx": 0,
       "dy": 0,
       "col": 14,
@@ -7100,8 +7163,8 @@
       "tags": []
     },
     {
-      "name": "roof_slate_ridge_l__0_0",
-      "group": "roof_slate_ridge_l",
+      "name": "roof_thatch_eave_r__0_0",
+      "group": "roof_thatch_eave_r",
       "dx": 0,
       "dy": 0,
       "col": 15,
@@ -7119,8 +7182,8 @@
       "tags": []
     },
     {
-      "name": "roof_slate_ridge_m__0_0",
-      "group": "roof_slate_ridge_m",
+      "name": "roof_thatch_edge_l__0_0",
+      "group": "roof_thatch_edge_l",
       "dx": 0,
       "dy": 0,
       "col": 0,
@@ -7138,8 +7201,8 @@
       "tags": []
     },
     {
-      "name": "roof_slate_ridge_r__0_0",
-      "group": "roof_slate_ridge_r",
+      "name": "roof_thatch_edge_r__0_0",
+      "group": "roof_thatch_edge_r",
       "dx": 0,
       "dy": 0,
       "col": 1,
@@ -7157,8 +7220,8 @@
       "tags": []
     },
     {
-      "name": "roof_slate_mid_l__0_0",
-      "group": "roof_slate_mid_l",
+      "name": "roof_slate_ridge_l__0_0",
+      "group": "roof_slate_ridge_l",
       "dx": 0,
       "dy": 0,
       "col": 2,
@@ -7176,8 +7239,8 @@
       "tags": []
     },
     {
-      "name": "roof_slate_mid_m__0_0",
-      "group": "roof_slate_mid_m",
+      "name": "roof_slate_ridge_m__0_0",
+      "group": "roof_slate_ridge_m",
       "dx": 0,
       "dy": 0,
       "col": 3,
@@ -7195,8 +7258,8 @@
       "tags": []
     },
     {
-      "name": "roof_slate_mid_r__0_0",
-      "group": "roof_slate_mid_r",
+      "name": "roof_slate_ridge_r__0_0",
+      "group": "roof_slate_ridge_r",
       "dx": 0,
       "dy": 0,
       "col": 4,
@@ -7214,8 +7277,8 @@
       "tags": []
     },
     {
-      "name": "roof_slate_eave_l__0_0",
-      "group": "roof_slate_eave_l",
+      "name": "roof_slate_mid_l__0_0",
+      "group": "roof_slate_mid_l",
       "dx": 0,
       "dy": 0,
       "col": 5,
@@ -7233,8 +7296,8 @@
       "tags": []
     },
     {
-      "name": "roof_slate_eave_m__0_0",
-      "group": "roof_slate_eave_m",
+      "name": "roof_slate_mid_m__0_0",
+      "group": "roof_slate_mid_m",
       "dx": 0,
       "dy": 0,
       "col": 6,
@@ -7252,8 +7315,8 @@
       "tags": []
     },
     {
-      "name": "roof_slate_eave_r__0_0",
-      "group": "roof_slate_eave_r",
+      "name": "roof_slate_mid_r__0_0",
+      "group": "roof_slate_mid_r",
       "dx": 0,
       "dy": 0,
       "col": 7,
@@ -7271,8 +7334,8 @@
       "tags": []
     },
     {
-      "name": "roof_slate_edge_l__0_0",
-      "group": "roof_slate_edge_l",
+      "name": "roof_slate_eave_l__0_0",
+      "group": "roof_slate_eave_l",
       "dx": 0,
       "dy": 0,
       "col": 8,
@@ -7290,8 +7353,8 @@
       "tags": []
     },
     {
-      "name": "roof_slate_edge_r__0_0",
-      "group": "roof_slate_edge_r",
+      "name": "roof_slate_eave_m__0_0",
+      "group": "roof_slate_eave_m",
       "dx": 0,
       "dy": 0,
       "col": 9,
@@ -7309,14 +7372,71 @@
       "tags": []
     },
     {
-      "name": "chimney_top__0_0",
-      "group": "chimney_top",
+      "name": "roof_slate_eave_r__0_0",
+      "group": "roof_slate_eave_r",
       "dx": 0,
       "dy": 0,
       "col": 10,
       "row": 10,
       "rect": [
         160,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_slate_edge_l__0_0",
+      "group": "roof_slate_edge_l",
+      "dx": 0,
+      "dy": 0,
+      "col": 11,
+      "row": 10,
+      "rect": [
+        176,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_slate_edge_r__0_0",
+      "group": "roof_slate_edge_r",
+      "dx": 0,
+      "dy": 0,
+      "col": 12,
+      "row": 10,
+      "rect": [
+        192,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "chimney_top__0_0",
+      "group": "chimney_top",
+      "dx": 0,
+      "dy": 0,
+      "col": 13,
+      "row": 10,
+      "rect": [
+        208,
         160,
         16,
         16
@@ -7334,10 +7454,10 @@
       "group": "chimney_body",
       "dx": 0,
       "dy": 0,
-      "col": 11,
+      "col": 14,
       "row": 10,
       "rect": [
-        176,
+        224,
         160,
         16,
         16
@@ -7355,10 +7475,10 @@
       "group": "stair_stone",
       "dx": 0,
       "dy": 0,
-      "col": 12,
+      "col": 15,
       "row": 10,
       "rect": [
-        192,
+        240,
         160,
         16,
         16
@@ -7376,11 +7496,11 @@
       "group": "stair_wood",
       "dx": 0,
       "dy": 0,
-      "col": 13,
-      "row": 10,
+      "col": 0,
+      "row": 11,
       "rect": [
-        208,
-        160,
+        0,
+        176,
         16,
         16
       ],
@@ -7395,69 +7515,6 @@
     {
       "name": "bridge_deck_l__0_0",
       "group": "bridge_deck_l",
-      "dx": 0,
-      "dy": 0,
-      "col": 14,
-      "row": 10,
-      "rect": [
-        224,
-        160,
-        16,
-        16
-      ],
-      "solid": false,
-      "sort_y": 16,
-      "above": false,
-      "kind": "bridge",
-      "tags": [
-        "bridge"
-      ]
-    },
-    {
-      "name": "bridge_deck_m__0_0",
-      "group": "bridge_deck_m",
-      "dx": 0,
-      "dy": 0,
-      "col": 15,
-      "row": 10,
-      "rect": [
-        240,
-        160,
-        16,
-        16
-      ],
-      "solid": false,
-      "sort_y": 16,
-      "above": false,
-      "kind": "bridge",
-      "tags": [
-        "bridge"
-      ]
-    },
-    {
-      "name": "bridge_deck_r__0_0",
-      "group": "bridge_deck_r",
-      "dx": 0,
-      "dy": 0,
-      "col": 0,
-      "row": 11,
-      "rect": [
-        0,
-        176,
-        16,
-        16
-      ],
-      "solid": false,
-      "sort_y": 16,
-      "above": false,
-      "kind": "bridge",
-      "tags": [
-        "bridge"
-      ]
-    },
-    {
-      "name": "bridge_rail_l__0_0",
-      "group": "bridge_rail_l",
       "dx": 0,
       "dy": 0,
       "col": 1,
@@ -7477,8 +7534,8 @@
       ]
     },
     {
-      "name": "bridge_rail_m__0_0",
-      "group": "bridge_rail_m",
+      "name": "bridge_deck_m__0_0",
+      "group": "bridge_deck_m",
       "dx": 0,
       "dy": 0,
       "col": 2,
@@ -7498,8 +7555,8 @@
       ]
     },
     {
-      "name": "bridge_rail_r__0_0",
-      "group": "bridge_rail_r",
+      "name": "bridge_deck_r__0_0",
+      "group": "bridge_deck_r",
       "dx": 0,
       "dy": 0,
       "col": 3,
@@ -7519,8 +7576,8 @@
       ]
     },
     {
-      "name": "bridge_v__0_0",
-      "group": "bridge_v",
+      "name": "bridge_rail_l__0_0",
+      "group": "bridge_rail_l",
       "dx": 0,
       "dy": 0,
       "col": 4,
@@ -7540,8 +7597,8 @@
       ]
     },
     {
-      "name": "bridge_v_end__0_0",
-      "group": "bridge_v_end",
+      "name": "bridge_rail_m__0_0",
+      "group": "bridge_rail_m",
       "dx": 0,
       "dy": 0,
       "col": 5,
@@ -7561,14 +7618,77 @@
       ]
     },
     {
-      "name": "well__0_0",
-      "group": "well",
+      "name": "bridge_rail_r__0_0",
+      "group": "bridge_rail_r",
       "dx": 0,
       "dy": 0,
       "col": 6,
       "row": 11,
       "rect": [
         96,
+        176,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    {
+      "name": "bridge_v__0_0",
+      "group": "bridge_v",
+      "dx": 0,
+      "dy": 0,
+      "col": 7,
+      "row": 11,
+      "rect": [
+        112,
+        176,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    {
+      "name": "bridge_v_end__0_0",
+      "group": "bridge_v_end",
+      "dx": 0,
+      "dy": 0,
+      "col": 8,
+      "row": 11,
+      "rect": [
+        128,
+        176,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    {
+      "name": "well__0_0",
+      "group": "well",
+      "dx": 0,
+      "dy": 0,
+      "col": 9,
+      "row": 11,
+      "rect": [
+        144,
         176,
         16,
         16
@@ -7586,10 +7706,10 @@
       "group": "well",
       "dx": 1,
       "dy": 0,
-      "col": 7,
+      "col": 10,
       "row": 11,
       "rect": [
-        112,
+        160,
         176,
         16,
         16
@@ -7607,10 +7727,10 @@
       "group": "well",
       "dx": 0,
       "dy": 1,
-      "col": 6,
+      "col": 9,
       "row": 12,
       "rect": [
-        96,
+        144,
         192,
         16,
         16
@@ -7628,10 +7748,10 @@
       "group": "well",
       "dx": 1,
       "dy": 1,
-      "col": 7,
+      "col": 10,
       "row": 12,
       "rect": [
-        112,
+        160,
         192,
         16,
         16
@@ -7647,69 +7767,6 @@
     {
       "name": "barrel__0_0",
       "group": "barrel",
-      "dx": 0,
-      "dy": 0,
-      "col": 8,
-      "row": 11,
-      "rect": [
-        128,
-        176,
-        16,
-        16
-      ],
-      "solid": true,
-      "sort_y": 16,
-      "above": true,
-      "kind": "prop",
-      "tags": [
-        "prop"
-      ]
-    },
-    {
-      "name": "crate__0_0",
-      "group": "crate",
-      "dx": 0,
-      "dy": 0,
-      "col": 9,
-      "row": 11,
-      "rect": [
-        144,
-        176,
-        16,
-        16
-      ],
-      "solid": true,
-      "sort_y": 16,
-      "above": true,
-      "kind": "prop",
-      "tags": [
-        "prop"
-      ]
-    },
-    {
-      "name": "crate_stack__0_0",
-      "group": "crate_stack",
-      "dx": 0,
-      "dy": 0,
-      "col": 10,
-      "row": 11,
-      "rect": [
-        160,
-        176,
-        16,
-        16
-      ],
-      "solid": true,
-      "sort_y": 16,
-      "above": true,
-      "kind": "prop",
-      "tags": [
-        "prop"
-      ]
-    },
-    {
-      "name": "chest_closed__0_0",
-      "group": "chest_closed",
       "dx": 0,
       "dy": 0,
       "col": 11,
@@ -7729,14 +7786,77 @@
       ]
     },
     {
-      "name": "chest_open__0_0",
-      "group": "chest_open",
+      "name": "crate__0_0",
+      "group": "crate",
       "dx": 0,
       "dy": 0,
       "col": 12,
       "row": 11,
       "rect": [
         192,
+        176,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "crate_stack__0_0",
+      "group": "crate_stack",
+      "dx": 0,
+      "dy": 0,
+      "col": 13,
+      "row": 11,
+      "rect": [
+        208,
+        176,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "chest_closed__0_0",
+      "group": "chest_closed",
+      "dx": 0,
+      "dy": 0,
+      "col": 14,
+      "row": 11,
+      "rect": [
+        224,
+        176,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "chest_open__0_0",
+      "group": "chest_open",
+      "dx": 0,
+      "dy": 0,
+      "col": 15,
+      "row": 11,
+      "rect": [
+        240,
         176,
         16,
         16
@@ -7754,11 +7874,11 @@
       "group": "lantern",
       "dx": 0,
       "dy": 0,
-      "col": 13,
-      "row": 11,
+      "col": 0,
+      "row": 12,
       "rect": [
-        208,
-        176,
+        0,
+        192,
         16,
         16
       ],
@@ -7775,11 +7895,11 @@
       "group": "torch",
       "dx": 0,
       "dy": 0,
-      "col": 14,
-      "row": 11,
+      "col": 1,
+      "row": 12,
       "rect": [
-        224,
-        176,
+        16,
+        192,
         16,
         16
       ],
@@ -7796,11 +7916,11 @@
       "group": "campfire_1",
       "dx": 0,
       "dy": 0,
-      "col": 15,
-      "row": 11,
+      "col": 2,
+      "row": 12,
       "rect": [
-        240,
-        176,
+        32,
+        192,
         16,
         16
       ],
@@ -7818,10 +7938,10 @@
       "group": "campfire_2",
       "dx": 0,
       "dy": 0,
-      "col": 0,
+      "col": 3,
       "row": 12,
       "rect": [
-        0,
+        48,
         192,
         16,
         16
@@ -7840,69 +7960,6 @@
       "group": "campfire_off",
       "dx": 0,
       "dy": 0,
-      "col": 1,
-      "row": 12,
-      "rect": [
-        16,
-        192,
-        16,
-        16
-      ],
-      "solid": true,
-      "sort_y": 16,
-      "above": true,
-      "kind": "prop",
-      "tags": [
-        "prop"
-      ]
-    },
-    {
-      "name": "haystack__0_0",
-      "group": "haystack",
-      "dx": 0,
-      "dy": 0,
-      "col": 2,
-      "row": 12,
-      "rect": [
-        32,
-        192,
-        16,
-        16
-      ],
-      "solid": true,
-      "sort_y": 16,
-      "above": true,
-      "kind": "prop",
-      "tags": [
-        "prop"
-      ]
-    },
-    {
-      "name": "pot__0_0",
-      "group": "pot",
-      "dx": 0,
-      "dy": 0,
-      "col": 3,
-      "row": 12,
-      "rect": [
-        48,
-        192,
-        16,
-        16
-      ],
-      "solid": true,
-      "sort_y": 16,
-      "above": true,
-      "kind": "prop",
-      "tags": [
-        "prop"
-      ]
-    },
-    {
-      "name": "market_stall__0_0",
-      "group": "market_stall",
-      "dx": 0,
-      "dy": 0,
       "col": 4,
       "row": 12,
       "rect": [
@@ -7920,14 +7977,77 @@
       ]
     },
     {
+      "name": "haystack__0_0",
+      "group": "haystack",
+      "dx": 0,
+      "dy": 0,
+      "col": 5,
+      "row": 12,
+      "rect": [
+        80,
+        192,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "pot__0_0",
+      "group": "pot",
+      "dx": 0,
+      "dy": 0,
+      "col": 6,
+      "row": 12,
+      "rect": [
+        96,
+        192,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "market_stall__0_0",
+      "group": "market_stall",
+      "dx": 0,
+      "dy": 0,
+      "col": 7,
+      "row": 12,
+      "rect": [
+        112,
+        192,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
       "name": "cave_entrance__0_0",
       "group": "cave_entrance",
       "dx": 0,
       "dy": 0,
-      "col": 8,
+      "col": 11,
       "row": 12,
       "rect": [
-        128,
+        176,
         192,
         16,
         16
@@ -7945,10 +8065,10 @@
       "group": "cave_entrance",
       "dx": 1,
       "dy": 0,
-      "col": 9,
+      "col": 12,
       "row": 12,
       "rect": [
-        144,
+        192,
         192,
         16,
         16
@@ -7966,10 +8086,10 @@
       "group": "cave_entrance",
       "dx": 0,
       "dy": 1,
-      "col": 8,
+      "col": 11,
       "row": 13,
       "rect": [
-        128,
+        176,
         208,
         16,
         16
@@ -7987,10 +8107,10 @@
       "group": "cave_entrance",
       "dx": 1,
       "dy": 1,
-      "col": 9,
+      "col": 12,
       "row": 13,
       "rect": [
-        144,
+        192,
         208,
         16,
         16

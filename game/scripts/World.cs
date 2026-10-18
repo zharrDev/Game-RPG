@@ -96,14 +96,29 @@ public sealed class World
     public readonly Dictionary<string, SpriteFrames> NpcFrames = new();
     /// <summary>Obor/lentera yang sinarnya berkedip (dipakai Game._Process).</summary>
     public readonly List<(Sprite2D Sprite, float Phase)> FlickerProps = new();
+    /// <summary>Titik api nyata (obor, lentera, api unggun) untuk heat haze + PointLight2D.</summary>
+    public readonly List<(Vector2 Pos, float Phase, float Size)> HeatSources = new();
     public Texture2D ShadowTexture = null!;
     public int GroundCellCount;
     public int GroundSourceId;
 
-    /// <summary>Sel air + varian tile-nya (untuk animasi riak dua/iga fase).</summary>
+    /// <summary>Sel air + varian tile-nya (untuk animasi riak dua/tiga fase).</summary>
     private readonly Dictionary<Vector2I, string[]> _waterCells = new();
     public IReadOnlyDictionary<Vector2I, string[]> WaterCells => _waterCells;
     public int WaterPhase { get; private set; }
+
+    /// <summary>Offset fase riak per sel: air berganti tidak serentak (riak menjalar).</summary>
+    private readonly Dictionary<Vector2I, int> _waterOffset = new();
+
+    /// <summary>Varian yang sedang tampil di sel air (untuk tes determinisme riak).</summary>
+    public int WaterVariantIndex(Vector2I cell) =>
+        _waterCells.TryGetValue(cell, out var variants)
+            ? (WaterPhase + _waterOffset[cell]) % variants.Length
+            : 0;
+
+    /// <summary>Overlay tanah hangus (dekoratif) di atas ground; null di mode sprite.</summary>
+    public TileMapLayer? Scorched;
+    public int ScorchedCellCount;
 
     /// <summary>Peta mini 1 px per tile yang dibangun dari data ground.</summary>
     public Texture2D Minimap = null!;
@@ -184,12 +199,58 @@ public sealed class World
                     if (!tileset.TileCoords.TryGetValue(tileName, out var coords)) continue;
                     ground.SetCell(new Vector2I(col, row), sourceId, new Vector2I(coords.col, coords.row));
                     var variants = WaterVariants(tileName, tileset);
-                    if (variants is not null) world._waterCells[new Vector2I(col, row)] = variants;
+                    if (variants is not null)
+                    {
+                        var cell = new Vector2I(col, row);
+                        var offset = (int)(Hash01(col, row, 91) * 8f);
+                        world._waterCells[cell] = variants;
+                        world._waterOffset[cell] = offset;
+                        // langsung tampilkan varian per-sel: riak tidak seragam sejak awal
+                        var name = variants[offset % variants.Length];
+                        if (tileset.TileCoords.TryGetValue(name, out var ripple))
+                            ground.SetCell(cell, sourceId, new Vector2I(ripple.col, ripple.row));
+                    }
                     used++;
                 }
             }
             world.GroundCellCount = used;
             root.AddChild(ground);
+
+            // tanah hangus dekoratif: overlay di atas ground, di bawah prop.
+            // Hanya menghanguskan grass/meadow (jalan, air, bebatuan tetap bersih)
+            // dan tepinya dibuat ragged agar tidak terlihat seperti kotak.
+            var scorched = new TileMapLayer
+            {
+                Name = "Scorched",
+                ZIndex = -15,
+                YSortEnabled = false,
+                CollisionEnabled = false,
+                TileSet = tileSet,
+            };
+            foreach (var zone in data.BurntZones)
+            {
+                for (var row = zone.Y; row < zone.Y + zone.H; row++)
+                {
+                    for (var col = zone.X; col < zone.X + zone.W; col++)
+                    {
+                        if (row < 0 || row >= data.Height || col < 0 || col >= data.Width) continue;
+                        var baseName = data.TileNames[data.Ground[row][col]];
+                        if (!baseName.StartsWith("grass", StringComparison.Ordinal) &&
+                            !baseName.StartsWith("meadow", StringComparison.Ordinal)) continue;
+                        var edge = col == zone.X || col == zone.X + zone.W - 1 ||
+                                   row == zone.Y || row == zone.Y + zone.H - 1;
+                        if (edge && Hash01(col, row, 77) < 0.45f) continue;
+                        var variant = 1 + (int)(Hash01(col, row, 78) * 3f) % 3;
+                        if (!tileset.TileCoords.TryGetValue($"scorched_{variant}", out var scorchCoords))
+                            continue;
+                        scorched.SetCell(new Vector2I(col, row), sourceId,
+                            new Vector2I(scorchCoords.col, scorchCoords.row));
+                        world.ScorchedCellCount++;
+                    }
+                }
+            }
+            world.Scorched = scorched;
+            root.AddChild(scorched);
         }
         else
         {
@@ -239,9 +300,15 @@ public sealed class World
                     Modulate = new Color(1, 1, 1, 0.3f),
                 });
             }
-            // obor & lentera berkedip hangat
-            if (prop.Group is "torch" or "lantern")
-                world.FlickerProps.Add((sprite, (prop.Col * 1.7f + prop.Row * 0.9f) % 6.283f));
+            // obor & lentera berkedip hangat + catat titik api untuk heat haze
+            if (prop.Group is "torch" or "lantern" or "campfire_1")
+            {
+                var phase = (prop.Col * 1.7f + prop.Row * 0.9f) % 6.283f;
+                world.FlickerProps.Add((sprite, phase));
+                var basePos = new Vector2((prop.Col + info.W / 2f) * TileSize, (prop.Row + info.H) * TileSize);
+                world.HeatSources.Add((new Vector2(basePos.X, basePos.Y - 9f), phase,
+                    prop.Group == "campfire_1" ? 52f : 44f));
+            }
         }
         root.AddChild(propRoot);
 
@@ -275,16 +342,30 @@ public sealed class World
         return true;
     }
 
-    /// <summary>Ganti fase riak air (dipanggil Game tiap ~0.6 detik).</summary>
+    /// <summary>Ganti fase riak air (dipanggil Game tiap ~0.6 detik).
+    /// Offset per sel membuat riak menjalar dari satu sel ke sel lain.</summary>
     public void SetWaterPhase(int phase)
     {
         if (_waterCells.Count == 0) return;
         WaterPhase = phase;
         foreach (var (cell, variants) in _waterCells)
         {
-            var name = variants[phase % variants.Length];
+            var name = variants[(phase + _waterOffset[cell]) % variants.Length];
             if (!Tileset.TileCoords.TryGetValue(name, out var coords)) continue;
             Ground.SetCell(cell, GroundSourceId, new Vector2I(coords.col, coords.row));
+        }
+    }
+
+    /// <summary>Hash deterministik 0..1 dari koordinat + salt (sama dengan preview Python).</summary>
+    private static float Hash01(int x, int y, int salt)
+    {
+        unchecked
+        {
+            var h = (uint)(x * 73856093) ^ (uint)(y * 19349663) ^ (uint)(salt * 83492791);
+            h ^= h >> 13;
+            h *= 0x5BD1E995;
+            h ^= h >> 15;
+            return (h & 0xFFFFFF) / (float)0xFFFFFF;
         }
     }
 

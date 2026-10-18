@@ -67,6 +67,7 @@ FLOWER = {
 GLASS = (0x4A, 0x6F, 0xA5, 255)
 GLASS_HI = (0x6B, 0x93, 0xC9, 255)
 FLAME = [(0xE8, 0xC8, 0x5A, 255), (0xE0, 0x8A, 0x3C, 255), (0xF5, 0xE7, 0xB0, 255)]
+BURNT = [(0x2A, 0x26, 0x20, 255), (0x3A, 0x33, 0x2A, 255), (0x4C, 0x42, 0x34, 255), (0x8E, 0x88, 0x7C, 255)]
 HOLE = (0x11, 0x11, 0x1A, 255)
 
 CLEAR = (0, 0, 0, 0)
@@ -190,6 +191,29 @@ def grass_base(img: Img, rng: random.Random, tones=GRASS, density=0.035, hi=GRAS
 def make_grass(seed: int):
     def draw(img: Img) -> None:
         grass_base(img, random.Random(seed))
+    return draw
+
+
+def make_scorched(seed: int):
+    """Tanah hangus (dekoratif): arang gelap + abu; dipasang World sebagai overlay
+    di zona bekas terbakar (markers.burnt) — walkable tetap dari tile aslinya."""
+
+    def draw(img: Img) -> None:
+        rng = random.Random(seed)
+        img.rect(0, 0, img.w, img.h, BURNT[1])
+        for y in range(img.h):
+            for x in range(img.w):
+                r = rng.random()
+                if r < 0.18:
+                    img.set(x, y, BURNT[0])
+                elif r < 0.26:
+                    img.set(x, y, BURNT[2])
+        for _ in range(3):
+            x, y = rng.randint(1, 12), rng.randint(1, 13)
+            img.hline(x, y, rng.randint(2, 4), BURNT[0])
+        img.speckle(rng, [BURNT[3]], 0.035)
+        img.speckle(rng, [BURNT[2]], 0.04)
+
     return draw
 
 
@@ -1119,6 +1143,8 @@ def main() -> None:
                 img.set(x, y - 1, FLOWER[c])
             img.set(x + 1, y, GRASS[0])
     add("grass_flowers_mixed", mixed_flowers, tags=["grass", "flower"])
+    for i in range(3):
+        add(f"scorched_{i + 1}", make_scorched(910 + i), tags=["ground", "scorched"])
 
     patch_autotile("dirt", DIRT, kind="path")
     patch_autotile("cobble", COBBLE, kind="road")

@@ -68,14 +68,16 @@ PY="$(rpg_python "$ROOT")" || {
   exit 1
 }
 
-echo "== 1/7 generate aset (tileset 16x16, peta, sprite, font, audio) =="
+echo "== 1/7 generate aset (tileset 16x16, peta, sprite, font, audio, fx) =="
 "$PY" tools/generate_tileset.py
 "$PY" tools/generate_pixel_font.py
 "$PY" tools/generate_audio.py
+"$PY" tools/generate_fx.py
 "$PY" tools/generate_world_map.py
 "$PY" tools/build_hero_sprites.py
 "$PY" tools/build_enemy_sprites.py
 "$PY" tools/build_npc_sprites.py
+"$PY" tools/preview_stages.py
 
 echo "== 2/7 verifikasi artefak aset =="
 "$PY" tools/verify_assets.py

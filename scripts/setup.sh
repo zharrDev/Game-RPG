@@ -48,10 +48,11 @@ if ! PY="$(rpg_python_setup "$ROOT")"; then
 fi
 echo "   pakai $PY ($("$PY" -c 'import PIL; print("Pillow " + PIL.__version__)'))"
 
-echo "== 4/6 generate aset: tileset 16x16 + font pixel + audio =="
+echo "== 4/6 generate aset: tileset 16x16 + font pixel + audio + tekstur FX =="
 "$PY" tools/generate_tileset.py
 "$PY" tools/generate_pixel_font.py
 "$PY" tools/generate_audio.py
+"$PY" tools/generate_fx.py
 
 echo "== 5/6 generate aset: peta overworld + sprite hero, musuh & NPC =="
 "$PY" tools/generate_world_map.py

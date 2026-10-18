@@ -7,6 +7,7 @@ __pycache__/
 .dotnet-home/
 server/**/bin/
 server/**/obj/
+server/publish/
 game/bin/
 game/obj/
 

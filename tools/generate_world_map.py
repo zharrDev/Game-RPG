@@ -364,6 +364,14 @@ checkpoints = [
      "zone": "ancient_ruins"},
 ]
 
+# Zona terbakar: MURNI DEKORATIF — tanah hangus lama (abu beterbangan + tunas
+# tumbuh kembali lewat Particles.cs). Tidak mengubah walkable/terrain di atas.
+burnt = [
+    {"id": "vale_scorch", "name": "Bekas Bakaran Ladang", "rect": [33, 40, 8, 5]},
+    {"id": "woods_scar", "name": "Luka Bakar Hutan Utara", "rect": [70, 6, 12, 8]},
+    {"id": "ruins_scorch", "name": "Hangus Batas Reruntuhan", "rect": [RX + 16, RY + 14, 10, 7]},
+]
+
 enemies: list[dict] = []
 for (etype, count, zone) in (("slime", 8, "greenwood_vale"), ("bat", 5, "north_woods"),
                              ("slime", 5, "old_road"), ("bat", 4, "old_road"),
@@ -653,6 +661,12 @@ def render(scale: int = 1, with_markers: bool = True, with_labels: bool = True,
                         outline=(0xFF, 0x00, 0xFF, 100), width=1)
             if with_labels:
                 d.text((r[0] * TILE + 4, r[1] * TILE + 3), z["name"], fill=(0xFF, 0xFF, 0xFF, 255))
+        for b in burnt:
+            r = b["rect"]
+            d.rectangle([r[0] * TILE, r[1] * TILE, (r[0] + r[2]) * TILE, (r[1] + r[3]) * TILE],
+                        outline=(0xC0, 0x50, 0x30, 220), width=1)
+            if with_labels:
+                d.text((r[0] * TILE + 4, (r[1] + r[3]) * TILE - 12), b["name"], fill=(0xE0, 0x88, 0x60, 255))
         for c in checkpoints:
             if with_labels:
                 d.text((c["col"] * TILE - 24, c["row"] * TILE + 16), c["name"], fill=(0xE8, 0xC8, 0x5A, 255))
@@ -682,6 +696,7 @@ def main() -> None:
             "spawn": spawn,
             "zones": zones,
             "checkpoints": checkpoints,
+            "burnt": burnt,
             "enemies": enemies,
             "npcs": npcs,
             "chests": chests,
@@ -699,7 +714,8 @@ def main() -> None:
 
     walk_tiles = sum(sum(r) for r in walkable)
     print(f"overworld.json: {W}x{H} tile ({W * TILE}x{H * TILE} px), {len(props)} prop, "
-          f"{len(enemies)} musuh, {len(npcs)} NPC, {len(chests)} peti, {len(zones)} zona")
+          f"{len(enemies)} musuh, {len(npcs)} NPC, {len(chests)} peti, {len(zones)} zona, "
+          f"{len(burnt)} zona terbakar")
     print(f"walkable: {walk_tiles}/{W * H} tile ({walk_tiles / (W * H):.1%})")
     print(f"preview: docs/preview-world.png")
 

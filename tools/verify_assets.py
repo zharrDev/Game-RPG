@@ -84,6 +84,16 @@ def verify_tileset() -> dict:
     check("tidak ada tile kosong", not empty, "; ".join(empty[:5]))
     check("tidak ada tile nyaris transparan", not transparent, "; ".join(transparent[:5]))
 
+    scorched = sorted(n for n in meta["tiles"] if n.startswith("scorched_"))
+    check("tanah hangus punya 3 varian", len(scorched) == 3, str(scorched))
+    dark = True
+    for n in scorched:
+        t = meta["tiles"][n]
+        px = atlas.crop((t["x"], t["y"], t["x"] + t["w"] * 16, t["y"] + t["h"] * 16)).convert("RGB").getdata()
+        if sum(sum(p) for p in px) / (3 * len(px)) > 100:
+            dark = False
+    check("tanah hangus gelap (abu & arang)", dark)
+
     # cell vs object konsisten
     cells_by_group = defaultdict(list)
     for cell in meta["cells"]:
@@ -186,6 +196,20 @@ def verify_world(meta: dict) -> None:
 
     zones = {z["id"] for z in data["markers"]["zones"]}
     check("empat zona terdefinisi", zones == {"greenwood_vale", "north_woods", "old_road", "ancient_ruins"}, str(sorted(zones)))
+
+    burnt = data["markers"].get("burnt", [])
+    check("zona bekas terbakar terdefinisi (>=2)", len(burnt) >= 2, str(len(burnt)))
+    bad_burnt = [b["id"] for b in burnt
+                 if not (0 <= b["rect"][0] and b["rect"][0] + b["rect"][2] <= w
+                         and 0 <= b["rect"][1] and b["rect"][1] + b["rect"][3] <= h)]
+    check("zona terbakar di dalam peta", not bad_burnt, "; ".join(bad_burnt))
+    walk_burnt = []
+    for b in burnt:
+        x0, y0, bw, bh = b["rect"]
+        walk_burnt.append(sum(1 for y in range(y0, y0 + bh) for x in range(x0, x0 + bw)
+                              if data["walkable"][y][x]))
+    check("zona terbakar punya cukup tile walkable (abu & tunas)",
+          len(walk_burnt) == len(burnt) and all(c >= 10 for c in walk_burnt), str(walk_burnt))
 
     npcs = data["markers"].get("npcs", [])
     check("tiga NPC desa terdefinisi", len(npcs) == 3, str(len(npcs)))
@@ -397,6 +421,99 @@ def verify_audio() -> None:
           str([info["seconds"] for info in manifest["music"].values()]))
 
 
+def verify_fx() -> None:
+    """Pipeline FX: tekstur noise/cahaya + shader. Tekstur ini bukan pixel art
+    ber-alpha biner (kabut & cahaya memang butuh gradasi), jadi diuji dengan
+    aturan sendiri: noise harus punya variasi & tileable, cahaya bergradasi
+    dari pusat terang ke tepi transparan, dan shader harus canvas_item."""
+    print("== pipeline FX ==")
+    fx = ROOT / "game/assets/fx"
+    noise_path = fx / "fx_noise.png"
+    light_path = fx / "fx_light_soft.png"
+    glow_path = fx / "fx_glow_soft.png"
+    check("fx: tekstur noise/cahaya/glow ada",
+          noise_path.exists() and light_path.exists() and glow_path.exists())
+    if not (noise_path.exists() and light_path.exists() and glow_path.exists()):
+        return
+
+    noise = Image.open(noise_path).convert("RGBA")
+    check("fx: ukuran noise 128x128 & alpha penuh",
+          noise.size == (128, 128) and all(p[3] == 255 for p in noise.getdata()), f"{noise.size}")
+    data = list(noise.getdata())
+    deviations = []
+    for c in range(3):
+        values = [p[c] for p in data]
+        mean = sum(values) / len(values)
+        deviations.append((sum((v - mean) ** 2 for v in values) / len(values)) ** 0.5)
+    check("fx: tiap kanal noise punya variasi", min(deviations) >= 10,
+          ", ".join(f"{s:.1f}" for s in deviations))
+    w, h = noise.size
+    seam_h = sum(abs(noise.getpixel((0, y))[0] - noise.getpixel((w - 1, y))[0]) for y in range(h)) / h
+    seam_v = sum(abs(noise.getpixel((x, 0))[0] - noise.getpixel((x, h - 1))[0]) for x in range(w)) / w
+    check("fx: noise tileable (tanpa jahitan)", seam_h < 24 and seam_v < 24,
+          f"h={seam_h:.1f} v={seam_v:.1f}")
+
+    light = Image.open(light_path).convert("RGBA")
+    center = light.getpixel((light.width // 2, light.height // 2))
+    corner = light.getpixel((0, 0))
+    levels = {p[3] for p in light.getdata()}
+    check("fx: cahaya radial terang di tengah & transparan di tepi",
+          light.size == (128, 128) and center[3] >= 200 and corner[3] <= 16,
+          f"center {center[3]} corner {corner[3]}")
+    check("fx: cahaya radial bergradasi (bukan alpha biner)", 16 <= len(levels) <= 256,
+          f"{len(levels)} level")
+    glow = Image.open(glow_path).convert("RGBA")
+    check("fx: titik glow 64x64 terang di tengah",
+          glow.size == (64, 64) and glow.getpixel((32, 32))[3] >= 200 and glow.getpixel((0, 0))[3] <= 16,
+          f"{glow.size}")
+
+    # fx_flame (pixel-art): 4 frame 16x16, alpha biner, hanya pixar hangat
+    flame_path = fx / "fx_flame.png"
+    check("fx: lembar nyala api ada (4 frame 16x16)", flame_path.exists())
+    if flame_path.exists():
+        flame = Image.open(flame_path).convert("RGBA")
+        check("fx: nyala 64x16 & alpha biner",
+              flame.size == (64, 16) and all(p[3] in (0, 255) for p in flame.getdata()),
+              f"{flame.size}")
+        frames = [flame.crop((i * 16, 0, i * 16 + 16, 16)) for i in range(4)]
+        empty = [i for i, f in enumerate(frames) if not any(p[3] for p in f.getdata())]
+        check("fx: tiap frame nyala terisi", not empty, f"kosong: {empty}")
+        warm = all(p[0] >= p[1] >= p[2] for p in flame.getdata() if p[3])
+        check("fx: nyala hanya warna hangat (r>=g>=b)", warm)
+
+    # fx_sprout (pixel-art): tunas hijau 8x8
+    sprout_path = fx / "fx_sprout.png"
+    check("fx: tunas zona terbakar ada (8x8)", sprout_path.exists())
+    if sprout_path.exists():
+        sprout = Image.open(sprout_path).convert("RGBA")
+        opaque = [p for p in sprout.getdata() if p[3]]
+        green = [p for p in opaque if p[1] > p[0] and p[1] > p[2]]
+        check("fx: tunas alpha biner, berisi & berwarna hijau",
+              sprout.size == (8, 8) and all(p[3] in (0, 255) for p in sprout.getdata())
+              and len(opaque) >= 8 and len(green) >= len(opaque) * 0.7,
+              f"{len(opaque)} piksel, {len(green)} hijau")
+
+    names = ["fx_smoke.gdshader", "fx_glow.gdshader", "fx_grade.gdshader", "fx_heat.gdshader"]
+    shader_dir = ROOT / "game/assets/shaders"
+    missing = [name for name in names if not (shader_dir / name).exists()]
+    check("fx: empat shader pipeline ada", not missing, "; ".join(missing))
+    bad = []
+    for name in names:
+        path = shader_dir / name
+        if not path.exists():
+            continue
+        text = path.read_text()
+        if "shader_type canvas_item;" not in text:
+            bad.append(f"{name}: bukan canvas_item")
+        elif "hint_screen_texture" not in text:
+            bad.append(f"{name}: tanpa screen texture")
+    check("fx: shader valid (canvas_item + screen texture)", not bad, "; ".join(bad))
+    grade = shader_dir / "fx_grade.gdshader"
+    grade_text = grade.read_text() if grade.exists() else ""
+    check("fx: grading punya uniform `night` (siklus siang/malam)",
+          "uniform float night" in grade_text and "night_tint" in grade_text)
+
+
 def verify_export_preset() -> None:
     """Aset dibaca game sebagai byte mentah, jadi harus masuk include_filter ekspor."""
     print("== preset ekspor ==")
@@ -424,6 +541,7 @@ def main() -> int:
     verify_npcs()
     verify_font()
     verify_audio()
+    verify_fx()
     verify_export_preset()
     print()
     print(f"=== aset: {CHECKS - len(FAILURES)} lulus, {len(FAILURES)} gagal ===")

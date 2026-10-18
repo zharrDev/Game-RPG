@@ -38,6 +38,20 @@ public static class HeadlessTest
         }
     }
 
+    /// <summary>Titik kaki pertama yang bisa dipijak di dalam zona bekas terbakar.</summary>
+    private static Vector2 SproutSpot(World world, BurntZoneInfo zone)
+    {
+        for (var row = zone.Y; row < zone.Y + zone.H; row++)
+        {
+            for (var col = zone.X; col < zone.X + zone.W; col++)
+            {
+                var feet = new Vector2((col + 0.5f) * 16, (row + 1) * 16);
+                if (world.Grid.WalkableAt(feet)) return feet;
+            }
+        }
+        return new Vector2((zone.X + 0.5f) * 16, (zone.Y + 1) * 16);
+    }
+
     public static void Run(Game game)
     {
         var world = game.World;
@@ -50,8 +64,8 @@ public static class HeadlessTest
         }
 
         GD.Print("=== aset & peta ===");
-        Check("tileset dimuat (191 tile termasuk 16 fase air)",
-            world.Tileset.Objects.Count == 191, $"{world.Tileset.Objects.Count}");
+        Check("tileset dimuat (194 tile termasuk 16 fase air & 3 tanah hangus)",
+            world.Tileset.Objects.Count == 194, $"{world.Tileset.Objects.Count}");
         Check("peta 96x72 tile", world.Data.Width == 96 && world.Data.Height == 72);
         Check("layer tanah terisi seluruh peta",
             world.GroundCellCount == world.Data.Width * world.Data.Height, $"{world.GroundCellCount}");
@@ -325,6 +339,121 @@ public static class HeadlessTest
         Check("bayangan ambient di bawah pohon/bangunan", shadowedProps >= 50, $"{shadowedProps} prop");
         Check("obor & lentera berkedip terdaftar", world.FlickerProps.Count >= 2, $"{world.FlickerProps.Count}");
 
+        GD.Print("=== pipeline FX: asap, bloom, grading, heat haze ===");
+        var fx = game.Fx;
+        Check("layer FX terpasang", fx is not null);
+        Check("shader asap/bloom/grading/heat termuat",
+            fx is not null && fx.SmokeMaterial.Shader is not null && fx.GlowMaterial.Shader is not null &&
+            fx.GradeMaterial.Shader is not null && fx.HeatMaterial.Shader is not null);
+        Check("heat haze terpasang di setiap titik api",
+            fx is not null && world.HeatSources.Count >= 2 && fx.HeatSourceCount == world.HeatSources.Count,
+            $"{fx?.HeatSourceCount ?? -1} vs {world.HeatSources.Count}");
+        Check("ketebalan asap di rentang aman",
+            fx is not null && fx.AshDensity > 0f && fx.AshDensity <= 0.75f, $"{fx?.AshDensity ?? -1f}");
+        Check("uniform kamera asap terpasang (asap mengikuti dunia)",
+            fx is not null &&
+            fx.SmokeMaterial.GetShaderParameter("cam_px").VariantType == Variant.Type.Vector2 &&
+            fx.SmokeMaterial.GetShaderParameter("noise_tex").VariantType == Variant.Type.Object,
+            fx is null ? "fx null" : fx.SmokeMaterial.GetShaderParameter("cam_px").VariantType.ToString());
+
+        GD.Print("=== lighting siang/malam & cahaya api ===");
+        var lighting = game.Lighting;
+        Check("node lighting terpasang", lighting is not null);
+        if (lighting is not null)
+        {
+            Check("satu cahaya per titik api",
+                world.HeatSources.Count >= 2 && lighting.Lights.Count == world.HeatSources.Count,
+                $"{lighting.Lights.Count} vs {world.HeatSources.Count}");
+            var lightsOk = lighting.Lights.Count > 0;
+            for (var i = 0; i < lighting.Lights.Count && lightsOk; i++)
+            {
+                var (pos, _, _) = world.HeatSources[i];
+                lightsOk = lighting.Lights[i].Texture is not null &&
+                           lighting.Lights[i].BlendMode == Light2D.BlendModeEnum.Add &&
+                           lighting.Lights[i].Position.DistanceTo(pos) < 0.01f;
+            }
+            Check("cahaya api: tekstur, mode add, posisi pas", lightsOk);
+
+            lighting.SetTimeOfDay(0.5f);
+            var noonColor = lighting.Modulate.Color;
+            var noonEnergy = lighting.Lights.Count > 0 ? lighting.Lights[0].Energy : 0f;
+            Check("tengah hari terang, malam = 0",
+                lighting.NightAmount < 0.05f && noonColor.R > 0.95f && noonColor.B > 0.95f,
+                $"night={lighting.NightAmount:0.00} {noonColor}");
+
+            lighting.SetTimeOfDay(0f);
+            var nightColor = lighting.Modulate.Color;
+            var nightEnergy = lighting.Lights.Count > 0 ? lighting.Lights[0].Energy : 0f;
+            Check("tengah malam gelap kebiruan, malam penuh",
+                lighting.NightAmount > 0.95f && nightColor.B > nightColor.R && nightColor.R < 0.6f,
+                $"night={lighting.NightAmount:0.00} {nightColor}");
+            Check("nyala api lebih kuat saat malam", nightEnergy > noonEnergy,
+                $"{nightEnergy:0.00} vs {noonEnergy:0.00}");
+
+            lighting.SetTimeOfDay(0.98f);
+            lighting.Advance(lighting.DayLength * 0.05);
+            Check("jam berputar & membungkus", MathF.Abs(lighting.TimeOfDay - 0.03f) < 0.01f,
+                $"t={lighting.TimeOfDay:0.000}");
+
+            fx?._Process(0.0);
+            Check("uniform night grading ikut siklus",
+                fx is not null &&
+                MathF.Abs((float)fx.GradeMaterial.GetShaderParameter("night") - lighting.NightAmount) < 0.001f,
+                fx is null ? "fx null" : fx.GradeMaterial.GetShaderParameter("night").ToString());
+        }
+
+        GD.Print("=== api, bara, abu & tunas (dekoratif) ===");
+        var ambience = game.Ambience;
+        Check("ambience api terpasang", ambience is not null);
+        Check("zona bekas terbakar terdefinisi di peta", world.Data.BurntZones.Count >= 2,
+            $"{world.Data.BurntZones.Count} zona");
+        if (ambience is not null)
+        {
+            Check("nyala api satu per titik api & beranimasi",
+                ambience.Flames.Count == world.HeatSources.Count && ambience.Flames.Count >= 2 &&
+                ambience.Flames.TrueForAll(f => f.IsPlaying() && f.SpriteFrames?.HasAnimation("burn") == true),
+                $"{ambience.Flames.Count} vs {world.HeatSources.Count}");
+            Check("pool partikel dialokasikan sekali (kapasitas tetap)",
+                ambience.Embers?.Capacity == FireAmbience.EmberCapacity &&
+                ambience.Ash?.Capacity == FireAmbience.AshCapacity &&
+                ambience.Embers.ActiveCount == 0 && ambience.Ash!.ActiveCount == 0,
+                $"ember {ambience.Embers?.Capacity}, ash {ambience.Ash?.Capacity}");
+
+            // bara: muncul, lalu kembali ke pool setelah umurnya habis
+            // (kamera dijauhkan dulu supaya tidak ada bara otomatis dari api yang terlihat)
+            ambience.SetCameraCenter(new Vector2(-1000f, -1000f));
+            var emberSpawned = ambience.ForceEmber(new Vector2(560, 480));
+            ambience.Advance(0.4);
+            Check("bara hidup & masih di udara sebelum umurnya habis",
+                emberSpawned && ambience.Embers!.ActiveCount == 1, $"{ambience.Embers.ActiveCount}");
+            ambience.Advance(3.0);
+            Check("pool bara bersih lagi setelah umur habis", ambience.Embers.ActiveCount == 0,
+                $"{ambience.Embers.ActiveCount}");
+
+            // tunas: tumbuh di dalam zona, lalu memudar & kembali ke pool
+            var zone = world.Data.BurntZones[0];
+            var sproutSpot = SproutSpot(world, zone);
+            var sproutSprite = ambience.ForceSproutAt(sproutSpot);
+            ambience.Advance(1.0);
+            Check("tunas tumbuh (skala membesar)",
+                sproutSprite is not null && sproutSprite.Scale.X > 0.6f && ambience.SproutCount == 1,
+                sproutSprite is null ? "penuh" : $"{sproutSprite.Scale.X:0.00}");
+            ambience.Advance(5.0);
+            Check("tunas selesai & kembali ke pool", ambience.SproutCount == 0, $"{ambience.SproutCount}");
+
+            // abu hanya saat kamera di zona terbakar; asap menebal di sana
+            var inside = new Vector2((zone.X + zone.W / 2f) * 16, (zone.Y + zone.H / 2f) * 16);
+            ambience.SetCameraCenter(inside);
+            ambience.Advance(1.0);
+            Check("abu beterbangan saat kamera di zona terbakar",
+                ambience.Ash!.ActiveCount > 0 &&
+                MathF.Abs(ambience.AshBoost - FireAmbience.BurntAshBoost) < 0.001f,
+                $"{ambience.Ash.ActiveCount} abu, boost {ambience.AshBoost:0.00}");
+            ambience.SetCameraCenter(new Vector2(48 * 16, 36 * 16));
+            ambience.Advance(0.2);
+            Check("di luar zona: boost asap nol", ambience.AshBoost == 0f, $"{ambience.AshBoost:0.00}");
+        }
+
         GD.Print("=== peti, gold & potion ===");
         Check("peti harta ter-spawn sesuai peta", world.Data.Chests.Count >= 4, $"{world.Data.Chests.Count}");
         var chest = world.Data.Chests[0];
@@ -377,16 +506,36 @@ public static class HeadlessTest
 
         GD.Print("=== animasi air & peta mini ===");
         Check("sel air terdaftar untuk animasi", world.WaterCells.Count > 200, $"{world.WaterCells.Count}");
-        var shoreCell = world.WaterCells.First(pair => pair.Value.Length == 2).Key;
-        var shoreBefore = world.Ground.GetCellAtlasCoords(shoreCell);
+        var shoreCells = world.WaterCells.Where(pair => pair.Value.Length == 2)
+            .Select(pair => pair.Key).OrderBy(cell => cell.Y).ThenBy(cell => cell.X).ToList();
+        var shoreBefore = shoreCells.ToDictionary(cell => cell, cell => world.Ground.GetCellAtlasCoords(cell));
+        var rippleSpread = shoreCells.Take(24).Select(world.WaterVariantIndex).Distinct().Count();
+        Check("riak air tidak seragam sejak awal (tidak pop serentak)", rippleSpread >= 2, $"{rippleSpread} varian");
         world.SetWaterPhase(1);
-        var shoreAfter = world.Ground.GetCellAtlasCoords(shoreCell);
-        Check("fase air 1 mengganti tile pantai", shoreBefore != shoreAfter, $"{shoreBefore} -> {shoreAfter}");
+        Check("fase air 1 mengganti tampilan semua sel pantai",
+            shoreCells.All(cell => world.Ground.GetCellAtlasCoords(cell) != shoreBefore[cell]));
         world.SetWaterPhase(2);
         Check("fase air kembali ke tile awal",
-            world.Ground.GetCellAtlasCoords(shoreCell) == shoreBefore,
-            $"{world.Ground.GetCellAtlasCoords(shoreCell)} vs {shoreBefore}");
+            shoreCells.All(cell => world.Ground.GetCellAtlasCoords(cell) == shoreBefore[cell]));
         world.SetWaterPhase(0);
+
+        GD.Print("=== tanah hangus (overlay dekoratif) ===");
+        Check("tanah hangus dipasang di zona terbakar",
+            world.Scorched is not null && world.ScorchedCellCount >= 90, $"{world.ScorchedCellCount}");
+        var scorchCells = world.Scorched?.GetUsedCells() ?? new Godot.Collections.Array<Vector2I>();
+        Check("sel hangus semuanya di dalam zona terbakar",
+            scorchCells.Count > 0 && scorchCells.All(cell =>
+                world.Data.BurntZones.Any(zone =>
+                    cell.X >= zone.X && cell.X < zone.X + zone.W &&
+                    cell.Y >= zone.Y && cell.Y < zone.Y + zone.H)),
+            $"{scorchCells.Count} sel");
+        Check("tanah hangus hanya menimpa grass/meadow (jalan & air tetap bersih)",
+            scorchCells.All(cell =>
+            {
+                var groundName = world.Data.TileNames[world.Data.Ground[cell.Y][cell.X]];
+                return groundName.StartsWith("grass", StringComparison.Ordinal) ||
+                       groundName.StartsWith("meadow", StringComparison.Ordinal);
+            }));
         Check("peta tetap penuh setelah animasi air",
             world.Ground.GetUsedCells().Count == world.Data.Width * world.Data.Height,
             $"{world.Ground.GetUsedCells().Count}");

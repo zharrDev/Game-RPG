@@ -21,6 +21,15 @@ public static class Assets
     public const string NpcPng = "res://assets/character/npc_atlas.png";
     public const string NpcJson = "res://assets/character/npc.json";
     public const string PixelFont = "res://assets/font/pixel.fnt";
+    public const string FxNoisePng = "res://assets/fx/fx_noise.png";
+    public const string FxLightSoftPng = "res://assets/fx/fx_light_soft.png";
+    public const string FxGlowSoftPng = "res://assets/fx/fx_glow_soft.png";
+    public const string FxFlamePng = "res://assets/fx/fx_flame.png";
+    public const string FxSproutPng = "res://assets/fx/fx_sprout.png";
+    public const string FxSmokeShader = "res://assets/shaders/fx_smoke.gdshader";
+    public const string FxGlowShader = "res://assets/shaders/fx_glow.gdshader";
+    public const string FxGradeShader = "res://assets/shaders/fx_grade.gdshader";
+    public const string FxHeatShader = "res://assets/shaders/fx_heat.gdshader";
 
     public static Texture2D LoadTexture(string resPath)
     {
@@ -41,6 +50,26 @@ public static class Assets
         if (string.IsNullOrWhiteSpace(text))
             throw new InvalidOperationException($"json tidak ditemukan / kosong: {resPath}");
         return JsonDocument.Parse(text);
+    }
+
+    /// <summary>
+    /// Shader dibaca sebagai teks lalu dibuat Shader resource di kode (sama seperti
+    /// PNG) supaya tidak bergantung pada importir Godot dan tetap 1 sumber kebenaran.
+    /// </summary>
+    public static Shader LoadShader(string resPath)
+    {
+        var text = FileAccess.GetFileAsString(resPath);
+        if (string.IsNullOrWhiteSpace(text))
+            throw new InvalidOperationException($"shader tidak ditemukan / kosong: {resPath}");
+        return new Shader { Code = text };
+    }
+
+    /// <summary>Piksel putih 1x1 untuk quad heat haze (warnanya diabaikan shader).</summary>
+    public static Texture2D MakeSolidPixel()
+    {
+        var image = Image.CreateEmpty(1, 1, false, Image.Format.Rgba8);
+        image.SetPixel(0, 0, new Color(1, 1, 1, 1));
+        return ImageTexture.CreateFromImage(image);
     }
 
     /// <summary>Tekstur bayangan lembut di bawah karakter (dipakai semua aktor).</summary>
