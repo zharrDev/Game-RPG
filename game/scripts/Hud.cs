@@ -9,9 +9,11 @@ public sealed partial class Hud : CanvasLayer
 {
     private ColorRect _hpBar = null!, _energyBar = null!, _xpBar = null!;
     private Label _hpText = null!, _statsText = null!, _zoneText = null!, _toast = null!, _hint = null!;
+    private Label _clock = null!, _questText = null!;
+    private TextureRect _vignette = null!;
     private Panel _pausePanel = null!, _profilePanel = null!;
     private VBoxContainer _pauseBox = null!, _profileBox = null!;
-    private Label _journalText = null!, _profileStatus = null!;
+    private Label _journalText = null!, _profileStatus = null!, _pauseSummary = null!;
     private Panel _dialogPanel = null!;
     private Label _dialogSpeaker = null!, _dialogText = null!;
     private TextureRect _minimap = null!;
@@ -34,6 +36,12 @@ public sealed partial class Hud : CanvasLayer
     public string DialogText => _dialogText.Text;
     public string DialogSpeaker => _dialogSpeaker.Text;
     public bool MinimapVisible => _minimap.Texture is not null;
+    public string ClockText => _clock.Text;
+    public string QuestTrackerText => _questText.Text;
+    public string PauseSummaryText => _pauseSummary.Text;
+    public float VignetteAlpha { get; private set; }
+    public double DamageFlashRemaining { get; private set; }
+    public float HpRatio { get; private set; } = 1f;
 
     /// <summary>Font bitmap 5x7 (tools/generate_pixel_font.py). Null = pakai font default.</summary>
     public static FontFile? PixelFont { get; private set; }
@@ -44,6 +52,29 @@ public sealed partial class Hud : CanvasLayer
         Name = "Hud";
         Layer = 10;
         EnsurePixelFont();
+
+        // vignette (tahap 2g): di bawah semua panel HUD, di atas dunia.
+        // Putih + alpha; di-modulate merah saat terluka / HP rendah.
+        _vignette = new TextureRect
+        {
+            Name = "Vignette",
+            Position = Vector2.Zero,
+            Size = new Vector2(480, 270),
+            ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+            StretchMode = TextureRect.StretchModeEnum.Scale,
+            TextureFilter = CanvasItem.TextureFilterEnum.Linear,
+            MouseFilter = Control.MouseFilterEnum.Ignore,
+            Modulate = new Color(1, 1, 1, 0),
+        };
+        try
+        {
+            _vignette.Texture = Assets.LoadTexture(Assets.FxVignettePng);
+        }
+        catch (Exception ex)
+        {
+            GD.PrintErr($"[hud] vignette gagal dimuat: {ex.Message}");
+        }
+        AddChild(_vignette);
 
         var top = new Panel { Position = new Vector2(4, 4), Size = new Vector2(196, 40) };
         AddChild(top);
@@ -60,6 +91,15 @@ public sealed partial class Hud : CanvasLayer
         AddChild(_statsText);
         _zoneText = MakeLabel(new Vector2(206, 20), 10);
         AddChild(_zoneText);
+
+        _clock = MakeLabel(new Vector2(206, 34), 8);
+        _clock.Modulate = new Color(0.95f, 0.88f, 0.6f);
+        AddChild(_clock);
+
+        _questText = MakeLabel(new Vector2(206, 46), 8);
+        _questText.Modulate = new Color(0.85f, 0.92f, 1f);
+        _questText.Visible = false;
+        AddChild(_questText);
 
         _toast = MakeLabel(new Vector2(8, 48), 10);
         _toast.Modulate = new Color(1f, 0.9f, 0.5f);
@@ -214,6 +254,10 @@ public sealed partial class Hud : CanvasLayer
         _journalText.Modulate = new Color(0.85f, 0.9f, 1f);
         _pauseBox.AddChild(_journalText);
 
+        _pauseSummary = MakeLabel(Vector2.Zero, 9);
+        _pauseSummary.Modulate = new Color(0.75f, 0.82f, 0.72f);
+        _pauseBox.AddChild(_pauseSummary);
+
         var back = MakeButton("Lanjut bermain", 240);
         back.Pressed += () => CloseMenu?.Invoke();
         _pauseBox.AddChild(back);
@@ -323,10 +367,49 @@ public sealed partial class Hud : CanvasLayer
         _toastTimer = 3.5;
     }
 
+    /// <summary>Jam dunia di HUD (tahap 2g): "Senja 17:24" dari Lighting.TimeOfDay.</summary>
+    public void UpdateClock(float timeOfDay)
+    {
+        var hours = ((timeOfDay % 1f) + 1f) % 1f * 24f;
+        var hh = (int)hours;
+        var mm = (int)((hours - hh) * 60f);
+        var phase = hh is >= 5 and < 11 ? "Pagi" : hh is >= 11 and < 16 ? "Siang" : hh is >= 16 and < 19 ? "Senja" : "Malam";
+        var text = $"{phase} {hh:00}:{mm:00}";
+        if (_clock.Text != text) _clock.Text = text;
+    }
+
+    /// <summary>Tracker quest di HUD (tahap 2g); teks kosong = disembunyikan.</summary>
+    public void SetQuestTracker(string text)
+    {
+        if (_questText.Text == text) return;
+        _questText.Text = text;
+        _questText.Visible = text.Length > 0;
+    }
+
+    /// <summary>Ringkasan profil di menu jeda (tahap 2g).</summary>
+    public void SetPauseSummary(string text) => _pauseSummary.Text = text;
+
+    /// <summary>Kedip merah singkat saat pemain terluka (vignette).</summary>
+    public void FlashDamage() => DamageFlashRemaining = 1.0;
+
+    /// <summary>
+    /// Majukan overlay vignette: kedip terluka mereda + denyut lembut saat HP
+    /// rendah (&lt; 30%). Dipanggil tiap frame dari _Process; tes memanggil
+    /// langsung supaya deterministik.
+    /// </summary>
+    public void AdvanceOverlay(double delta, float seconds)
+    {
+        DamageFlashRemaining = Math.Max(0, DamageFlashRemaining - delta * 1.6);
+        var lowHp = HpRatio < 0.30f ? 0.20f + 0.08f * (0.5f + 0.5f * MathF.Sin(seconds * 5.5f)) : 0f;
+        VignetteAlpha = MathF.Max(lowHp, (float)DamageFlashRemaining * 0.55f);
+        _vignette.Modulate = new Color(1f, 0.32f, 0.32f, VignetteAlpha);
+    }
+
     public void SetHint(string message) => _hint.Text = message;
 
     public void UpdateStats(GameState state, double energy, double playtime, string zoneName, string checkpointName)
     {
+        HpRatio = state.MaxHp > 0 ? (float)state.Hp / state.MaxHp : 1f;
         _hpText.Text = $"HP {state.Hp}/{state.MaxHp}   Lv {state.Level}   Skill Lv {state.SkillLevel}";
         _hpBar.Size = new Vector2(Math.Max(0, 180f * state.Hp / Math.Max(1, state.MaxHp)), 5);
         _energyBar.Size = new Vector2((float)Math.Max(0, 180f * energy / Rules.MaxEnergy), 4);
@@ -346,5 +429,6 @@ public sealed partial class Hud : CanvasLayer
             _toastTimer -= delta;
             if (_toastTimer <= 0) _toast.Text = "";
         }
+        AdvanceOverlay(delta, (float)Time.GetTicksMsec() / 1000f);
     }
 }

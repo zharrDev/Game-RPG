@@ -32,6 +32,10 @@ Output:
     docs/preview-stage-2f-before.png   (akhir 2e: hero lari tanpa efek)
     docs/preview-stage-2f-after.png    (+ debu langkah, percikan peti, trail)
     docs/preview-stage-2f-compare.png
+  tahap 2g — HUD informasi (mock 1:1 dengan elemen Hud.cs):
+    docs/preview-stage-2g-before.png   (akhir 2f: layar tanpa overlay HUD baru)
+    docs/preview-stage-2g-after.png    (+ pseudo-HUD: HP/XP, jam, tracker, vignette)
+    docs/preview-stage-2g-compare.png
 
 Jalankan:
     python3 tools/preview_stages.py
@@ -455,6 +459,35 @@ def draw_burnt_debris(img: Image.Image, zones: list[tuple[int, int, int, int]], 
     return img
 
 
+def compose_2g(base: Image.Image, vignette: Image.Image) -> Image.Image:
+    """Mock overlay HUD 2g di atas dunia: vignette HP rendah + jam + tracker quest.
+
+    Elemen digambar 1:1 dengan posisi di game/scripts/Hud.cs supaya pratinjau
+    bisa dibandingkan langsung dengan layar sungguhan.
+    """
+    out = base.copy()
+    red = Image.new("RGBA", vignette.size, (255, 82, 82, 255))
+    out.alpha_composite(ImageChops.multiply(vignette, red))
+
+    d = ImageDraw.Draw(out)
+    panel = Image.new("RGBA", (196, 40), (18, 16, 24, 205))
+    out.alpha_composite(panel, (4, 4))
+    d.rectangle([8, 19, 8 + 128, 23], fill=(166, 56, 64, 255))       # HP 42/120
+    d.rectangle([8, 26, 8 + 156, 29], fill=(72, 153, 217, 255))      # energi
+    d.rectangle([8, 32, 8 + 96, 35], fill=(217, 191, 77, 255))       # XP 34/80
+    d.text((8, 6), "HP 42/120  Lv 3  Skill Lv 1", fill=(240, 240, 240, 255))
+    d.text((206, 6), "34/80 XP - 02:31 - 120 gold - potion 2 - bunuh 12", fill=(240, 240, 240, 255))
+    d.text((206, 20), "Zona: greenwood_vale - checkpoint: village_square", fill=(220, 220, 230, 255))
+    d.text((206, 34), "Senja 17:24", fill=(242, 224, 153, 255))
+    d.text((206, 46), "QUEST", fill=(217, 235, 255, 255))
+    d.text((206, 58), "- Mira: kalahkan slime 3/5", fill=(217, 235, 255, 255))
+
+    minimap = Image.new("RGBA", (72, 54), (12, 12, 18, 190))
+    out.alpha_composite(minimap, (396, 186))
+    d.rectangle([396 + 30, 186 + 24, 396 + 32, 186 + 26], fill=(255, 237, 107, 255))
+    return out
+
+
 def load_hero() -> tuple[dict, Image.Image]:
     """Metadata frame hero + atlas (aset yang sama dengan game)."""
     meta = json.loads((CHAR_DIR / "hero.json").read_text())
@@ -640,6 +673,13 @@ def main() -> None:
     write_trio("2f", before2f, after2f,
                "SEBELUM - akhir 2e: hero lari, kamera diam, tanpa debu",
                "SESUDAH - + debu langkah, percikan pukulan & shake (tahap 2f)")
+
+    # tahap 2g: overlay HUD informasi (jam, tracker quest, vignette HP rendah)
+    vig_img = Image.open(FX_DIR / "fx_vignette.png").convert("RGBA")
+    after2g = compose_2g(base.copy(), vig_img)
+    write_trio("2g", base, after2g,
+               "SEBELUM - akhir 2f: layar tanpa overlay HUD baru",
+               "SESUDAH - + jam dunia, tracker quest & vignette HP rendah (2g)")
 
     scorch_cells = sum(1 for y in range(data["height"]) for x in range(data["width"])
                        if scorched_variant(data, data["tile_names"][data["ground_tiles"][y][x]], x, y))

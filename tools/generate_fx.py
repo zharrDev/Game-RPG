@@ -16,6 +16,9 @@ game/assets/shaders/:
                      dengan FLAME di generate_tileset.py.
   fx_sprout.png      8x8 RGBA — tunas hijau (pixel-art alpha biner) yang
                      tumbuh di zona bekas terbakar.
+  fx_vignette.png    480x270 RGBA — vignette HUD: tengah transparan, tepi
+                     putih ber-alpha (game me-modulate merah saat terluka /
+                     HP rendah). Dipakai Hud.cs (tahap 2g).
 
 Catatan gaya: tekstur di atas bukan pixel-art ber-alpha biner (cahaya & kabut
 memang perlu gradasi), jadi tools/verify_assets.py menguji kualitasnya
@@ -29,6 +32,7 @@ Output:
   game/assets/fx/fx_glow_soft.png
   game/assets/fx/fx_flame.png
   game/assets/fx/fx_sprout.png
+  game/assets/fx/fx_vignette.png
   docs/preview-fx.png                 pratinjau 4x (manusia)
 
 Jalankan:
@@ -41,7 +45,7 @@ import math
 import random
 from pathlib import Path
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageChops, ImageDraw
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT_DIR = ROOT / "game/assets/fx"
@@ -64,6 +68,9 @@ FLAME_TIP = (0xF5, 0xE7, 0xB0)         # FLAME[2]
 SPROUT_SIZE = 8
 SPROUT_STEM = (0x4F, 0x7A, 0x33)
 SPROUT_LEAF = (0x6F, 0xA3, 0x48)
+VIGNETTE_W, VIGNETTE_H = 480, 270     # ukuran viewport game
+VIGNETTE_INNER = 0.55                  # radius (ternormalisasi) mulai muncul
+VIGNETTE_MAX_ALPHA = 0.62              # alpha maksimum di tepi layar
 
 
 def smoothstep(t: float) -> float:
@@ -182,13 +189,34 @@ def make_sprout() -> Image.Image:
     return image
 
 
+def make_vignette() -> Image.Image:
+    """Vignette 480x270 untuk HUD (tahap 2g): tengah transparan, tepi putih+alpha.
+
+    Warnanya putih supaya game bisa me-modulate (merah saat terluka / HP rendah);
+    alpha naik halus dari 0 di tengah ke VIGNETTE_MAX_ALPHA di tepi layar.
+    """
+    image = Image.new("RGBA", (VIGNETTE_W, VIGNETTE_H))
+    cx, cy = (VIGNETTE_W - 1) / 2.0, (VIGNETTE_H - 1) / 2.0
+    px = []
+    for y in range(VIGNETTE_H):
+        for x in range(VIGNETTE_W):
+            dx = (x - cx) / cx
+            dy = (y - cy) / cy
+            d = min(1.0, math.hypot(dx, dy))
+            t = 0.0 if d <= VIGNETTE_INNER else (d - VIGNETTE_INNER) / (1.0 - VIGNETTE_INNER)
+            a = int(round((t ** 1.6) * VIGNETTE_MAX_ALPHA * 255))
+            px.append((255, 255, 255, a))
+    image.putdata(px)
+    return image
+
+
 def build_preview(noise: Image.Image, light: Image.Image, glow: Image.Image,
-                  flame: Image.Image, sprout: Image.Image) -> None:
+                  flame: Image.Image, sprout: Image.Image, vignette: Image.Image) -> None:
     scale = 4
     pad = 8
     label_h = 12
     cell_w = NOISE_SIZE * scale * 2 + pad * 3
-    cell_h = NOISE_SIZE * scale * 2 + label_h + pad * 2
+    cell_h = NOISE_SIZE * scale * 2 + label_h + pad * 2 + VIGNETTE_H + label_h + pad
     preview = Image.new("RGBA", (cell_w, cell_h), (0x1E, 0x1E, 0x26, 255))
     noise_tiled = Image.new("RGBA", (NOISE_SIZE * 2, NOISE_SIZE * 2))
     for ty in range(2):
@@ -214,6 +242,13 @@ def build_preview(noise: Image.Image, light: Image.Image, glow: Image.Image,
     preview.alpha_composite(sprout_big, (pad * 2 + NOISE_SIZE * scale * 2, fx_y + label_h + flame_big.height + pad))
     draw.text((pad * 2 + NOISE_SIZE * scale * 2, fx_y),
               "fx_flame 4 frame 16x16 (4x) + fx_sprout 8x8 (12x)", fill=(0xE8, 0xC8, 0x5A, 255))
+
+    # vignette HUD: tampilkan di atas kotak gelap supaya alpha tepi terlihat
+    vig_y = fx_y + label_h + flame_big.height + pad + sprout_big.height + pad
+    vig_bg = Image.new("RGBA", (vignette.width, vignette.height), (0x3A, 0x4A, 0x38, 255))
+    vig_bg.alpha_composite(ImageChops.multiply(vignette, Image.new("RGBA", vignette.size, (0xFF, 0x66, 0x66, 255))))
+    preview.alpha_composite(vig_bg, (pad, vig_y + label_h))
+    draw.text((pad, vig_y), "fx_vignette 480x270 (modulate merah)", fill=(0xE8, 0xC8, 0x5A, 255))
     preview.convert("RGB").save(DOCS / "preview-fx.png")
 
 
@@ -225,17 +260,20 @@ def main() -> None:
     glow = make_light(GLOW_SIZE, (255, 245, 220), falloff=2.8)
     flame = make_flame()
     sprout = make_sprout()
+    vignette = make_vignette()
     noise.save(OUT_DIR / "fx_noise.png")
     light.save(OUT_DIR / "fx_light_soft.png")
     glow.save(OUT_DIR / "fx_glow_soft.png")
     flame.save(OUT_DIR / "fx_flame.png")
     sprout.save(OUT_DIR / "fx_sprout.png")
-    build_preview(noise, light, glow, flame, sprout)
+    vignette.save(OUT_DIR / "fx_vignette.png")
+    build_preview(noise, light, glow, flame, sprout, vignette)
     print(f"fx_noise.png      : {noise.width}x{noise.height} (3 kanal noise tileable)")
     print(f"fx_light_soft.png : {light.width}x{light.height} (cahaya radial warm)")
     print(f"fx_glow_soft.png  : {glow.width}x{glow.height} (titik glow)")
     print(f"fx_flame.png      : {flame.width}x{flame.height} ({len(FLAME_FRAMES)} frame nyala)")
     print(f"fx_sprout.png     : {sprout.width}x{sprout.height} (tunas zona terbakar)")
+    print(f"fx_vignette.png   : {vignette.width}x{vignette.height} (vignette HUD, alpha tepi {VIGNETTE_MAX_ALPHA})")
     print(f"preview: {DOCS / 'preview-fx.png'}")
 
 

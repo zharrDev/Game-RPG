@@ -46,6 +46,7 @@ public sealed partial class Game : Node2D
     private double _waterTimer;
     private double _stepTimer;
     private bool _airborne;
+    private int _questTrackerSignature = -1;
     private string? _shotPath;
     private double _shotDelay = 1.5;
     private double _shotTimer;
@@ -455,6 +456,8 @@ public sealed partial class Game : Node2D
 
         Hud.UpdateStats(Player.State, Player.Energy, Playtime, ZoneName, Player.State.Checkpoint);
         Hud.UpdateMinimap(Player.Position, World.Data.PixelSize);
+        Hud.UpdateClock(Lighting?.TimeOfDay ?? 0.5f);
+        RefreshQuestTracker();
     }
 
     /// <summary>
@@ -715,6 +718,7 @@ public sealed partial class Game : Node2D
         Feel?.Shake(died ? 5.5f : 4f);
         Feel?.HitStop(0.085);
         Feel?.Burst(Player.Center, new Color(1f, 0.42f, 0.36f, 0.95f), 6);
+        Hud?.FlashDamage();
         Hud?.Toast($"{mob.Stats.Display} menyerangmu  ·  -{damage} HP");
         if (died)
         {
@@ -938,14 +942,45 @@ public sealed partial class Game : Node2D
         }
     }
 
-    private void OpenPauseMenu()
+    public void OpenPauseMenu()
     {
-        if (Hud is null) return;
+        if (Hud is null || Player is null) return;
+        var time = TimeSpan.FromSeconds(Playtime);
+        Hud.SetPauseSummary($"{ProfileName} · Lv {Player.State.Level} · {Player.State.Gold} gold · " +
+            $"bunuh {Player.State.Kills} · tumbang {Player.State.Deaths} · {time.Minutes:00}:{time.Seconds:00} · {ZoneName}");
         Hud.ShowPauseMenu(true);
         if (ProfileId is not null && Api is not null) Hud.SetJournal(Api.Journey(ProfileId));
     }
 
-    private void CloseMenus()
+    /// <summary>
+    /// Tracker quest di HUD (tahap 2g, murni informasi): quest yang belum
+    /// selesai dihitung dari state pemain. Dipanggil tiap frame tetapi hanya
+    /// membangun ulang teks kalau jumlah kill/flag berubah (cache signature).
+    /// </summary>
+    public void RefreshQuestTracker()
+    {
+        if (Player is null || World is null || Hud is null) return;
+        var defeatedTotal = 0;
+        foreach (var pair in Player.State.Defeated) defeatedTotal += pair.Value;
+        var signature = Player.State.Kills * 7 + Player.State.Flags.Count * 131 + defeatedTotal * 17;
+        if (signature == _questTrackerSignature) return;
+        _questTrackerSignature = signature;
+
+        var lines = new List<string>();
+        foreach (var npc in World.Data.Npcs)
+        {
+            var quest = npc.Quest;
+            if (quest is null || quest.Flag.Length == 0) continue;
+            if (Player.State.Flags.GetValueOrDefault(quest.Flag)) continue;
+            var killed = Math.Min(Player.State.Defeated.GetValueOrDefault(quest.Target), quest.Count);
+            lines.Add(killed >= quest.Count
+                ? $"- {npc.Name}: selesai, temui dia"
+                : $"- {npc.Name}: kalahkan {quest.Target} {killed}/{quest.Count}");
+        }
+        Hud.SetQuestTracker(lines.Count == 0 ? "" : "QUEST\n" + string.Join("\n", lines));
+    }
+
+    public void CloseMenus()
     {
         Hud?.ShowPauseMenu(false);
         Hud?.ShowProfileMenu(false);

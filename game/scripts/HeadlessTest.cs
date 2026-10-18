@@ -630,6 +630,66 @@ public static class HeadlessTest
             Check("warga berhenti saat dialog/menu terbuka", walker.Position == pausedPos);
         }
 
+        GD.Print("=== HUD 2g: jam, tracker quest, vignette & ringkasan menu ===");
+        var hud = game.Hud!;
+        hud.UpdateClock(0.5f);
+        Check("jam HUD: t=0.5 -> Siang 12:00", hud.ClockText == "Siang 12:00", hud.ClockText);
+        hud.UpdateClock(0.0f);
+        Check("jam HUD: tengah malam", hud.ClockText == "Malam 00:00", hud.ClockText);
+        hud.UpdateClock(0.75f);
+        Check("jam HUD: fase senja menjelang malam",
+            hud.ClockText.StartsWith("Senja") && hud.ClockText.EndsWith("18:00"), hud.ClockText);
+        hud.UpdateClock(0.95f);
+        Check("jam HUD: malam larut", hud.ClockText == "Malam 22:48", hud.ClockText);
+
+        var trackerNpc = world.Data.Npcs.FirstOrDefault(n => n.Quest is not null && n.Quest.Flag.Length > 0);
+        if (trackerNpc?.Quest is not null)
+        {
+            var trackerQuest = trackerNpc.Quest;
+            var hadFlag = player.State.Flags.GetValueOrDefault(trackerQuest.Flag);
+            player.State.Flags.Remove(trackerQuest.Flag);
+            player.State.Defeated[trackerQuest.Target] = 0;
+            game.RefreshQuestTracker();
+            Check("tracker quest tampil dengan progres 0/N",
+                hud.QuestTrackerText.Contains(trackerNpc.Name) && hud.QuestTrackerText.Contains("0/"),
+                hud.QuestTrackerText.Replace('\n', ' '));
+            player.State.Defeated[trackerQuest.Target] = trackerQuest.Count;
+            game.RefreshQuestTracker();
+            Check("tracker quest berubah saat target tercapai",
+                hud.QuestTrackerText.Contains("selesai"), hud.QuestTrackerText.Replace('\n', ' '));
+            if (hadFlag) player.State.Flags[trackerQuest.Flag] = true;
+            game.RefreshQuestTracker();
+            Check("tracker quest hilang setelah flag selesai",
+                !hud.QuestTrackerText.Contains(trackerNpc.Name), hud.QuestTrackerText.Replace('\n', ' '));
+        }
+        else
+        {
+            Check("tracker quest: ada quest untuk diuji", false, "tidak ada NPC dengan quest");
+        }
+
+        hud.FlashDamage();
+        hud.AdvanceOverlay(0.0, 0f);
+        Check("kedip merah saat pemain terluka",
+            hud.DamageFlashRemaining > 0 && hud.VignetteAlpha > 0.5f, $"{hud.VignetteAlpha:F2}");
+        hud.AdvanceOverlay(1.0, 0f);
+        Check("kedip terluka mereda (HP penuh -> vignette nol)",
+            hud.DamageFlashRemaining == 0 && hud.VignetteAlpha == 0f, $"{hud.VignetteAlpha:F2}");
+        player.State.Hp = Math.Max(1, player.State.MaxHp / 10);
+        hud.UpdateStats(player.State, 50, 90, "greenwood_vale", "village_square");
+        hud.AdvanceOverlay(0.0, 0.3f);
+        Check("denyut vignette saat HP < 30%", hud.VignetteAlpha >= 0.2f, $"{hud.VignetteAlpha:F2}");
+        player.State.Hp = player.State.MaxHp;
+        hud.UpdateStats(player.State, 50, 90, "greenwood_vale", "village_square");
+        hud.AdvanceOverlay(0.0, 0f);
+        Check("vignette mati saat HP pulih", hud.VignetteAlpha == 0f, $"{hud.VignetteAlpha:F2}");
+
+        game.OpenPauseMenu();
+        Check("menu jeda terbuka + ringkasan profil",
+            hud.MenuOpen && hud.PauseSummaryText.Contains("Lv") && hud.PauseSummaryText.Contains("tumbang"),
+            hud.PauseSummaryText);
+        game.CloseMenus();
+        Check("menu jeda bisa ditutup", !hud.MenuOpen);
+
         GD.Print("=== audio chiptune ===");
         Check("manifest audio dimuat (9 SFX + 2 musik)", AudioLibrary.Count >= 11, $"{AudioLibrary.Count}");
         var slashCue = AudioLibrary.Get("slash");

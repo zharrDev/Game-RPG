@@ -512,6 +512,17 @@ def verify_fx() -> None:
               and len(opaque) >= 8 and len(green) >= len(opaque) * 0.7,
               f"{len(opaque)} piksel, {len(green)} hijau")
 
+    # fx_vignette: 480x270, tengah transparan, tepi ber-alpha (HUD 2g)
+    vig_path = fx / "fx_vignette.png"
+    check("fx: vignette HUD ada (480x270)", vig_path.exists())
+    if vig_path.exists():
+        vig = Image.open(vig_path).convert("RGBA")
+        center_a = vig.getpixel((240, 135))[3]
+        edge_a = min(vig.getpixel((1, 135))[3], vig.getpixel((240, 1))[3])
+        check("fx: vignette transparan di tengah & pekat di tepi",
+              vig.size == (480, 270) and center_a == 0 and edge_a >= 120,
+              f"center {center_a}, edge {edge_a}")
+
     names = ["fx_smoke.gdshader", "fx_glow.gdshader", "fx_grade.gdshader", "fx_heat.gdshader"]
     shader_dir = ROOT / "game/assets/shaders"
     missing = [name for name in names if not (shader_dir / name).exists()]

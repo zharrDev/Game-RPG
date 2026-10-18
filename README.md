@@ -128,7 +128,8 @@ game/                      proyek Godot 4 (.NET)
     SaveApi.cs             klien REST ke backend C# (otomatis jatuh ke simpanan lokal)
     LocalSave.cs           simpanan offline user://save_offline.json kalau server mati
     Audio.cs               parser WAV + pemutar 8 suara & 1 kanal musik
-    Hud.cs                 HUD pixel + menu pause/profil + kotak dialog + minimap
+    Hud.cs                 HUD pixel + jam dunia, tracker quest, vignette HP rendah,
+                           menu pause/profil + kotak dialog + minimap
     Fx.cs                  pipeline FX: asap, bloom tipis, color grading, heat haze
     Lighting.cs            siklus siang/malam + PointLight2D hangat di titik api
     Particles.cs           pooling partikel: nyala 4-frame, bara, abu, tunas pulih
@@ -147,7 +148,7 @@ tools/                     generator aset + verifikator
    generate_pixel_font.py  font bitmap 5x7 (BMFont) untuk HUD
    generate_audio.py       9 SFX + 2 musik chiptune (WAV PCM, disintesis sendiri)
    generate_fx.py          tekstur FX: noise asap tileable, cahaya radial, titik glow,
-                           lembar nyala 4 frame & tunas zona terbakar
+                           lembar nyala 4 frame, tunas zona terbakar & vignette HUD
    preview_stages.py       pratinjau SEBELUM/SESUDAH tiap tahap visual -> docs/
    build_hero_sprites.py   gabung frame prosedural + frame AI (attack/skill/hurt/death/jump)
    build_enemy_sprites.py  slime & bat prosedural + boss dari frame AI
@@ -191,7 +192,7 @@ bash scripts/test-all.sh
 
 Yang dijalankan:
 
-1. **generate aset** (idempoten) lalu **`tools/verify_assets.py`** — 99 pemeriksaan
+1. **generate aset** (idempoten) lalu **`tools/verify_assets.py`** — 101 pemeriksaan
    artefak: tidak ada tile saling menimpa/keluar atlas, tidak ada tile kosong,
    alpha biner (tanpa anti-aliasing), palet terbatas, collision cell cocok, grid
    walkable konsisten dengan terrain + prop, spawn/checkpoint/musuh/NPC di tile yang bisa
@@ -199,7 +200,8 @@ Yang dijalankan:
    dalam atlas, kaki sejajar garis tanah, animasi tidak ada yang kosong, font pixel
    lengkap & hard-edged, tiap NPC punya palet sendiri, peti padat tapi bisa dicapai,
    audio PCM 16-bit yang benar-benar berisi suara, tekstur FX (noise tileable, cahaya
-   radial, nyala 4 frame & tunas ber-alpha biner, shader termuat, uniform `night`),
+   radial, nyala 4 frame & tunas ber-alpha biner, vignette HUD transparan di tengah,
+   shader termuat, uniform `night`),
    tanah hangus (3 varian, gelap), zona bekas terbakar (di dalam peta + cukup tile
    walkable), dan `include_filter` ekspor mencakup semua aset mentah yang dibaca game.
 2. **build backend C#** dan **build game Godot C#**.
@@ -226,7 +228,10 @@ Yang dijalankan:
     hit-stop membekukan lalu berakhir, serangan kena otomatis memicu shake/hit-stop/
     percikan, debu langkah & percikan peti kembali ke pool (tidak pernah melebihi
     kapasitas), serta warga mondar-mandir (`walk_side`, tidak menjauh dari rumah,
-    berhenti saat dialog/menu). Keluar dengan exit code ≠ 0 kalau ada yang gagal.
+    berhenti saat dialog/menu); HUD 2g: jam dunia mengikuti fase (Pagi/Siang/Senja/
+    Malam), tracker quest tampil-baru-hilang sesuai progres & flag, vignette kedip
+    saat terluka lalu mereda, denyut vignette saat HP < 30%, dan menu jeda memuat
+    ringkasan profil. Keluar dengan exit code ≠ 0 kalau ada yang gagal.
 
 ---
 
@@ -273,6 +278,13 @@ Yang dijalankan:
   saat musuh kena dan saat peti dibuka. Warga desa kini mondar-mandir pendek di
   sekitar rumahnya memakai frame `walk_side` (berhenti saat dialog/menu terbuka).
   Tidak ada perubahan pada damage, kolisi, atau AI.
+* HUD & menu (`Hud.cs`, tahap 2g): jam dunia kecil di kanan atas mengikuti
+  `Lighting.TimeOfDay` (fase Pagi/Siang/Senja/Malam + HH:MM), tracker quest
+  menampilkan quest aktif beserta progres kill ("Mira: kalahkan slime 3/5") dan
+  berubah/hilang saat selesai, vignette (`fx_vignette.png`) dipakai dua fungsi —
+  kedip merah singkat saat pemain terluka dan denyut lembut saat HP < 30% — serta
+  ringkasan profil (level, gold, kill, tumbang, playtime, zona) di menu jeda.
+  Semuanya murni informasi, tidak mengubah gameplay.
 * Menutup jendela game atau menekan "Keluar" memicu autosave terlebih dahulu.
 * Ekspor (`game/export_presets.cfg`) menyertakan PNG/JSON/font mentah lewat
   `include_filter`, karena game membacanya sebagai byte; ekspor itu sendiri belum diuji
