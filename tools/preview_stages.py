@@ -28,6 +28,10 @@ Output:
     docs/preview-stage-2d-after.png    (tanah hangus di zona terbakar + riak menjalar)
     docs/preview-stage-2d-compare.png
     docs/preview-stage-2d-water-*.png  (crop tepi sungai: bukti riak tidak seragam)
+  tahap 2f — game feel (mock dari aset asli):
+    docs/preview-stage-2f-before.png   (akhir 2e: hero lari tanpa efek)
+    docs/preview-stage-2f-after.png    (+ debu langkah, percikan peti, trail)
+    docs/preview-stage-2f-compare.png
 
 Jalankan:
     python3 tools/preview_stages.py
@@ -46,6 +50,7 @@ ROOT = Path(__file__).resolve().parent.parent
 TILES_DIR = ROOT / "game/assets/tiles"
 WORLD_DIR = ROOT / "game/assets/world"
 FX_DIR = ROOT / "game/assets/fx"
+CHAR_DIR = ROOT / "game/assets/character"
 DOCS = ROOT / "docs"
 
 TILE = 16
@@ -450,6 +455,68 @@ def draw_burnt_debris(img: Image.Image, zones: list[tuple[int, int, int, int]], 
     return img
 
 
+def load_hero() -> tuple[dict, Image.Image]:
+    """Metadata frame hero + atlas (aset yang sama dengan game)."""
+    meta = json.loads((CHAR_DIR / "hero.json").read_text())
+    atlas = Image.open(CHAR_DIR / "hero_atlas.png").convert("RGBA")
+    return meta, atlas
+
+
+def paste_hero(out: Image.Image, meta: dict, atlas: Image.Image, frame: str,
+               feet: tuple[float, float], flip: bool = False) -> None:
+    """Tempel frame hero dengan garis kaki tepat di `feet` (anchor sama dengan game)."""
+    fr = meta["frames"][frame]
+    sprite = atlas.crop((fr["x"], fr["y"], fr["x"] + fr["w"], fr["y"] + fr["h"]))
+    if flip:
+        sprite = sprite.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    foot = meta["foot"]
+    out.alpha_composite(sprite, (int(feet[0] - foot["x"]), int(feet[1] - foot["y"])))
+
+
+def glow_tinted(glow: Image.Image, color: tuple[float, float, float], size: int,
+                alpha: float) -> Image.Image:
+    """Inti fx_glow_soft diwarnai & di-skala (partikel debu/percikan)."""
+    sprite = glow.crop((24, 24, 40, 40)).resize((size, size), Image.LANCZOS)
+    mask = sprite.getchannel("A").point(lambda a: int(a * alpha))
+    tint = Image.new("RGBA", sprite.size, (int(color[0] * 255), int(color[1] * 255), int(color[2] * 255), 255))
+    tint.putalpha(mask)
+    return tint
+
+
+def draw_dust_trail(out: Image.Image, feet: tuple[float, float], glow: Image.Image,
+                    rng: random.Random) -> None:
+    """Debu langkah: beberapa kepulan memudar di belakang kaki kiri."""
+    puffs = ((-7, -1, 10, 0.65), (-15, -3, 13, 0.5), (-24, -6, 16, 0.34), (-34, -9, 19, 0.2))
+    for dx, dy, size, alpha in puffs:
+        jx = rng.uniform(-1.5, 1.5)
+        puff = glow_tinted(glow, (0.76, 0.72, 0.64), size, alpha)
+        out.alpha_composite(puff, (int(feet[0] + dx + jx - size / 2), int(feet[1] + dy - size / 2)))
+
+
+def draw_sparks(out: Image.Image, center: tuple[float, float], glow: Image.Image,
+                rng: random.Random, color: tuple[float, float, float] = (1.0, 0.85, 0.38),
+                count: int = 9) -> None:
+    """Percikan radial (peti dibuka / pukulan kena) — Burst tahap 2f."""
+    for _ in range(count):
+        angle = rng.uniform(0.15, math.pi - 0.15)
+        dist = rng.uniform(3, 15)
+        size = rng.choice((3, 4, 5))
+        x = center[0] + math.cos(angle) * dist
+        y = center[1] - math.sin(angle) * dist * 0.8
+        spark = glow_tinted(glow, color, size, rng.uniform(0.7, 1.0))
+        out.alpha_composite(spark, (int(x - size / 2), int(y - size / 2)))
+
+
+def pick_feel_spot(data: dict, crop_box: tuple[int, int]) -> tuple[tuple[float, float], tuple[float, float] | None]:
+    """Posisi kaki hero + pusat percikan (koordinat lokal crop): di samping peti."""
+    ox, oy = crop_box
+    for chest in data["markers"]["chests"]:
+        px, py = chest["col"] * TILE - ox, chest["row"] * TILE - oy
+        if 56 <= px <= VIEW_W - 40 and 48 <= py <= VIEW_H - 48:
+            return (px - 10.0, py + 14.0), (px + 8.0, py - 2.0)
+    return (VIEW_W / 2.0, VIEW_H / 2.0), None
+
+
 def compose_2c(base: Image.Image, fires, crop_box, noise, light_img: Image.Image,
                flame_img: Image.Image, sprout_img: Image.Image, glow_img: Image.Image,
                zones: list[tuple[int, int, int, int]], seed: int = 20260219) -> Image.Image:
@@ -555,6 +622,25 @@ def main() -> None:
                "SEBELUM - riak seragam (semua sel fase yang sama)",
                "SESUDAH - riak per sel: tiap sel fase berbeda (zoom 6x)")
 
+    # tahap 2f: game feel — debu langkah & percikan (mock dari aset hero asli;
+    # hit-stop & shake tidak bisa dipotret statis, dijelaskan di README)
+    feel_meta, feel_atlas = load_hero()
+    feel_feet, feel_spark = pick_feel_spot(data, crop_box)
+    rng_feel = random.Random(20260607)
+    before2f = base.copy()
+    paste_hero(before2f, feel_meta, feel_atlas, "right_run_2", feel_feet)
+    after2f = base.copy()
+    draw_dust_trail(after2f, feel_feet, glow_img, rng_feel)
+    paste_hero(after2f, feel_meta, feel_atlas, "right_run_2", feel_feet)
+    if feel_spark is not None:
+        draw_sparks(after2f, feel_spark, glow_img, rng_feel)
+    else:
+        draw_sparks(after2f, (feel_feet[0] + 24, feel_feet[1] - 15), glow_img, rng_feel,
+                    color=(1.0, 0.55, 0.34), count=6)
+    write_trio("2f", before2f, after2f,
+               "SEBELUM - akhir 2e: hero lari, kamera diam, tanpa debu",
+               "SESUDAH - + debu langkah, percikan pukulan & shake (tahap 2f)")
+
     scorch_cells = sum(1 for y in range(data["height"]) for x in range(data["width"])
                        if scorched_variant(data, data["tile_names"][data["ground_tiles"][y][x]], x, y))
     print(f"stage 2a: crop {crop_box} ({VIEW_W}x{VIEW_H}), {len(fires)} titik api di peta")
@@ -562,6 +648,8 @@ def main() -> None:
     print(f"stage 2c: senja t={TIME_OF_DAY_2C}, {EMBER_PER_FIRE} bara/api, {len(zones)} zona terbakar")
     print(f"stage 2d: {scorch_cells} tile tanah hangus, riak air offset per sel (salt 91)")
     print(f"stage 2d-water: zoom tepi sungai di ({shore_x},{shore_y}) [{zx},{zy}] 6x")
+    spark_note = "peti" if feel_spark is not None else "tanpa peti di crop"
+    print(f"stage 2f: pose {feel_atlas.width}x{feel_atlas.height}, kaki di ({feel_feet[0]:.0f},{feel_feet[1]:.0f}), percikan: {spark_note}")
 
 
 if __name__ == "__main__":

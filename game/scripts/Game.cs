@@ -18,6 +18,7 @@ public sealed partial class Game : Node2D
     public Fx? Fx { get; private set; }
     public Lighting? Lighting { get; private set; }
     public FireAmbience? Ambience { get; private set; }
+    public GameFeel? Feel { get; private set; }
     public AudioPlayer? Sfx { get; private set; }
     public SaveApi? Api { get; private set; }
 
@@ -44,6 +45,7 @@ public sealed partial class Game : Node2D
     private bool _testPending;
     private double _waterTimer;
     private double _stepTimer;
+    private bool _airborne;
     private string? _shotPath;
     private double _shotDelay = 1.5;
     private double _shotTimer;
@@ -220,6 +222,11 @@ public sealed partial class Game : Node2D
         Player.AddChild(_camera);
         _camera.MakeCurrent();
 
+        // game feel (tahap 2f): shake kamera, hit-stop, debu langkah, percikan
+        Feel = new GameFeel();
+        Feel.Configure();
+        World.Root.AddChild(Feel);
+
         SpawnMobs();
         SpawnNpcs();
         UpdateZone(true);
@@ -337,6 +344,10 @@ public sealed partial class Game : Node2D
         }
 
         if (World is null || Player is null || Hud is null) return;
+        // game feel: shake mereda, hit-stop berjalan, partikel menua
+        Feel?.Advance(delta);
+        if (Feel is not null) _camera.Offset = Feel.CameraOffset;
+        var frozen = Feel?.Frozen == true;
         // asap yang menempel di dunia: ikut titik tengah kamera (termasuk smoothing)
         var camCenter = _camera.GetScreenCenterPosition();
         Fx?.SetCameraCenter(camCenter);
@@ -362,9 +373,18 @@ public sealed partial class Game : Node2D
         if (playing && Input.IsActionJustPressed("interact") && !Interact())
             Hud.Toast("Tidak ada yang bisa diajak bicara di dekat sini");
         if (playing && Input.IsActionJustPressed("potion")) DrinkPotion();
-        if (playing && Player.Alive)
+        if (playing && Player.Alive && !frozen)
         {
             Player.Tick(delta, ReadInput(), World.Grid);
+            if (Player.JumpTimer > 0)
+            {
+                _airborne = true;
+            }
+            else if (_airborne)
+            {
+                _airborne = false;
+                Feel?.LandingPuff(Player.Position);
+            }
             if (Player.Action is "walk" or "run")
             {
                 _stepTimer += delta;
@@ -372,6 +392,7 @@ public sealed partial class Game : Node2D
                 {
                     _stepTimer = 0;
                     Sfx?.Play("step", -20f);
+                    Feel?.StepPuff(Player.Position, Player.Action == "run");
                 }
             }
             else
@@ -389,15 +410,25 @@ public sealed partial class Game : Node2D
             UpdateZone(false);
             UpdateCheckpoint();
         }
-        else if (playing)
+        else if (playing && !frozen)
         {
             Player.Tick(delta, default, World.Grid);
         }
 
-        foreach (var mob in Mobs.ToArray())
+        if (!frozen)
         {
-            if (!IsInstanceValid(mob)) continue;
-            mob.Tick(delta, Player.Center, Player.Alive && playing, World.Grid, OnMobHitsPlayer);
+            foreach (var mob in Mobs.ToArray())
+            {
+                if (!IsInstanceValid(mob)) continue;
+                mob.Tick(delta, Player.Center, Player.Alive && playing, World.Grid, OnMobHitsPlayer);
+            }
+        }
+
+        // warga mondar-mandir singkat (tahap 2f, murni visual); berhenti saat dialog/menu/hit-stop
+        foreach (var npc in Npcs)
+        {
+            if (!IsInstanceValid(npc)) continue;
+            npc.Tick(delta, !playing || frozen || DialogOpen || !Player.Alive);
         }
 
         if (playing && !Player.Alive && Player.DeathTimer >= Rules.DeathDuration)
@@ -537,6 +568,9 @@ public sealed partial class Game : Node2D
         Player.State.Potions = Math.Min(Rules.MaxPotions, Player.State.Potions + 1);
         World?.SetPropTile(chest.Col, chest.Row, "chest_open");
         Sfx?.Play("quest");
+        // percikan emas dari mulut peti (visual, tahap 2f)
+        var chestPos = new Vector2((chest.Col + 0.5f) * World.TileSize, (chest.Row + 0.5f) * World.TileSize);
+        Feel?.Burst(chestPos - new Vector2(0, 4), new Color(1f, 0.85f, 0.38f, 0.95f), 10);
         Hud?.Toast($"Peti terbuka: +{chest.Gold} gold, +1 potion");
         LogEvent("chest", chest.Id);
         Autosave("peti terbuka");
@@ -678,6 +712,9 @@ public sealed partial class Game : Node2D
         if (Player is null || !Player.Alive) return;
         var died = Player.TakeDamage(damage);
         Sfx?.Play(died ? "death" : "hurt");
+        Feel?.Shake(died ? 5.5f : 4f);
+        Feel?.HitStop(0.085);
+        Feel?.Burst(Player.Center, new Color(1f, 0.42f, 0.36f, 0.95f), 6);
         Hud?.Toast($"{mob.Stats.Display} menyerangmu  ·  -{damage} HP");
         if (died)
         {
@@ -719,6 +756,7 @@ public sealed partial class Game : Node2D
         var range = kind == "skill" ? Rules.SkillRange : Rules.AttackRange;
         Sfx?.Play(kind == "skill" ? "skill" : "slash");
         var hit = 0;
+        Vector2? firstHit = null;
         foreach (var mob in Mobs.ToArray())
         {
             if (mob.Dead || !IsInstanceValid(mob)) continue;
@@ -727,11 +765,18 @@ public sealed partial class Game : Node2D
             if (distance > range) continue;
             if (kind != "skill" && distance > 0.5f && dir.Dot(offset.Normalized()) < Rules.AttackArcDot) continue;
             hit++;
+            firstHit ??= mob.Position - new Vector2(0, 8);
             var died = mob.TakeDamage(damage);
             var label = kind == "skill" ? "Aura Slash" : "Serangan";
             Hud?.Toast($"{label}: {mob.Stats.Display} -{damage} HP" + (died ? " (tumbang)" : ""));
         }
-        if (hit > 0) Sfx?.Play("hit");
+        if (hit > 0)
+        {
+            Sfx?.Play("hit");
+            Feel?.Shake(kind == "skill" ? 3.2f : 2.4f);
+            Feel?.HitStop(0.055);
+            if (firstHit is not null) Feel?.Burst(firstHit.Value, new Color(1f, 0.86f, 0.5f, 0.95f), 6);
+        }
         if (hit == 0 && kind == "skill") Hud?.Toast("Aura Slash: tidak ada musuh di jangkauan");
     }
 

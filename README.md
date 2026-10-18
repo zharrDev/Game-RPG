@@ -132,6 +132,7 @@ game/                      proyek Godot 4 (.NET)
     Fx.cs                  pipeline FX: asap, bloom tipis, color grading, heat haze
     Lighting.cs            siklus siang/malam + PointLight2D hangat di titik api
     Particles.cs           pooling partikel: nyala 4-frame, bara, abu, tunas pulih
+    GameFeel.cs            game feel: camera shake, hit-stop, debu langkah, percikan
     Assets.cs / Data.cs    pemuat PNG & parser JSON aset
     HeadlessTest.cs        tes yang menjalankan kode game sungguhan
   assets/                  hasil generate (tileset, peta, atlas) + tekstur FX + shader
@@ -218,10 +219,14 @@ Yang dijalankan:
    9 PointLight2D di titik api, ambient siang terang / malam kebiruan, jam berputar &
    membungkus, serta uniform `night` grading ikut siklus; dan ambience api: nyala
    4-frame per titik api, bara yang kembali ke pool, abu hanya saat kamera di zona
-   terbakar (+boost asap), tunas tumbuh lalu kembali ke pool; tanah hangus (overlay
-   tilemap dekoratif di 3 zona terbakar — tepi ragged, hanya menimpa grass/meadow
-   sehingga jalan & air tetap bersih) dan riak air per sel (offset fase dari hash,
-   tidak pop serentak). Keluar dengan exit code ≠ 0 kalau ada yang gagal.
+    terbakar (+boost asap), tunas tumbuh lalu kembali ke pool; tanah hangus (overlay
+    tilemap dekoratif di 3 zona terbakar — tepi ragged, hanya menimpa grass/meadow
+    sehingga jalan & air tetap bersih) dan riak air per sel (offset fase dari hash,
+    tidak pop serentak); game feel 2f: shake mereda & offset kamera dibatasi,
+    hit-stop membekukan lalu berakhir, serangan kena otomatis memicu shake/hit-stop/
+    percikan, debu langkah & percikan peti kembali ke pool (tidak pernah melebihi
+    kapasitas), serta warga mondar-mandir (`walk_side`, tidak menjauh dari rumah,
+    berhenti saat dialog/menu). Keluar dengan exit code ≠ 0 kalau ada yang gagal.
 
 ---
 
@@ -261,6 +266,13 @@ Yang dijalankan:
   walkable, damage, dan AI tidak berubah.
 * Audio: 9 SFX (langkah, pedang, kena, tumbang, level, quest, istirahat, skill) +
   2 musik loop (desa & padang liar) — semuanya disintesis `tools/generate_audio.py`.
+* Game feel (`GameFeel.cs`, tahap 2f — murni visual): kamera bergetar singkat saat
+  pukulan kena / pemain terluka (offset dibatasi 4 px agar tidak mual), hit-stop
+  ±55–85 ms membuat pukulan terasa berbobot (freeze frame dunia, HUD tetap hidup),
+  debu kecil di kaki saat melangkah/berlari & saat mendarat dari lompat, percikan
+  saat musuh kena dan saat peti dibuka. Warga desa kini mondar-mandir pendek di
+  sekitar rumahnya memakai frame `walk_side` (berhenti saat dialog/menu terbuka).
+  Tidak ada perubahan pada damage, kolisi, atau AI.
 * Menutup jendela game atau menekan "Keluar" memicu autosave terlebih dahulu.
 * Ekspor (`game/export_presets.cfg`) menyertakan PNG/JSON/font mentah lewat
   `include_filter`, karena game membacanya sebagai byte; ekspor itu sendiri belum diuji

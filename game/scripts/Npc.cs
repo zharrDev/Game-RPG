@@ -1,24 +1,49 @@
+using System;
 using Godot;
 
 namespace RpgGame;
 
 /// <summary>
 /// Warga desa: sprite idle 2 frame + penanda "!" kalau ada quest yang belum
-/// selesai. NPC tidak ikut bertarung dan tidak memblokir jalan.
+/// selesai. NPC tidak ikut bertarung dan tidak memblokir jalan. Sejak tahap 2f
+/// warga mondar-mandir dekat rumahnya (pakai frame walk_side) — murni visual,
+/// deterministik, dan berhenti saat dialog terbuka.
 /// </summary>
 public sealed partial class Npc : Node2D
 {
+    public const float WanderSpeed = 18f;
+    public const float WanderRadiusTiles = 2.2f;
+
     public readonly NpcInfo Info;
     public bool QuestPending { get; private set; }
+    public Vector2 Home { get; }
 
     private readonly AnimatedSprite2D _sprite;
     private readonly Label _marker;
+    private readonly CollisionGrid _grid;
+    private int _dir;
+    private double _pause = 2.0;
+    private double _walkLeft;
+    private uint _state = 0x9E3779B9u;
+
+    public bool Walking => _dir != 0;
+
+    /// <summary>Animasi sprite saat ini (dipakai tes headless).</summary>
+    public string Animation => _sprite.Animation;
 
     public Npc(World world, NpcInfo info)
     {
         Info = info;
         Name = $"Npc_{info.Id}";
+        _grid = world.Grid;
         Position = new Vector2((info.Col + 0.5f) * World.TileSize, (info.Row + 1f) * World.TileSize);
+        Home = Position;
+        foreach (var ch in info.Id)
+        {
+            _state ^= ch;
+            _state *= 16777619u;
+        }
+        if (_state == 0) _state = 1;
 
         AddChild(new Sprite2D
         {
@@ -76,6 +101,7 @@ public sealed partial class Npc : Node2D
     /// <summary>Menghadap pemain saat diajak bicara (sprite side di-flip).</summary>
     public void Face(Vector2 target)
     {
+        StopWalking();
         if (!_sprite.SpriteFrames!.HasAnimation("idle_side")) return;
         _sprite.FlipH = target.X < Position.X;
         if (_sprite.Animation != "idle_side")
@@ -83,5 +109,74 @@ public sealed partial class Npc : Node2D
             _sprite.Animation = "idle_side";
             _sprite.Play();
         }
+    }
+
+    /// <summary>
+    /// Mondar-mandir horizontal pendek di sekitar titik awal (dekoratif).
+    /// Paused = sedang dialog / menu: warga berhenti di tempat.
+    /// </summary>
+    public void Tick(double delta, bool paused)
+    {
+        if (paused)
+        {
+            StopWalking();
+            return;
+        }
+
+        if (_dir != 0)
+        {
+            var step = _dir * WanderSpeed * (float)delta;
+            var next = Position + new Vector2(step, 0);
+            var probe = next + new Vector2(_dir * 3f, -1f);
+            var withinHome = MathF.Abs(next.X - Home.X) <= WanderRadiusTiles * World.TileSize;
+            if (_grid.WalkableAt(probe) && withinHome)
+            {
+                Position = next;
+                _walkLeft -= delta;
+            }
+            else
+            {
+                _walkLeft = 0;
+            }
+            if (_walkLeft <= 0)
+            {
+                StopWalking();
+                _pause = Rand(1.4f, 3.2f);
+            }
+            return;
+        }
+
+        _pause -= delta;
+        if (_pause > 0) return;
+        _dir = Rand(0f, 1f) < 0.5f ? -1 : 1;
+        _walkLeft = Rand(0.6f, 1.6f);
+        _sprite.FlipH = _dir < 0;
+        Play("walk_side");
+    }
+
+    private void StopWalking()
+    {
+        if (_dir != 0)
+        {
+            _dir = 0;
+            if (_pause < 1.0) _pause = 1.0;
+            Play("idle_side");
+        }
+    }
+
+    private void Play(string animation)
+    {
+        if (_sprite.SpriteFrames is null || !_sprite.SpriteFrames.HasAnimation(animation)) return;
+        if (_sprite.Animation == animation && _sprite.IsPlaying()) return;
+        _sprite.Animation = animation;
+        _sprite.Play();
+    }
+
+    private float Rand(float min, float max)
+    {
+        _state ^= _state << 13;
+        _state ^= _state >> 17;
+        _state ^= _state << 5;
+        return min + (max - min) * ((_state & 0xFFFFFF) / (float)0xFFFFFF);
     }
 }

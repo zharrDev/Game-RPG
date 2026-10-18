@@ -546,6 +546,90 @@ public static class HeadlessTest
             world.Minimap is not null && world.Minimap.GetWidth() == 96 && world.Minimap.GetHeight() == 72);
         Check("HUD menampilkan minimap", game.Hud!.MinimapVisible);
 
+        GD.Print("=== game feel: shake, hit-stop, debu & warga berjalan ===");
+        var feel = game.Feel;
+        Check("pool debu & percikan siap",
+            feel is not null && feel.Dust is not null && feel.Sparks is not null &&
+            (feel.Dust?.Capacity ?? 0) >= 32 && (feel.Sparks?.Capacity ?? 0) >= 16,
+            feel is null ? "null" : $"{feel.Dust?.Capacity}/{feel.Sparks?.Capacity}");
+        if (feel is not null && feel.Dust is not null && feel.Sparks is not null)
+        {
+            var dust = feel.Dust;
+            var sparks = feel.Sparks;
+            for (var i = 0; i < 40; i++) feel.Advance(1.0 / 40);   // bersihkan efek dari tes tempur
+            Check("kamera tenang setelah efek mereda",
+                feel.ShakeAmount == 0f && feel.CameraOffset == Vector2.Zero && !feel.Frozen);
+
+            feel.Shake(3f);
+            Check("shake aktif setelah dipanggil", MathF.Abs(feel.ShakeAmount - 3f) < 0.001f, $"{feel.ShakeAmount:F2}");
+            feel.Advance(0.2);
+            Check("shake mereda seiring waktu", feel.ShakeAmount < 3f, $"{feel.ShakeAmount:F2}");
+            feel.Shake(99f);
+            feel.Advance(1.0 / 60);
+            Check("offset kamera dibatasi supaya tidak mual",
+                feel.CameraOffset.Length() <= GameFeel.MaxCameraOffset + 0.01f, $"{feel.CameraOffset.Length():F2}");
+            feel.Advance(12);   // habiskan shake besar
+
+            feel.HitStop(0.08);
+            Check("hit-stop membekukan dunia", feel.Frozen);
+            feel.Advance(0.05);
+            Check("hit-stop masih berjalan setelah 50 ms", feel.Frozen, $"{feel.HitStopRemaining:F3}s");
+            feel.Advance(0.05);
+            Check("hit-stop berakhir setelah waktunya", !feel.Frozen);
+
+            var liveMob = game.Mobs.FirstOrDefault(m => !m.Dead && GodotObject.IsInstanceValid(m));
+            if (liveMob is not null)
+            {
+                var mobHp = liveMob.Hp;
+                var sparksBefore = feel.SparkSpawned;
+                game.ApplyStrike(liveMob.Position, "down", 1, "attack");
+                Check("serangan kena otomatis memicu shake + hit-stop + percikan",
+                    liveMob.Hp < mobHp && feel.HitStopRemaining > 0 && feel.ShakeAmount > 0f &&
+                    feel.SparkSpawned > sparksBefore,
+                    $"hp {mobHp}->{liveMob.Hp} stop {feel.HitStopRemaining:F3}s shake {feel.ShakeAmount:F1}");
+                for (var i = 0; i < 40; i++) feel.Advance(1.0 / 40);
+            }
+
+            var dustBefore = feel.DustSpawned;
+            feel.StepPuff(player.Position, true);
+            Check("debu langkah muncul (2 partikel saat lari)",
+                feel.DustSpawned - dustBefore == 2 && dust.ActiveCount >= 2,
+                $"{feel.DustSpawned - dustBefore} partikel");
+            var sparkBefore = feel.SparkSpawned;
+            feel.Burst(player.Position, new Color(1f, 0.85f, 0.38f), 8);
+            Check("percikan peti muncul (8 partikel)",
+                feel.SparkSpawned - sparkBefore == 8 && sparks.ActiveCount >= 8);
+            for (var i = 0; i < 60; i++) feel.Advance(1.0 / 60);
+            Check("partikel habis umurnya lalu kembali ke pool",
+                dust.ActiveCount == 0 && sparks.ActiveCount == 0,
+                $"debu {dust.ActiveCount} percikan {sparks.ActiveCount}");
+            for (var i = 0; i < 120; i++) feel.StepPuff(player.Position, false);
+            Check("pool debu tidak pernah melebihi kapasitas",
+                dust.ActiveCount <= dust.Capacity, $"{dust.ActiveCount}/{dust.Capacity}");
+            for (var i = 0; i < 60; i++) feel.Advance(1.0 / 60);
+
+            var walker = game.Npcs.First(n => n.Info.Id == "tomas");
+            var home = walker.Home;
+            var startedWalking = false;
+            for (var i = 0; i < 60 * 8 && !startedWalking; i++)
+            {
+                walker.Tick(1.0 / 60, false);
+                startedWalking = walker.Position != home;
+            }
+            Check("warga mulai mondar-mandir sendiri", startedWalking,
+                $"x {walker.Position.X - home.X:F1}px");
+            Check("warga memakai animasi walk_side saat berjalan",
+                walker.Walking && walker.Animation == "walk_side", walker.Animation);
+            for (var i = 0; i < 60 * 60; i++) walker.Tick(1.0 / 60, false);
+            Check("warga tidak menjauh dari rumahnya (± 2.2 tile, sumbu Y tetap)",
+                MathF.Abs(walker.Position.X - home.X) <= Npc.WanderRadiusTiles * World.TileSize + 1f &&
+                MathF.Abs(walker.Position.Y - home.Y) < 0.01f,
+                $"dx {walker.Position.X - home.X:F1}px");
+            var pausedPos = walker.Position;
+            for (var i = 0; i < 60; i++) walker.Tick(1.0 / 60, true);
+            Check("warga berhenti saat dialog/menu terbuka", walker.Position == pausedPos);
+        }
+
         GD.Print("=== audio chiptune ===");
         Check("manifest audio dimuat (9 SFX + 2 musik)", AudioLibrary.Count >= 11, $"{AudioLibrary.Count}");
         var slashCue = AudioLibrary.Get("slash");
