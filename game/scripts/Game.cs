@@ -40,7 +40,7 @@ public sealed partial class Game : Node2D
     public double AutosaveTimer;
     public bool TestMode;
 
-    private Camera2D _camera = null!;
+    private readonly CameraRig _cameraRig = new();
     private bool _menuVisible;
     private bool _testPending;
     private double _waterTimer;
@@ -209,19 +209,7 @@ public sealed partial class Game : Node2D
         Player.LeveledUp += OnLevelUp;
         World.Root.AddChild(Player);
 
-        _camera = new Camera2D
-        {
-            Name = "Camera",
-            PositionSmoothingEnabled = true,
-            PositionSmoothingSpeed = 8,
-            LimitLeft = 0,
-            LimitTop = 0,
-            LimitRight = (int)data.PixelSize.X,
-            LimitBottom = (int)data.PixelSize.Y,
-            Position = new Vector2(0, -12),
-        };
-        Player.AddChild(_camera);
-        _camera.MakeCurrent();
+        _cameraRig.Build(Player, data.PixelSize);
 
         // game feel (tahap 2f): shake kamera, hit-stop, debu langkah, percikan
         Feel = new GameFeel();
@@ -347,10 +335,10 @@ public sealed partial class Game : Node2D
         if (World is null || Player is null || Hud is null) return;
         // game feel: shake mereda, hit-stop berjalan, partikel menua
         Feel?.Advance(delta);
-        if (Feel is not null) _camera.Offset = Feel.CameraOffset;
+        if (Feel is not null) _cameraRig.ApplyOffset(Feel.CameraOffset);
         var frozen = Feel?.Frozen == true;
         // asap yang menempel di dunia: ikut titik tengah kamera (termasuk smoothing)
-        var camCenter = _camera.GetScreenCenterPosition();
+        var camCenter = _cameraRig.ScreenCenter;
         Fx?.SetCameraCenter(camCenter);
         // jam dunia berjalan (ambient + kedip cahaya api); Fx.NightAmount ikut terisi
         Lighting?.Advance(delta);
