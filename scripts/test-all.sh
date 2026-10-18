@@ -1,18 +1,26 @@
 #!/usr/bin/env bash
-# Uji seluruh proyek: build server C#, tes logika game (node), tes API end-to-end,
-# restart server untuk membuktikan persistensi, lalu (opsional) tes browser.
+# Uji seluruh proyek:
+#   1. generate aset (idempoten)
+#   2. verifikasi artefak aset (tileset/peta/sprite)
+#   3. build backend C#
+#   4. build game Godot (C#)
+#   5. tes API end-to-end + kontrak save (tests/)
+#   6. restart server -> tes persistensi
+#   7. tes headless Godot: game benar-benar dijalankan (gerak, tabrakan, animasi, tempur, save)
 #
 # Pemakaian:
-#   bash scripts/test-all.sh              # tanpa tes browser
-#   RUN_BROWSER=1 bash scripts/test-all.sh
+#   bash scripts/test-all.sh
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
+# shellcheck source=scripts/python.sh
+source "$ROOT/scripts/python.sh"
 
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 export DOTNET_NOLOGO=1
 export DOTNET_CLI_HOME="$ROOT/.dotnet-home"
+export DOTNET_ROOT="$ROOT/.dotnet"
 export PATH="$ROOT/.dotnet:$PATH"
 
 PORT="${RPG_TEST_PORT:-5099}"
@@ -22,6 +30,8 @@ export RPG_BASE_URL="http://127.0.0.1:$PORT"
 export RPG_MARKER_FILE="$MARKER"
 export RPG_DB="$DB"
 export RPG_PORT="$PORT"
+
+GODOT_BIN="$(ls "$ROOT"/.godot-bin/Godot_v*_mono_linux.x86_64 2>/dev/null | head -1 || true)"
 
 SERVER_PID=""
 cleanup() {
@@ -34,7 +44,7 @@ cleanup() {
 trap cleanup EXIT
 
 start_server() {
-  "$ROOT/.dotnet/dotnet" run --project server/RpgServer --no-build -- --port "$PORT" >/tmp/rpg-server.log 2>&1 &
+  dotnet run --project server/RpgServer --no-build -- --port "$PORT" >/tmp/rpg-server.log 2>&1 &
   SERVER_PID=$!
   for _ in $(seq 1 60); do
     if curl -sf "$RPG_BASE_URL/api/health" >/dev/null 2>&1; then return 0; fi
@@ -53,27 +63,44 @@ stop_server() {
   SERVER_PID=""
 }
 
-echo "== 1/5 build backend C# =="
-"$ROOT/.dotnet/dotnet" build server/RpgServer/RpgServer.csproj -v quiet --nologo
+PY="$(rpg_python "$ROOT")" || {
+  echo "Pillow belum ada — jalankan dulu: bash scripts/setup.sh" >&2
+  exit 1
+}
 
-echo "== 2/5 tes logika game (web/test/core.test.mjs) =="
-(cd web && node --test test/core.test.mjs)
+echo "== 1/7 generate aset (tileset 16x16, peta, sprite, font, audio) =="
+"$PY" tools/generate_tileset.py
+"$PY" tools/generate_pixel_font.py
+"$PY" tools/generate_audio.py
+"$PY" tools/generate_world_map.py
+"$PY" tools/build_hero_sprites.py
+"$PY" tools/build_enemy_sprites.py
+"$PY" tools/build_npc_sprites.py
 
-echo "== 3/5 tes API + kontrak save (server jalan) =="
+echo "== 2/7 verifikasi artefak aset =="
+"$PY" tools/verify_assets.py
+
+echo "== 3/7 build backend C# =="
+dotnet build server/RpgServer/RpgServer.csproj -v quiet --nologo
+
+echo "== 4/7 build game Godot (C#) =="
+dotnet build game/RpgGame.csproj -v quiet --nologo
+
+echo "== 5/7 tes API + kontrak save (server jalan) =="
 start_server
-(cd web && node --test test/api.test.mjs)
+(cd tests && node --test api.test.mjs)
 
-echo "== 4/5 restart server, lalu tes persistensi =="
+echo "== 6/7 restart server, lalu tes persistensi =="
 stop_server
 start_server
-(cd web && node --test test/api-persistence.test.mjs)
+(cd tests && node --test api-persistence.test.mjs)
 
-echo "== 5/5 tes browser headless (opsional) =="
-if [[ "${RUN_BROWSER:-0}" == "1" ]]; then
-  (cd web && RUN_BROWSER=1 RPG_BASE_URL="$RPG_BASE_URL" node --test test/browser.test.mjs)
-else
-  echo "   dilewati (set RUN_BROWSER=1 untuk menjalankan)"
+echo "== 7/7 tes headless Godot (game dijalankan sungguhan) =="
+if [[ -z "$GODOT_BIN" ]]; then
+  echo "   Godot tidak ada di ./.godot-bin — jalankan: bash scripts/setup.sh" >&2
+  exit 1
 fi
+"$GODOT_BIN" --headless --path game -- --test "--server=$RPG_BASE_URL"
 
 echo
 echo "SEMUA TES LULUS ✅"
