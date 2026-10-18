@@ -14,7 +14,6 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
     Args = args,
     ContentRootPath = repoRoot,
-    WebRootPath = Path.Combine(repoRoot, "web"),
 });
 builder.WebHost.UseUrls($"http://{host}:{port}");
 builder.Services.AddSingleton(new GameDb(dbPath));
@@ -22,21 +21,48 @@ builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.W
 
 var app = builder.Build();
 
-app.UseDefaultFiles();
-app.UseStaticFiles();
-var assetsDir = Path.Combine(repoRoot, "assets");
-if (Directory.Exists(assetsDir))
+// Server ini HANYA backend: game-nya aplikasi Godot di ./game.
+// Yang disajikan cuma aset untuk diperiksa & pratinjau seni (tanpa HTML).
+static void ServeFolder(WebApplication app, string folder, string requestPath)
 {
+    if (!Directory.Exists(folder)) return;
     app.UseStaticFiles(new StaticFileOptions
     {
-        FileProvider = new PhysicalFileProvider(assetsDir),
-        RequestPath = "/assets",
+        FileProvider = new PhysicalFileProvider(folder),
+        RequestPath = requestPath,
     });
 }
+ServeFolder(app, Path.Combine(repoRoot, "game", "assets"), "/assets"); // aset yang dipakai game
+ServeFolder(app, Path.Combine(repoRoot, "assets"), "/frames");        // frame AI asli + atlas lama
+ServeFolder(app, Path.Combine(repoRoot, "docs"), "/preview");         // pratinjau PNG hasil generator
 
 // ---------------------------------------------------------------------------- //
 // API
 // ---------------------------------------------------------------------------- //
+app.MapGet("/", (GameDb db) => Results.Ok(new
+{
+    status = "ok",
+    game = "Arga: Open World RPG",
+    engine = "godot",
+    engineVersion = "Godot 4 (.NET/C#)",
+    frontend = Path.Combine(repoRoot, "game"),
+    run = "bash scripts/dev.sh   # backend ini + jendela game Godot",
+    note = "Tidak ada frontend HTML: server ini murni API save game.",
+    slots = GameDb.SlotCount,
+    api = new[]
+    {
+        "/api/health",
+        "/api/profiles",
+        "/api/profiles/{id}",
+        "/api/profiles/{id}/slots/{slot}",
+        "/api/profiles/{id}/resume",
+        "/api/profiles/{id}/journey",
+    },
+    assets = "/assets/",
+    frames = "/frames/",
+    preview = "/preview/preview-world.png",
+}));
+
 app.MapGet("/api/health", (GameDb db) => Results.Ok(new
 {
     status = "ok",
@@ -137,8 +163,6 @@ app.MapGet("/api/profiles/{id}/journey", (GameDb db, string id) =>
     });
 });
 
-app.MapFallbackToFile("index.html");
-
 app.Logger.LogInformation("RPG server siap di http://{Host}:{Port} (db: {Db})", host, port, dbPath);
 app.Run();
 return 0;
@@ -160,13 +184,13 @@ static int ResolvePort(string[] args)
     return int.TryParse(Environment.GetEnvironmentVariable("RPG_PORT"), out var envPort) ? envPort : 5080;
 }
 
-/// <summary>Cari folder root project (yang berisi web/index.html) dari lokasi binary.</summary>
+/// <summary>Cari folder root project (yang berisi proyek Godot game/project.godot) dari lokasi binary.</summary>
 static string LocateRepoRoot()
 {
     var current = new DirectoryInfo(AppContext.BaseDirectory);
     while (current is not null)
     {
-        if (File.Exists(Path.Combine(current.FullName, "web", "index.html"))) return current.FullName;
+        if (File.Exists(Path.Combine(current.FullName, "game", "project.godot"))) return current.FullName;
         current = current.Parent;
     }
     // fallback: naik 4 level dari bin/Debug/net8.0/ (server/RpgServer/bin/Debug/net8.0)

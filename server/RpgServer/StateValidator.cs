@@ -49,6 +49,8 @@ public static class StateValidator
             var level = ClampInt(GetNumber(player, "level", 1), 1, 99);
             var xp = ClampInt(GetNumber(player, "xp", 0), 0, 10_000_000);
             var skillLevel = ClampInt(GetNumber(player, "skillLevel", 0), 0, 3);
+            var gold = ClampInt(GetNumber(player, "gold", 0), 0, 9_999_999);
+            var potions = ClampInt(GetNumber(player, "potions", 0), 0, 99);
 
             var x = ClampDouble(GetNumber(player, "x", 0), -100_000, 1_000_000);
             var y = ClampDouble(GetNumber(player, "y", 0), -100_000, 100_000);
@@ -88,6 +90,8 @@ public static class StateValidator
                     ["xp"] = xp,
                     ["skillLevel"] = skillLevel,
                     ["skills"] = skills,
+                    ["gold"] = gold,
+                    ["potions"] = potions,
                 },
                 ["world"] = new JsonObject
                 {
