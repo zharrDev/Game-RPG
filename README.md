@@ -1,139 +1,230 @@
-# Arga — Open World RPG Pixel Art (Medieval Fantasy · Side-view · Warrior)
+# Arga — Open World RPG (16-bit, top-down)
 
-Game RPG aksi side-view **solo** dengan karakter pixel art "Arga, Young Warrior Knight",
-progres perjalanan yang bisa disimpan/dilanjutkan kapan saja, backend **C# (ASP.NET Core + SQLite)**,
-dan klien game **HTML5 Canvas** (nol dependency, jalan langsung di browser).
+RPG solo bergaya **SNES JRPG**: satu region medieval fantasy (desa di tengah, sungai
+berkelok + jembatan kayu di timur, hutan di utara, reruntuhan + mulut gua di barat
+laut), karakter yang bisa maju/mundur/kiri/kanan, lari, menyerang, memakai skill, dan
+**perjalanan tersimpan otomatis** ke backend C#.
 
-![Gameplay](docs/preview-gameplay.png)
+| Bagian | Teknologi |
+|---|---|
+| Game (frontend) | **Godot 4.7 (.NET/C#)** — `game/` |
+| Backend save | **ASP.NET Core minimal API + SQLite** — `server/RpgServer` |
+| Aset | digenerate prosedural dengan Python + Pillow — `tools/` |
 
-## Jalankan
+Tidak ada aset dari internet: tileset 16×16, peta, sprite karakter, dan sprite musuh
+semuanya digambar dari nol oleh skrip di `tools/` (palet dari `PROMPTS.md`), sehingga
+gaya, outline, shading, dan warnanya konsisten.
+
+Game-nya **murni aplikasi Godot** — tidak ada frontend HTML/canvas. Backend C# hanya
+melayani API save (plus `/assets` dan `/preview` untuk memeriksa hasil generator).
+
+---
+
+## 1. Jalankan game
 
 ```bash
-bash scripts/setup.sh     # sekali saja: SDK .NET lokal, Pillow, sprite, build server
-bash scripts/dev.sh       # mulai game -> http://127.0.0.1:5080
+bash scripts/setup.sh     # sekali: .NET 8 + Godot 4 lokal, generate aset, build
+bash scripts/dev.sh       # nyalakan backend save, lalu buka jendela game Godot
 ```
 
-`setup.sh` mengunduh SDK .NET 8 ke `./.dotnet` (project-local, tidak mengubah sistem),
-meng-install Pillow, meng-generate 23 frame karakter, dan mem-build server.
+`scripts/dev.sh` melakukan tiga hal:
 
-| Kontrol | Aksi |
+1. build backend C#,
+2. jalankan backend di `http://127.0.0.1:5080` (API profil/save + catatan perjalanan),
+3. buka game Godot dengan `--server=http://127.0.0.1:5080`.
+
+> Butuh layar (bukan headless). Untuk hanya menyalakan backend: `SERVER_ONLY=1 bash scripts/dev.sh`.
+
+### Kontrol
+
+| Tombol | Aksi |
 |---|---|
-| `←` `→` / `A` `D` | jalan maju & mundur |
-| `Shift` | berlari |
-| `Spasi` / `W` / `↑` | lompat (crouch → naik → jatuh) |
-| `J` / `Z` | serang pedang |
-| `K` / `X` | skill **Aura Slash** (terbuka di level 3, butuh energi) |
-| `F` | simpan cepat ke slot aktif |
-| `Esc` | menu: simpan/muat slot, catatan perjalanan, keluar ke menu |
+| `WASD` / `←↑↓→` | gerak 4 arah (maju, mundur, kiri, kanan) |
+| `Shift` | lari |
+| `J` | serang (pedang) |
+| `Spasi` | lompat (frame pose `jump_1`→`jump_3`) |
+| `K` | skill **Aura Slash** — terbuka di level 3, memakai energi |
+| `E` | bicara dengan NPC · buka peti harta · istirahat di api unggun (HP+energi penuh, otomatis simpan) |
+| `Q` | minum potion (+40 HP) |
+| `F` | simpan cepat ke slot terakhir |
+| `Esc` | menu: simpan/muat 3 slot, catatan perjalanan, ganti profil, keluar |
 
-## Fitur
+### Alur bermain & penyimpanan
 
-- **3 zona** (Greenwood Vale → Old Road → Reruntuhan Kuno), platform, gerbang antar zona,
-  api unggun sebagai checkpoint, dan boss **Ruin Warden** di akhir.
-- **Musuh dengan AI sendiri**: slime (patroli), kelelawar (mengejar dari udara),
-  boss (charge + kontak damage). Kill memberi XP, naik level menambah HP maksimum &
-  kekuatan serangan, dan membuka skill.
-- **Progresi**: XP/level, energi skill, HP, waktu bermain, jumlah kill & kematian.
-  Tumbang → respawn di checkpoint terakhir.
-- **Save perjalanan**: 3 slot per profil, autosave tiap 30 detik + saat checkpoint/zona/boss,
-  simpan & muat manual dari menu, plus simpan otomatis saat halaman ditutup.
-  Mendarat kembali ke posisi, level, HP, dan zona terakhir.
-- **Catatan perjalanan** (journey log): server mencatat otomatis tiap perubahan penting
-  (level up, checkpoint, pindah zona, boss kalah) sehingga "sampai mana" bisa dilihat kapan saja.
+Pilih profil di menu awal (dibuat di backend) → main → **autosave tiap 30 detik** dan
+setiap kali checkpoint dinyalakan, zona berganti, atau boss dikalahkan. Reload/reopen
+game → pilih profil → `resume` mengembalikan slot terakhir: posisi, level, XP, HP,
+skill, zona, checkpoint, waktu bermain, jumlah kill/mati. Server juga menyusun
+**catatan perjalanan** otomatis (level up, checkpoint, zona, boss, kematian).
 
-| Catatan perjalanan | Simpan/muat slot |
-|---|---|
-| ![Journey](docs/preview-journey.png) | ![Save](docs/preview-save.png) |
+---
 
-## Struktur
+## 2. Isi dunia
+
+* **Desa (Greenwood Vale)** — rumah kayu/batu dengan atap rumbia & sirap, cerobong,
+  jendela, pintu, **sumur** di alun-alun batu, pasar, tong, peti, lampu, tiang penunjuk.
+* **Old Road (timur)** — jalan tanah bertambal cobblestone menuju **jembatan kayu**
+  yang menyeberangi sungai berkelok; satu-satunya jalur ke tepi timur.
+* **North Woods (utara)** — hutan lebat oak & pinus (dua ukuran), semak, batu, tunggul.
+* **Ancient Ruins (barat laut)** — plato batu, pilar runtuh, obor, peti harta, dan
+  **mulut gua** yang menembus tebing.
+* 4 zona itu terdeteksi otomatis dari posisi pemain; 3 checkpoint (alun-alun, jembatan,
+  reruntuhan) jadi titik simpan/bangkit.
+
+Musuh: **slime** (prosedural), **kelelawar** (prosedural), dan boss **Ruin Warden**
+(frame AI yang kamu taruh di `assets/character/frames/enemies/`, dibersihkan + disamakan
+palet & skalanya).
+
+NPC desa (sprite dari generator yang sama, palet berbeda):
+
+* **Mira** (pedagang pasar) — memberi quest *Bunuh 5 slime* (hadiah 120 XP, flag
+  `quest_slime_done` tersimpan). Penanda **!** di atas kepala selama quest belum selesai.
+* **Bram** (penjaga gerbang) — petunjuk jembatan & reruntuhan.
+* **Sari** (warga) — lore desa + cara istirahat.
+
+Dialog tampil di kotak bawah ala JRPG; permainan berhenti selama dialog, `E` untuk
+lanjut. Semua NPC menghadap pemain saat diajak bicara.
+
+**Ekonomi sederhana**: 5 **peti harta** tersebar (desa, jalan timur, hutan, gua,
+reruntuhan) berisi **gold + 1 potion**; membuka peti menyimpan flag jadi tidak bisa
+diambil dua kali dan sprite-nya berganti ke `chest_open`. Gold dipakai untuk membeli
+potion di menu (`Esc` → "Beli potion — 25 gold"), potion diminum dengan `Q`.
+Gold, potion, dan peti yang sudah dibuka ikut tersimpan ke server maupun ke simpanan
+lokal.
+
+---
+
+## 3. Struktur proyek
 
 ```
-assets/character/
-  character.json                # palet + daftar 23 frame + animasi (fps/loop)
-  reference/hero-reference.png  # render referensi 4x (background magenta)
-  frames/*.png                  # 23 frame hasil generator prosedural
-  generated/anchor.json         # titik kaki sprite (dipakai klien & tool)
-  build/arga_spritesheet.png    # spritesheet + atlas JSON + .tres Godot 4
-tools/
-  generate_character_frames.py  # gambar karakter & animasinya (prosedural, konsisten)
-  make_spritesheet.py           # rakit frame -> spritesheet + atlas + SpriteFrames
-server/RpgServer/               # backend C#
-  Program.cs                    # minimal API + static hosting (game + aset)
-  GameDb.cs                     # SQLite: profil, slot save, catatan perjalanan
-  StateValidator.cs             # validasi & normalisasi payload save
-web/                            # klien game (HTML5 Canvas, tanpa bundler)
-  index.html, style.css
-  js/core.js                    # aturan game (murni, diuji headless)
-  js/atlas.js                   # loader spritesheet + animator
-  js/game.js                    # loop, render, HUD, menu, autosave
-  js/api.js                     # klien REST ke backend
-  test/                         # tes node: logika, kontrak API, browser headless
-scripts/                        # setup.sh, dev.sh, test-all.sh
+game/                      proyek Godot 4 (.NET)
+  project.godot            viewport 480x270 (di-scale 2x), filter piksel = nearest
+  scenes/Main.tscn         root; seluruh dunia dibangun dari kode
+  scripts/
+    Game.cs                orkestrator: dunia, loop, zona, checkpoint, save otomatis
+    World.cs               TileMapLayer tanah, prop (y-sort), CollisionGrid, SpriteFrames
+    Actors.cs              Player (4 arah, lari, serang, skill, lompat, hurt, mati) + Mob (AI)
+    Npc.cs                 warga desa: sprite idle, penanda quest, menghadap pemain
+    Rules.cs               statistik, kurva level, damage, tipe musuh
+    SaveApi.cs             klien REST ke backend C# (otomatis jatuh ke simpanan lokal)
+    LocalSave.cs           simpanan offline user://save_offline.json kalau server mati
+    Audio.cs               parser WAV + pemutar 8 suara & 1 kanal musik
+    Hud.cs                 HUD pixel + menu pause/profil + kotak dialog + minimap
+    Assets.cs / Data.cs    pemuat PNG & parser JSON aset
+    HeadlessTest.cs        tes yang menjalankan kode game sungguhan
+  assets/                  hasil generate (tileset, peta, atlas hero & musuh)
+
+server/RpgServer/          ASP.NET Core + SQLite (profil, 3 slot save, resume, journey)
+tools/                     generator aset + verifikator
+   generate_tileset.py     175 tile / 187 cell: rumput, jalan (autotile 16), cobble,
+                           air + tepi, tebing, pohon, rumah, atap, jembatan, sumur, gua…
+   generate_world_map.py   susun peta 96x72 tile + NPC + preview + grid walkability
+   generate_topdown_frames.py  40 frame hero 4 arah (idle/walk/run)
+   generate_pixel_font.py  font bitmap 5x7 (BMFont) untuk HUD
+   generate_audio.py       9 SFX + 2 musik chiptune (WAV PCM, disintesis sendiri)
+   build_hero_sprites.py   gabung frame prosedural + frame AI (attack/skill/hurt/death/jump)
+   build_enemy_sprites.py  slime & bat prosedural + boss dari frame AI
+   build_npc_sprites.py    3 warga desa (generator sama, palet berbeda)
+   verify_assets.py        verifikasi artefak (tanpa perlu mata manusia)
+   generate_character_frames.py / make_spritesheet.py   pipeline side-view lama (masih
+                           dipakai untuk 3 frame pelengkap + ekspor .tres Godot)
+tests/                     tes HTTP backend (node --test), tanpa browser
+   api.test.mjs             kontrak API: profil, 3 slot save, resume, journey, clamping,
+                           + penjaga "server tidak menyajikan HTML"
+   api-persistence.test.mjs  dibuktikan setelah server direstart (SQLite)
+game/assets/font/          pixel.png + pixel.fnt (font HUD, ikut diekspor lewat
+                           include_filter di game/export_presets.cfg)
+docs/                      pratinjau (tileset, peta, hero, musuh, NPC) — bisa dibuka di
+                           http://127.0.0.1:5080/preview/preview-world.png
 ```
 
-## Arsitektur
+### Bagaimana aset dipakai
 
 ```
-Browser (HTML5 Canvas)                 C# ASP.NET Core (1 proses)          SQLite
-┌────────────────────────┐   REST     ┌───────────────────────────┐   ┌──────────────────┐
-│ core.js  (aturan game) │ ─────────► │ /api/profiles             │   │ profiles         │
-│ atlas.js (sprite)      │  save/load │ /api/profiles/{id}/slots  │──►│ save_slots       │
-│ game.js  (render/HUD)  │            │ /api/profiles/{id}/journey│   │ events           │
-└────────────────────────┘ ◄───────── │ static: /  /js  /assets   │   └──────────────────┘
-                                       └───────────────────────────┘
+tools/*.py  ->  game/assets/{tiles,world,character}/*.{png,json}
+                     |
+                     +-> gambar dibaca apa adanya (tanpa importer) via Assets.LoadTexture
+                     +-> data tile/prop/animation dibaca dari JSON (satu sumber kebenaran)
 ```
 
-- Server menyajikan game **dan** API dalam satu port, jadi tidak ada CORS/masalah origin.
-- Progresi bersifat *client-authoritative* (game solo offline tanpa login); server tetap
-  memvalidasi bentuk & batas nilai payload agar database sehat dan tidak bisa asal ditimpa.
-- Semua frame sprite memakai region cell yang sama (`align: canvas`), jadi animasi tidak
-  jitter walau pose berbeda.
+Peta direpresentasikan sebagai data: `overworld.json` memuat tile ground per sel
+(hasil autotile), daftar prop, **grid walkability**, zona, checkpoint, dan titik spawn
+musuh. `CollisionGrid` memakai grid itu untuk tabrakan (per-sumbu), jadi gerak pemain
+deterministik dan bisa diuji tanpa physics engine.
 
-### API
+---
 
-| Metode | Endpoint | Fungsi |
-|---|---|---|
-| `GET` | `/api/health` | status server + lokasi database |
-| `GET` `POST` | `/api/profiles` | daftar / buat profil (nama 1-24 karakter) |
-| `GET` `DELETE` | `/api/profiles/{id}` | detail / hapus profil |
-| `GET` | `/api/profiles/{id}/resume` | lanjutkan dari slot terakhir |
-| `GET` `PUT` `DELETE` | `/api/profiles/{id}/slots/{slot}` | muat / simpan / hapus slot (1-3) |
-| `GET` | `/api/profiles/{id}/journey` | profil + slot + catatan perjalanan |
-| `POST` | `/api/profiles/{id}/events` | catat event manual |
-
-## Pengembangan
+## 4. Tes
 
 ```bash
-bash scripts/test-all.sh              # build C# + 18 tes logika + 10 tes API + tes persistensi
-RUN_BROWSER=1 bash scripts/test-all.sh # + tes end-to-end di Chromium headless (butuh npm install di web/)
-
-python3 tools/generate_character_frames.py   # gambar ulang 23 frame karakter
-python3 tools/make_spritesheet.py            # rakit ulang spritesheet/atlas/.tres
-python3 tools/make_spritesheet.py --target-height 64   # skalakan ke tinggi badan 64px
+bash scripts/test-all.sh
 ```
 
-Tes browser headless menjalankan game sungguhan: buat profil lewat form, gerak/lari/lompat
-(memastikan frame `jump_1/jump_2/jump_3` benar-benar tergambar), serang, cek skill terkunci di
-level 1 lalu aktif di level 3, simpan lewat menu pause, verifikasi isi database lewat HTTP,
-reload halaman, dan memastikan perjalanan lanjut dari titik tersimpan.
+Yang dijalankan:
 
-## Sprite & Godot 4
+1. **generate aset** (idempoten) lalu **`tools/verify_assets.py`** — 76 pemeriksaan
+   artefak: tidak ada tile saling menimpa/keluar atlas, tidak ada tile kosong,
+   alpha biner (tanpa anti-aliasing), palet terbatas, collision cell cocok, grid
+   walkable konsisten dengan terrain + prop, spawn/checkpoint/musuh/NPC di tile yang bisa
+   dipijak, sungai benar-benar terpisah kecuali lewat jembatan, semua frame sprite di
+   dalam atlas, kaki sejajar garis tanah, animasi tidak ada yang kosong, font pixel
+   lengkap & hard-edged, tiap NPC punya palet sendiri, peti padat tapi bisa dicapai,
+   audio PCM 16-bit yang benar-benar berisi suara, dan `include_filter` ekspor
+   mencakup semua aset mentah yang dibaca game.
+2. **build backend C#** dan **build game Godot C#**.
+3. **tes API** (`tests/api.test.mjs`) + **persistensi setelah server direstart**
+   (`tests/api-persistence.test.mjs`). Termasuk penjaga bahwa server tidak lagi
+   menyajikan HTML/halaman web: `/` harus JSON, `/index.html` & `/prototype.html` 404.
+4. **tes headless Godot** (`godot --headless --path game -- --test`) — menjalankan kode
+   game yang sama seperti dimainkan: gerak 4 arah & flip, animasi idle/walk/run,
+   serangan & skill (terkunci di level 1, aktif di level 3, memakai energi), lompat,
+   kematian pemain (animasi `death` benar-benar diputar) & bangkit, damage ke musuh
+   sampai mati → kill/XP/level, deteksi 4 zona & checkpoint, menyeberang sungai lewat
+   jembatan (dan tidak bisa menembus air), serta save/load lewat backend sungguhan.
+   Plus NPC: dialog terbuka/tertutup, baris quest, hadiah XP, flag quest tersimpan,
+   penanda "!" hilang setelah selesai; font pixel termuat; simpanan offline; dan
+   bayangan ambient/obor yang berkedip terpasang. Keluar dengan exit code ≠ 0 kalau ada
+   yang gagal.
 
-Pipeline frame → spritesheet tetap kompatibel dengan dokumen prompt:
+---
 
-1. `assets/character/character.json` menyimpan palet & daftar 23 frame.
-2. `tools/generate_character_frames.py` menggambar tiap frame (idle, walk, run, jump, attack,
-   skill, hurt, death) dari satu tabel pose + auto-plant kaki, jadi tinggi badan konsisten.
-3. `tools/make_spritesheet.py` menghasilkan:
-   - `arga_spritesheet.png` (PNG RGBA + atlas JSON)
-   - `arga_frames.tres` — resource `SpriteFrames` Godot 4 siap dipakai `AnimatedSprite2D`
-   - untuk menghadap kiri cukup `flip_h`, tidak perlu frame tambahan.
-4. `PROMPTS.md` (dokumen 2 dari 3) tetap bisa dipakai untuk membuat variasi gaya AI;
-   simpan hasilnya ke `assets/character/frames/` dengan nama yang sama lalu rakit ulang.
-   Kalau frame hasil AI punya margin berbeda-beda, pakai `align: bottom-center` (default)
-   alih-alih `canvas` di `character.json`.
+## 5. Catatan & batasan
 
-## Catatan
+* Game dijalankan dari sumber (`--path game`). Kalau nanti di-*export*, PNG aset perlu
+  di-import Godot atau ikut diekspor (kode membaca PNG apa adanya via `FileAccess`).
+* Progresi bersifat client-authoritative (game solo lokal): server memvalidasi bentuk
+  data dan membatasi nilai, bukan mengawasi permainan.
+* API tidak memakai autentikasi — memang untuk main solo di mesin sendiri.
+* Kalau backend mati, game tetap bisa dimainkan: profil & 3 slot disimpan di
+  `user://save_offline.json` (tombol/menu sama). Saat server hidup lagi, profil lokal
+  itu **otomatis dipindah** ke server (nama yang sama dilewati) dan file lokal
+  dihapus setelah kosong.
+* Visual: air memakai 16 tile fase-2 (`water_<mask>_b`) yang ditukar tiap 0,6 detik,
+  obor/lentera berkedip, ada bayangan ambient di bawah pohon/bangunan, dan minimap di
+  kanan bawah HUD.
+* Audio: 9 SFX (langkah, pedang, kena, tumbang, level, quest, istirahat, skill) +
+  2 musik loop (desa & padang liar) — semuanya disintesis `tools/generate_audio.py`.
+* Menutup jendela game atau menekan "Keluar" memicu autosave terlebih dahulu.
+* Ekspor (`game/export_presets.cfg`) menyertakan PNG/JSON/font mentah lewat
+  `include_filter`, karena game membacanya sebagai byte; ekspor itu sendiri belum diuji
+  di mesin ini (butuh template ekspor Godot).
+* Aset AI yang kamu taruh di `assets/character/frames/` sudah dibersihkan otomatis
+  (alpha dibinerkan, warna di-snap ke palet Arga, bintik dibuang, kaki disejajarkan).
+  Kalau kamu regenerate frame AI, cukup jalankan `python3 tools/build_hero_sprites.py`
+  dan `python3 tools/build_enemy_sprites.py` lagi.
+* `assets/character/build/arga_frames.tres` (ekspor Godot dari pipeline side-view lama)
+  dibuat oleh `tools/make_spritesheet.py` dan tidak dipakai game top-down ini.
 
-- Tanpa autentikasi — dirancang untuk main solo di komputer sendiri (`RPG_HOST` untuk bind alamat lain).
-- Database ada di `server/data/rpg.db` (ubah lewat env `RPG_DB`). Port lewat `RPG_PORT` / `--port`.
+### Pipeline side-view lama (masih hidup)
+
+Dipakai untuk 3 frame pelengkap pose aksi (`jump_1`, `jump_2`, `death_2`) dan untuk
+membuat ulang `hero-reference.png` / `.tres` Godot:
+
+```bash
+python3 tools/generate_character_frames.py                 # 23 frame side-view 88x96
+python3 tools/make_spritesheet.py --target-height 64       # spritesheet + atlas + .tres
+python3 tools/make_spritesheet.py --only idle,walk --strict
+```
+
+Opsi `make_spritesheet.py`: `--only`, `--cell`, `--columns`, `--align`, `--tolerance`,
+`--no-chroma-key`, `--no-despill`, `--strict`, `--target-height 0` (tanpa resize).
