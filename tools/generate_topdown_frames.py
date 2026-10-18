@@ -44,6 +44,25 @@ BLADE_S = (0xA8, 0xB4, 0xC2, 255)
 OUTLINE = (0x20, 0x20, 0x2E, 255)
 CLEAR = (0, 0, 0, 0)
 
+# --------------------------------------------------------------------------- #
+# fitur opsional (dipakai NPC lewat build_npc_sprites.py; default = hero).
+# Nilainya sengaja planar: cukup setattr dari build_npc_sprites, sama seperti
+# palet. Output hero tidak berubah selama semua nilai default di bawah dipakai.
+# --------------------------------------------------------------------------- #
+OPT_SWORD = True                     # pedang di punggung / tangan samping
+OPT_PAULDRON = True                  # zirah bahu
+OPT_HAIR = "short"                   # short | bun | long | bald
+OPT_HAT: tuple | None = None         # warna topi jerami (None = tanpa topi)
+OPT_APRON: tuple | None = None       # warna celemek (None = tanpa celemek)
+OPT_STAFF: tuple | None = None       # warna tongkat di tangan kanan
+
+
+def shade(c, factor: float):
+    """Versi terang/gelap dari warna (untuk shading topi/celemek/tongkat)."""
+    return (max(0, min(255, int(c[0] * factor))),
+            max(0, min(255, int(c[1] * factor))),
+            max(0, min(255, int(c[2] * factor))), c[3])
+
 CELL_W, CELL_H = 64, 40
 CX, FOOT_Y = 32, 36
 
@@ -114,12 +133,13 @@ class Frame:
 # bagian tubuh
 # --------------------------------------------------------------------------- #
 def draw_leg(f: Frame, x: int, y_bottom: int, w: int, lift: int, far: bool = False) -> None:
-    """Kaki + sepatu boot. lift = px terangkat dari tanah."""
+    """Kaki + sepatu boot. lift = px terangkat dari tanah.
+    Aman untuk kaki pendek (anak): sepatu selalu mengisi sisa di atas telapak."""
     boot = LEATHER_S if far else LEATHER
     pant = TUNIC_S if far else TUNIC
     y0 = y_bottom - LEG_H - lift
     f.rect(x, y0, w, 2, pant)
-    f.rect(x, y0 + 2, w, LEG_H - 3, boot)
+    f.rect(x, y0 + 2, w, max(1, LEG_H - 3), boot)
     f.rect(x, y_bottom - 1 - lift, w, 1, boot)
     f.hline(x, y0, w, TUNIC_S if far else TUNIC_H)
 
@@ -162,11 +182,35 @@ def draw_head_front(f: Frame, bob: int, lean: int) -> None:
     top = HEAD_TOP + bob
     f.rect(BODY_X, top, BODY_W, HEAD_H, SKIN)
     # rambut: atas + sisi, sedikit miring sesuai arah hadap
-    f.rect(BODY_X, top, BODY_W, 3, HAIR)
-    f.hline(BODY_X, top, BODY_W, HAIR_H)
-    f.rect(BODY_X, top + 3, 1, 3, HAIR)
-    f.rect(BODY_X + BODY_W - 1, top + 3, 1, 3, HAIR_S)
-    f.rect(BODY_X + 1, top + 3, 2, 1, HAIR_S)
+    if OPT_HAIR == "bun":
+        f.rect(BODY_X, top, BODY_W, 3, HAIR)
+        f.hline(BODY_X, top, BODY_W, HAIR_H)
+        f.rect(BODY_X, top + 3, 1, 2, HAIR)
+        f.rect(BODY_X + BODY_W - 1, top + 3, 1, 2, HAIR_S)
+        f.rect(BODY_X + 3, top - 2, 4, 2, HAIR)              # sanggul
+        f.hline(BODY_X + 4, top - 2, 2, HAIR_H)
+    elif OPT_HAIR == "long":
+        f.rect(BODY_X, top, BODY_W, 3, HAIR)
+        f.hline(BODY_X, top, BODY_W, HAIR_H)
+        f.rect(BODY_X, top + 3, 2, HEAD_H - 2, HAIR)
+        f.rect(BODY_X + BODY_W - 2, top + 3, 2, HEAD_H - 2, HAIR_S)
+        f.set(BODY_X + 2, top + 3, HAIR_S)
+    elif OPT_HAIR == "bald":
+        f.rect(BODY_X, top + 3, 1, 3, HAIR)
+        f.rect(BODY_X + BODY_W - 1, top + 3, 1, 3, HAIR_S)
+        f.hline(BODY_X, top, BODY_W, SKIN_H)                 # kulit kepala
+    else:
+        f.rect(BODY_X, top, BODY_W, 3, HAIR)
+        f.hline(BODY_X, top, BODY_W, HAIR_H)
+        f.rect(BODY_X, top + 3, 1, 3, HAIR)
+        f.rect(BODY_X + BODY_W - 1, top + 3, 1, 3, HAIR_S)
+        f.rect(BODY_X + 1, top + 3, 2, 1, HAIR_S)
+    if OPT_HAT:
+        f.hline(BODY_X - 1, top - 1, BODY_W + 2, OPT_HAT)    # tepi topi
+        f.set(BODY_X - 1, top, shade(OPT_HAT, 0.72))
+        f.set(BODY_X + BODY_W, top, shade(OPT_HAT, 0.72))
+        f.rect(BODY_X + 1, top - 4, BODY_W - 2, 3, shade(OPT_HAT, 1.12))
+        f.hline(BODY_X + 2, top - 4, BODY_W - 4, OPT_HAT)
     # wajah
     eye_y = top + 4
     f.rect(BODY_X + 2 + lean, eye_y, 2, 2, OUTLINE)
@@ -182,7 +226,21 @@ def draw_head_back(f: Frame, bob: int) -> None:
     f.rect(BODY_X, top, BODY_W, HEAD_H, HAIR)
     f.hline(BODY_X, top, BODY_W, HAIR_H)
     f.hline(BODY_X, top + 1, BODY_W - 2, HAIR_H)
-    f.rect(BODY_X, top + 5, BODY_W, 3, HAIR_S)
+    if OPT_HAIR == "long":
+        f.rect(BODY_X, top + 5, BODY_W, 3, HAIR_S)
+        f.rect(BODY_X, top + HEAD_H - 1, BODY_W, 2, HAIR)    # rambut turun ke punggung
+    elif OPT_HAIR == "bun":
+        f.rect(BODY_X + 3, top + 2, 4, 3, HAIR_S)            # sanggul dari belakang
+    elif OPT_HAIR == "bald":
+        f.rect(BODY_X + 1, top + 2, BODY_W - 2, 3, SKIN)
+        f.hline(BODY_X + 1, top + 2, BODY_W - 2, SKIN_H)
+        f.rect(BODY_X, top, BODY_W, 2, HAIR)
+    else:
+        f.rect(BODY_X, top + 5, BODY_W, 3, HAIR_S)
+    if OPT_HAT:
+        f.hline(BODY_X - 1, top - 1, BODY_W + 2, OPT_HAT)
+        f.rect(BODY_X + 1, top - 4, BODY_W - 2, 3, shade(OPT_HAT, 1.12))
+        f.hline(BODY_X + 2, top - 4, BODY_W - 4, OPT_HAT)
     f.rect(BODY_X + 2, top + 7, 2, 1, SKIN_S)        # leher
     f.rect(BODY_X + BODY_W - 3, top + 7, 2, 1, SKIN_S)
 
@@ -198,6 +256,13 @@ def draw_front(f: Frame, pose: dict, back: bool = False) -> None:
 
     draw_leg(f, BODY_X, FOOT_Y, 4, leg_l[1])
     draw_leg(f, BODY_X + BODY_W - 4, FOOT_Y, 4, leg_r[1])
+
+    # tongkat: digambar sebelum lengan supaya tangan tampak menggenggam
+    if OPT_STAFF and not back:
+        staff_x = BODY_X + BODY_W
+        staff_top = HEAD_TOP + bob - 3
+        f.vline(staff_x, staff_top, FOOT_Y - staff_top, OPT_STAFF)
+        f.rect(staff_x - 2, staff_top, 3, 2, shade(OPT_STAFF, 1.18))
 
     # lengan (kiri/kanan) + tangan
     draw_arm(f, BODY_X - 3, body_y + 1, pose["arm"][0])
@@ -216,17 +281,24 @@ def draw_front(f: Frame, pose: dict, back: bool = False) -> None:
         f.rect(BODY_X + 1, body_y + 1, BODY_W - 2, 1, TUNIC_S)
     else:
         f.rect(BODY_X + 3, body_y + 3, BODY_W - 6, 1, TUNIC_H)   # lipatan kain
+        if OPT_APRON:
+            f.rect(BODY_X + 1, body_y + 3, BODY_W - 2, 6, OPT_APRON)
+            f.vline(BODY_X + BODY_W - 2, body_y + 3, 6, shade(OPT_APRON, 0.78))
+            f.hline(BODY_X + 1, body_y + 8, BODY_W - 2, shade(OPT_APRON, 0.9))
     # pauldron bahu kanan (dari sudut pandang pemain)
-    f.rect(BODY_X - 1, body_y, 4, 3, ARMOR)
-    f.hline(BODY_X - 1, body_y, 4, ARMOR_H)
-    f.vline(BODY_X + 2, body_y, 3, ARMOR_S)
+    if OPT_PAULDRON:
+        f.rect(BODY_X - 1, body_y, 4, 3, ARMOR)
+        f.hline(BODY_X - 1, body_y, 4, ARMOR_H)
+        f.vline(BODY_X + 2, body_y, 3, ARMOR_S)
 
     if back:
         draw_head_back(f, bob)
-        draw_sword_back(f, -1)
+        if OPT_SWORD:
+            draw_sword_back(f, -1)
     else:
         draw_head_front(f, bob, pose.get("head_lean", 0))
-        draw_sword_back(f, 1)
+        if OPT_SWORD:
+            draw_sword_back(f, 1)
     f.outline()
 
 
@@ -256,25 +328,53 @@ def draw_side(f: Frame, pose: dict, facing: int) -> None:
     f.rect(SIDE_X, body_y + 7, SIDE_W, 2, LEATHER)
     f.hline(SIDE_X, body_y + 7, SIDE_W, LEATHER_H)
     f.set(SIDE_X + SIDE_W - 3, body_y + 8, LEATHER_S)
+    if OPT_APRON:
+        f.rect(SIDE_X + SIDE_W - 4, body_y + 3, 4, 6, OPT_APRON)
+        f.vline(SIDE_X + SIDE_W - 1, body_y + 3, 6, shade(OPT_APRON, 0.78))
     # pauldron
-    f.rect(SIDE_X + SIDE_W - 5, body_y, 4, 3, ARMOR)
-    f.hline(SIDE_X + SIDE_W - 5, body_y, 4, ARMOR_H)
+    if OPT_PAULDRON:
+        f.rect(SIDE_X + SIDE_W - 5, body_y, 4, 3, ARMOR)
+        f.hline(SIDE_X + SIDE_W - 5, body_y, 4, ARMOR_H)
 
     # kepala: profil dengan hidung
     top = HEAD_TOP + bob
     f.rect(SIDE_X - 1, top, SIDE_W + 2, HEAD_H, SKIN)
-    f.rect(SIDE_X - 1, top, SIDE_W + 2, 3, HAIR)
-    f.hline(SIDE_X - 1, top, SIDE_W + 1, HAIR_H)
-    f.rect(SIDE_X - 2, top + 3, 2, 2, HAIR)          # rambut belakang
+    if OPT_HAIR == "bun":
+        f.rect(SIDE_X - 1, top, SIDE_W + 2, 3, HAIR)
+        f.hline(SIDE_X - 1, top, SIDE_W + 1, HAIR_H)
+        f.rect(SIDE_X - 4, top + 1, 3, 3, HAIR)          # sanggul di belakang
+        f.set(SIDE_X - 3, top + 1, HAIR_H)
+    elif OPT_HAIR == "long":
+        f.rect(SIDE_X - 1, top, SIDE_W + 2, 3, HAIR)
+        f.hline(SIDE_X - 1, top, SIDE_W + 1, HAIR_H)
+        f.rect(SIDE_X - 2, top + 3, 3, 4, HAIR)          # rambut panjang ke belakang
+        f.rect(SIDE_X - 1, top + 6, 2, 2, HAIR_S)
+    elif OPT_HAIR == "bald":
+        f.rect(SIDE_X - 2, top + 2, 2, 3, HAIR)          # sisa rambut belakang
+        f.hline(SIDE_X, top, SIDE_W + 1, SKIN_H)         # kulit kepala
+    else:
+        f.rect(SIDE_X - 1, top, SIDE_W + 2, 3, HAIR)
+        f.hline(SIDE_X - 1, top, SIDE_W + 1, HAIR_H)
+        f.rect(SIDE_X - 2, top + 3, 2, 2, HAIR)          # rambut belakang
+    if OPT_HAT:
+        f.hline(SIDE_X - 3, top - 1, SIDE_W + 5, OPT_HAT)    # tepi topi menjorok ke depan
+        f.set(SIDE_X + SIDE_W + 2, top - 1, shade(OPT_HAT, 0.72))
+        f.rect(SIDE_X, top - 4, SIDE_W, 3, shade(OPT_HAT, 1.12))
+        f.hline(SIDE_X + 1, top - 4, SIDE_W - 2, OPT_HAT)
     f.set(SIDE_X + SIDE_W, top + 4, SKIN)             # hidung
     f.rect(SIDE_X + SIDE_W - 3, top + 4, 2, 2, OUTLINE)  # mata profil
     f.set(SIDE_X + SIDE_W - 4, top + 6, SKIN_S)
 
-    # lengan depan + pedang (pedang digambar sebelum lengan supaya gagang di tangan)
+    # lengan depan + pedang/tongkat (digambar sebelum lengan supaya gagang di tangan)
     front_arm = pose["near_arm"]
     arm_x = SIDE_X + SIDE_W - 4
     hand_y = body_y + 1 + 4 + max(2, ARM_H - 4 - max(0, -front_arm)) + front_arm + 1
-    draw_sword_side(f, arm_x + 1, hand_y, pose["sword"])
+    if OPT_SWORD:
+        draw_sword_side(f, arm_x + 1, hand_y, pose["sword"])
+    elif OPT_STAFF:
+        staff_top = HEAD_TOP + bob - 3
+        f.vline(arm_x + 1, staff_top, FOOT_Y - staff_top, OPT_STAFF)
+        f.rect(arm_x, staff_top, 3, 2, shade(OPT_STAFF, 1.18))
     draw_arm(f, arm_x, body_y + 1, front_arm, 3)
 
     f.outline()

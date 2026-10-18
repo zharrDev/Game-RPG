@@ -212,7 +212,7 @@ def verify_world(meta: dict) -> None:
           len(walk_burnt) == len(burnt) and all(c >= 10 for c in walk_burnt), str(walk_burnt))
 
     npcs = data["markers"].get("npcs", [])
-    check("tiga NPC desa terdefinisi", len(npcs) == 3, str(len(npcs)))
+    check("lima warga desa terdefinisi", len(npcs) == 5, str(len(npcs)))
     bad_npc = [f"{n['id']}@{n['col']},{n['row']}" for n in npcs if not data["walkable"][n["row"]][n["col"]]]
     check("semua NPC berdiri di tile walkable", not bad_npc, "; ".join(bad_npc))
     too_close = [
@@ -259,9 +259,12 @@ def verify_npcs() -> None:
     check("npc: atlas = kolom x baris x sel",
           atlas.width == meta["atlas"]["columns"] * cell["w"] and
           atlas.height == meta["atlas"]["rows"] * cell["h"])
-    check("npc: tiga warga, dua arah idle",
-          len(meta["animations"]) == 3 and
-          all(len(set(anim)) == 2 for npc in meta["animations"].values() for anim in npc.values()),
+    check("npc: lima warga, idle 2 & walk 4 frame per arah",
+          len(meta["animations"]) == 5 and
+          all(len(set(anim)) == 2 for npc in meta["animations"].values()
+              for key, anim in npc.items() if key.startswith("idle")) and
+          all(len(set(anim)) == 4 for npc in meta["animations"].values()
+              for key, anim in npc.items() if key.startswith("walk")),
           str(len(meta["animations"])))
     outside = [name for name, f in meta["frames"].items()
                if f["x"] + f["w"] > atlas.width or f["y"] + f["h"] > atlas.height]
@@ -276,7 +279,23 @@ def verify_npcs() -> None:
             continue
         box = atlas.crop((f["x"], f["y"], f["x"] + f["w"], f["y"] + f["h"]))
         palettes.add(hash(box.tobytes()))
-    check("npc: setiap warga punya palet sendiri", len(palettes) == 3, str(len(palettes)))
+    check("npc: setiap warga punya palet sendiri", len(palettes) == 5, str(len(palettes)))
+
+    # Tomas (anak) harus lebih pendek dari warga dewasa
+    def frame_height(frame_name: str) -> int:
+        f = meta["frames"][frame_name]
+        box = atlas.crop((f["x"], f["y"], f["x"] + f["w"], f["y"] + f["h"])).getchannel("A").getbbox()
+        return box[3] - box[1]
+
+    child_h = frame_height("tomas:idle_down_1")
+    adult_h = min(frame_height(f"{npc}:idle_down_1") for npc in ("mira", "bram", "sari", "lena"))
+    check("npc: tomas (anak) lebih pendek dari warga dewasa", child_h < adult_h,
+          f"{child_h} vs {adult_h}")
+
+    # fitur membedakan: Bram satu-satunya yang membawa pedang (zirah + pedang)
+    features = meta.get("features", {})
+    armed = [npc for npc, feat in features.items() if feat.get("OPT_SWORD", True)]
+    check("npc: hanya Bram yang berpedang (warga lain tanpa senjata)", armed == ["bram"], str(armed))
 
 
 def verify_hero() -> None:

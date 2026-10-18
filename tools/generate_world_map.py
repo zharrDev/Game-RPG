@@ -453,6 +453,30 @@ NPC_SPECS = [
         ],
         "quest": None,
     },
+    {
+        "id": "lena",
+        "name": "Lena",
+        "role": "petani ladang",
+        "anchor": (VX + 23, VY + 10),
+        "facing": "side",
+        "lines": [
+            "Ladangku di tepi utara ikut hangus waktu api lewat. Tanahnya masih hidup, syukurlah.",
+            "Lihat tunas kecil di bekas terbakar? Dua minggu lagi padang itu hijau kembali.",
+        ],
+        "quest": None,
+    },
+    {
+        "id": "tomas",
+        "name": "Tomas",
+        "role": "anak desa",
+        "anchor": (plaza[0] + 2, plaza[1] - 2),
+        "facing": "down",
+        "lines": [
+            "Aku lihat api besar di hutan utara! Bram bilang itu bukan api unggun biasa.",
+            "Kalau aku besar nanti, aku mau jadi penjaga gerbang seperti Bram. Tapi aku takut warden.",
+        ],
+        "quest": None,
+    },
 ]
 
 

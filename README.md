@@ -84,12 +84,22 @@ Musuh: **slime** (prosedural), **kelelawar** (prosedural), dan boss **Ruin Warde
 (frame AI yang kamu taruh di `assets/character/frames/enemies/`, dibersihkan + disamakan
 palet & skalanya).
 
-NPC desa (sprite dari generator yang sama, palet berbeda):
+NPC desa — 5 warga dari generator top-down yang sama, masing-masing punya palet
+dan **fitur pembeda** (tanpa pedang/zirah bawaan; gaya rambut, topi, celemek,
+tongkat, dan metrik badan anak):
 
 * **Mira** (pedagang pasar) — memberi quest *Bunuh 5 slime* (hadiah 120 XP, flag
   `quest_slime_done` tersimpan). Penanda **!** di atas kepala selama quest belum selesai.
-* **Bram** (penjaga gerbang) — petunjuk jembatan & reruntuhan.
-* **Sari** (warga) — lore desa + cara istirahat.
+  Rambut disanggul + celemek dagang.
+* **Bram** (penjaga gerbang) — petunjuk jembatan & reruntuhan; satu-satunya warga
+  yang berpedang + zirah bahu.
+* **Sari** (warga) — lore desa + cara istirahat; rambut putih panjang, bertongkat.
+* **Lena** (petani ladang, baru) — tutur soal tanah hangus yang menghijau lagi;
+  topi jerami + celemek.
+* **Tomas** (anak desa, baru) — mengagumi Bram; badan lebih pendek & ramping.
+
+Semua warga punya animasi idle **dan walk** (2+4 frame per arah) — walk dipakai
+untuk warga berjalan mondar-mandir di tahap berikutnya.
 
 Dialog tampil di kotak bawah ala JRPG; permainan berhenti selama dialog, `E` untuk
 lanjut. Semua NPC menghadap pemain saat diajak bicara.
@@ -140,7 +150,7 @@ tools/                     generator aset + verifikator
    preview_stages.py       pratinjau SEBELUM/SESUDAH tiap tahap visual -> docs/
    build_hero_sprites.py   gabung frame prosedural + frame AI (attack/skill/hurt/death/jump)
    build_enemy_sprites.py  slime & bat prosedural + boss dari frame AI
-   build_npc_sprites.py    3 warga desa (generator sama, palet berbeda)
+   build_npc_sprites.py    5 warga desa (palet + fitur pembeda; Tomas berbadan anak)
    verify_assets.py        verifikasi artefak (tanpa perlu mata manusia)
    generate_character_frames.py / make_spritesheet.py   pipeline side-view lama (masih
                            dipakai untuk 3 frame pelengkap + ekspor .tres Godot)
@@ -180,7 +190,7 @@ bash scripts/test-all.sh
 
 Yang dijalankan:
 
-1. **generate aset** (idempoten) lalu **`tools/verify_assets.py`** — 97 pemeriksaan
+1. **generate aset** (idempoten) lalu **`tools/verify_assets.py`** — 99 pemeriksaan
    artefak: tidak ada tile saling menimpa/keluar atlas, tidak ada tile kosong,
    alpha biner (tanpa anti-aliasing), palet terbatas, collision cell cocok, grid
    walkable konsisten dengan terrain + prop, spawn/checkpoint/musuh/NPC di tile yang bisa

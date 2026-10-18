@@ -10,11 +10,11 @@
   "atlas": {
     "file": "npc_atlas.png",
     "columns": 6,
-    "rows": 2,
+    "rows": 10,
     "width": 384,
-    "height": 80
+    "height": 400
   },
-  "frame_count": 12,
+  "frame_count": 60,
   "frames": {
     "mira:idle_down_1": {
       "col": 0,
@@ -48,7 +48,7 @@
       "w": 64,
       "h": 40
     },
-    "bram:idle_down_1": {
+    "mira:walk_down_1": {
       "col": 4,
       "row": 0,
       "x": 256,
@@ -56,7 +56,7 @@
       "w": 64,
       "h": 40
     },
-    "bram:idle_down_2": {
+    "mira:walk_down_2": {
       "col": 5,
       "row": 0,
       "x": 320,
@@ -64,7 +64,7 @@
       "w": 64,
       "h": 40
     },
-    "bram:idle_side_1": {
+    "mira:walk_down_3": {
       "col": 0,
       "row": 1,
       "x": 0,
@@ -72,7 +72,7 @@
       "w": 64,
       "h": 40
     },
-    "bram:idle_side_2": {
+    "mira:walk_down_4": {
       "col": 1,
       "row": 1,
       "x": 64,
@@ -80,7 +80,7 @@
       "w": 64,
       "h": 40
     },
-    "sari:idle_down_1": {
+    "mira:walk_side_1": {
       "col": 2,
       "row": 1,
       "x": 128,
@@ -88,7 +88,7 @@
       "w": 64,
       "h": 40
     },
-    "sari:idle_down_2": {
+    "mira:walk_side_2": {
       "col": 3,
       "row": 1,
       "x": 192,
@@ -96,7 +96,7 @@
       "w": 64,
       "h": 40
     },
-    "sari:idle_side_1": {
+    "mira:walk_side_3": {
       "col": 4,
       "row": 1,
       "x": 256,
@@ -104,11 +104,395 @@
       "w": 64,
       "h": 40
     },
-    "sari:idle_side_2": {
+    "mira:walk_side_4": {
       "col": 5,
       "row": 1,
       "x": 320,
       "y": 40,
+      "w": 64,
+      "h": 40
+    },
+    "bram:idle_down_1": {
+      "col": 0,
+      "row": 2,
+      "x": 0,
+      "y": 80,
+      "w": 64,
+      "h": 40
+    },
+    "bram:idle_down_2": {
+      "col": 1,
+      "row": 2,
+      "x": 64,
+      "y": 80,
+      "w": 64,
+      "h": 40
+    },
+    "bram:idle_side_1": {
+      "col": 2,
+      "row": 2,
+      "x": 128,
+      "y": 80,
+      "w": 64,
+      "h": 40
+    },
+    "bram:idle_side_2": {
+      "col": 3,
+      "row": 2,
+      "x": 192,
+      "y": 80,
+      "w": 64,
+      "h": 40
+    },
+    "bram:walk_down_1": {
+      "col": 4,
+      "row": 2,
+      "x": 256,
+      "y": 80,
+      "w": 64,
+      "h": 40
+    },
+    "bram:walk_down_2": {
+      "col": 5,
+      "row": 2,
+      "x": 320,
+      "y": 80,
+      "w": 64,
+      "h": 40
+    },
+    "bram:walk_down_3": {
+      "col": 0,
+      "row": 3,
+      "x": 0,
+      "y": 120,
+      "w": 64,
+      "h": 40
+    },
+    "bram:walk_down_4": {
+      "col": 1,
+      "row": 3,
+      "x": 64,
+      "y": 120,
+      "w": 64,
+      "h": 40
+    },
+    "bram:walk_side_1": {
+      "col": 2,
+      "row": 3,
+      "x": 128,
+      "y": 120,
+      "w": 64,
+      "h": 40
+    },
+    "bram:walk_side_2": {
+      "col": 3,
+      "row": 3,
+      "x": 192,
+      "y": 120,
+      "w": 64,
+      "h": 40
+    },
+    "bram:walk_side_3": {
+      "col": 4,
+      "row": 3,
+      "x": 256,
+      "y": 120,
+      "w": 64,
+      "h": 40
+    },
+    "bram:walk_side_4": {
+      "col": 5,
+      "row": 3,
+      "x": 320,
+      "y": 120,
+      "w": 64,
+      "h": 40
+    },
+    "sari:idle_down_1": {
+      "col": 0,
+      "row": 4,
+      "x": 0,
+      "y": 160,
+      "w": 64,
+      "h": 40
+    },
+    "sari:idle_down_2": {
+      "col": 1,
+      "row": 4,
+      "x": 64,
+      "y": 160,
+      "w": 64,
+      "h": 40
+    },
+    "sari:idle_side_1": {
+      "col": 2,
+      "row": 4,
+      "x": 128,
+      "y": 160,
+      "w": 64,
+      "h": 40
+    },
+    "sari:idle_side_2": {
+      "col": 3,
+      "row": 4,
+      "x": 192,
+      "y": 160,
+      "w": 64,
+      "h": 40
+    },
+    "sari:walk_down_1": {
+      "col": 4,
+      "row": 4,
+      "x": 256,
+      "y": 160,
+      "w": 64,
+      "h": 40
+    },
+    "sari:walk_down_2": {
+      "col": 5,
+      "row": 4,
+      "x": 320,
+      "y": 160,
+      "w": 64,
+      "h": 40
+    },
+    "sari:walk_down_3": {
+      "col": 0,
+      "row": 5,
+      "x": 0,
+      "y": 200,
+      "w": 64,
+      "h": 40
+    },
+    "sari:walk_down_4": {
+      "col": 1,
+      "row": 5,
+      "x": 64,
+      "y": 200,
+      "w": 64,
+      "h": 40
+    },
+    "sari:walk_side_1": {
+      "col": 2,
+      "row": 5,
+      "x": 128,
+      "y": 200,
+      "w": 64,
+      "h": 40
+    },
+    "sari:walk_side_2": {
+      "col": 3,
+      "row": 5,
+      "x": 192,
+      "y": 200,
+      "w": 64,
+      "h": 40
+    },
+    "sari:walk_side_3": {
+      "col": 4,
+      "row": 5,
+      "x": 256,
+      "y": 200,
+      "w": 64,
+      "h": 40
+    },
+    "sari:walk_side_4": {
+      "col": 5,
+      "row": 5,
+      "x": 320,
+      "y": 200,
+      "w": 64,
+      "h": 40
+    },
+    "lena:idle_down_1": {
+      "col": 0,
+      "row": 6,
+      "x": 0,
+      "y": 240,
+      "w": 64,
+      "h": 40
+    },
+    "lena:idle_down_2": {
+      "col": 1,
+      "row": 6,
+      "x": 64,
+      "y": 240,
+      "w": 64,
+      "h": 40
+    },
+    "lena:idle_side_1": {
+      "col": 2,
+      "row": 6,
+      "x": 128,
+      "y": 240,
+      "w": 64,
+      "h": 40
+    },
+    "lena:idle_side_2": {
+      "col": 3,
+      "row": 6,
+      "x": 192,
+      "y": 240,
+      "w": 64,
+      "h": 40
+    },
+    "lena:walk_down_1": {
+      "col": 4,
+      "row": 6,
+      "x": 256,
+      "y": 240,
+      "w": 64,
+      "h": 40
+    },
+    "lena:walk_down_2": {
+      "col": 5,
+      "row": 6,
+      "x": 320,
+      "y": 240,
+      "w": 64,
+      "h": 40
+    },
+    "lena:walk_down_3": {
+      "col": 0,
+      "row": 7,
+      "x": 0,
+      "y": 280,
+      "w": 64,
+      "h": 40
+    },
+    "lena:walk_down_4": {
+      "col": 1,
+      "row": 7,
+      "x": 64,
+      "y": 280,
+      "w": 64,
+      "h": 40
+    },
+    "lena:walk_side_1": {
+      "col": 2,
+      "row": 7,
+      "x": 128,
+      "y": 280,
+      "w": 64,
+      "h": 40
+    },
+    "lena:walk_side_2": {
+      "col": 3,
+      "row": 7,
+      "x": 192,
+      "y": 280,
+      "w": 64,
+      "h": 40
+    },
+    "lena:walk_side_3": {
+      "col": 4,
+      "row": 7,
+      "x": 256,
+      "y": 280,
+      "w": 64,
+      "h": 40
+    },
+    "lena:walk_side_4": {
+      "col": 5,
+      "row": 7,
+      "x": 320,
+      "y": 280,
+      "w": 64,
+      "h": 40
+    },
+    "tomas:idle_down_1": {
+      "col": 0,
+      "row": 8,
+      "x": 0,
+      "y": 320,
+      "w": 64,
+      "h": 40
+    },
+    "tomas:idle_down_2": {
+      "col": 1,
+      "row": 8,
+      "x": 64,
+      "y": 320,
+      "w": 64,
+      "h": 40
+    },
+    "tomas:idle_side_1": {
+      "col": 2,
+      "row": 8,
+      "x": 128,
+      "y": 320,
+      "w": 64,
+      "h": 40
+    },
+    "tomas:idle_side_2": {
+      "col": 3,
+      "row": 8,
+      "x": 192,
+      "y": 320,
+      "w": 64,
+      "h": 40
+    },
+    "tomas:walk_down_1": {
+      "col": 4,
+      "row": 8,
+      "x": 256,
+      "y": 320,
+      "w": 64,
+      "h": 40
+    },
+    "tomas:walk_down_2": {
+      "col": 5,
+      "row": 8,
+      "x": 320,
+      "y": 320,
+      "w": 64,
+      "h": 40
+    },
+    "tomas:walk_down_3": {
+      "col": 0,
+      "row": 9,
+      "x": 0,
+      "y": 360,
+      "w": 64,
+      "h": 40
+    },
+    "tomas:walk_down_4": {
+      "col": 1,
+      "row": 9,
+      "x": 64,
+      "y": 360,
+      "w": 64,
+      "h": 40
+    },
+    "tomas:walk_side_1": {
+      "col": 2,
+      "row": 9,
+      "x": 128,
+      "y": 360,
+      "w": 64,
+      "h": 40
+    },
+    "tomas:walk_side_2": {
+      "col": 3,
+      "row": 9,
+      "x": 192,
+      "y": 360,
+      "w": 64,
+      "h": 40
+    },
+    "tomas:walk_side_3": {
+      "col": 4,
+      "row": 9,
+      "x": 256,
+      "y": 360,
+      "w": 64,
+      "h": 40
+    },
+    "tomas:walk_side_4": {
+      "col": 5,
+      "row": 9,
+      "x": 320,
+      "y": 360,
       "w": 64,
       "h": 40
     }
@@ -122,6 +506,18 @@
       "idle_side": [
         "mira:idle_side_1",
         "mira:idle_side_2"
+      ],
+      "walk_down": [
+        "mira:walk_down_1",
+        "mira:walk_down_2",
+        "mira:walk_down_3",
+        "mira:walk_down_4"
+      ],
+      "walk_side": [
+        "mira:walk_side_1",
+        "mira:walk_side_2",
+        "mira:walk_side_3",
+        "mira:walk_side_4"
       ]
     },
     "bram": {
@@ -132,6 +528,18 @@
       "idle_side": [
         "bram:idle_side_1",
         "bram:idle_side_2"
+      ],
+      "walk_down": [
+        "bram:walk_down_1",
+        "bram:walk_down_2",
+        "bram:walk_down_3",
+        "bram:walk_down_4"
+      ],
+      "walk_side": [
+        "bram:walk_side_1",
+        "bram:walk_side_2",
+        "bram:walk_side_3",
+        "bram:walk_side_4"
       ]
     },
     "sari": {
@@ -142,6 +550,62 @@
       "idle_side": [
         "sari:idle_side_1",
         "sari:idle_side_2"
+      ],
+      "walk_down": [
+        "sari:walk_down_1",
+        "sari:walk_down_2",
+        "sari:walk_down_3",
+        "sari:walk_down_4"
+      ],
+      "walk_side": [
+        "sari:walk_side_1",
+        "sari:walk_side_2",
+        "sari:walk_side_3",
+        "sari:walk_side_4"
+      ]
+    },
+    "lena": {
+      "idle_down": [
+        "lena:idle_down_1",
+        "lena:idle_down_2"
+      ],
+      "idle_side": [
+        "lena:idle_side_1",
+        "lena:idle_side_2"
+      ],
+      "walk_down": [
+        "lena:walk_down_1",
+        "lena:walk_down_2",
+        "lena:walk_down_3",
+        "lena:walk_down_4"
+      ],
+      "walk_side": [
+        "lena:walk_side_1",
+        "lena:walk_side_2",
+        "lena:walk_side_3",
+        "lena:walk_side_4"
+      ]
+    },
+    "tomas": {
+      "idle_down": [
+        "tomas:idle_down_1",
+        "tomas:idle_down_2"
+      ],
+      "idle_side": [
+        "tomas:idle_side_1",
+        "tomas:idle_side_2"
+      ],
+      "walk_down": [
+        "tomas:walk_down_1",
+        "tomas:walk_down_2",
+        "tomas:walk_down_3",
+        "tomas:walk_down_4"
+      ],
+      "walk_side": [
+        "tomas:walk_side_1",
+        "tomas:walk_side_2",
+        "tomas:walk_side_3",
+        "tomas:walk_side_4"
       ]
     }
   },
@@ -181,7 +645,82 @@
       "ARMOR": "#C7BEA2",
       "ARMOR_S": "#978F76",
       "ARMOR_H": "#E4DCC2"
+    },
+    "lena": {
+      "TUNIC": "#6E7A3A",
+      "TUNIC_S": "#4C5628",
+      "TUNIC_H": "#8F9C52",
+      "HAIR": "#4A321E",
+      "HAIR_S": "#332213",
+      "HAIR_H": "#68482C",
+      "ARMOR": "#6E7A3A",
+      "ARMOR_S": "#4C5628",
+      "ARMOR_H": "#8F9C52"
+    },
+    "tomas": {
+      "TUNIC": "#C97A42",
+      "TUNIC_S": "#94552B",
+      "TUNIC_H": "#E89C5E",
+      "HAIR": "#2A201C",
+      "HAIR_S": "#1A1310",
+      "HAIR_H": "#44342C",
+      "ARMOR": "#C97A42",
+      "ARMOR_S": "#94552B",
+      "ARMOR_H": "#E89C5E",
+      "LEATHER": "#6B4A28",
+      "LEATHER_S": "#4E351C",
+      "LEATHER_H": "#8A6136"
     }
   },
+  "features": {
+    "mira": {
+      "OPT_SWORD": false,
+      "OPT_PAULDRON": false,
+      "OPT_HAIR": "bun",
+      "OPT_APRON": [
+        107,
+        74,
+        40,
+        255
+      ]
+    },
+    "bram": {
+      "OPT_HAIR": "short"
+    },
+    "sari": {
+      "OPT_SWORD": false,
+      "OPT_PAULDRON": false,
+      "OPT_HAIR": "long",
+      "OPT_STAFF": [
+        122,
+        79,
+        42,
+        255
+      ]
+    },
+    "lena": {
+      "OPT_SWORD": false,
+      "OPT_PAULDRON": false,
+      "OPT_HAIR": "bun",
+      "OPT_HAT": [
+        201,
+        164,
+        85,
+        255
+      ],
+      "OPT_APRON": [
+        138,
+        107,
+        67,
+        255
+      ]
+    },
+    "tomas": {
+      "OPT_SWORD": false,
+      "OPT_PAULDRON": false,
+      "OPT_HAIR": "short"
+    }
+  },
+  "child": "tomas",
   "source": "tools/build_npc_sprites.py"
 }

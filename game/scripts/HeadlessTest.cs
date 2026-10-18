@@ -290,13 +290,16 @@ public static class HeadlessTest
         Check("istirahat di luar checkpoint ditolak", !game.RestAtCheckpoint());
 
         GD.Print("=== NPC, dialog & quest ===");
-        Check("tiga NPC desa ter-spawn", game.Npcs.Count == 3, $"{game.Npcs.Count}");
+        Check("lima warga desa ter-spawn", game.Npcs.Count == 5, $"{game.Npcs.Count}");
         Check("NPC punya sprite idle 2 frame",
             world.NpcFrames.TryGetValue("mira", out var miraFrames) && miraFrames.GetFrameCount("idle_down") == 2);
+        Check("NPC punya walk 4 frame (bekal warga berjalan)",
+            world.NpcFrames.TryGetValue("tomas", out var tomasFrames) &&
+            tomasFrames.GetFrameCount("walk_down") == 4 && tomasFrames.GetFrameCount("walk_side") == 4);
         var npcFrame = world.NpcFrames["mira"].GetFrameTexture("idle_down", 0) as AtlasTexture;
-        Check("frame NPC menunjuk npc_atlas.png (384x80)",
+        Check("frame NPC menunjuk npc_atlas.png (384x400)",
             npcFrame is not null && npcFrame.Atlas == world.NpcTexture &&
-            world.NpcTexture.GetWidth() == 384 && world.NpcTexture.GetHeight() == 80,
+            world.NpcTexture.GetWidth() == 384 && world.NpcTexture.GetHeight() == 400,
             $"{world.NpcTexture.GetWidth()}x{world.NpcTexture.GetHeight()}");
 
         var mira = world.Data.Npcs.First(n => n.Id == "mira");
