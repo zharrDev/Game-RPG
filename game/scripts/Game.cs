@@ -41,9 +41,9 @@ public sealed partial class Game : Node2D
     public bool TestMode;
 
     private readonly CameraRig _cameraRig = new();
+    private readonly TimeSystem _time = new();
     private bool _menuVisible;
     private bool _testPending;
-    private double _waterTimer;
     private double _stepTimer;
     private bool _airborne;
     private int _questTrackerSignature = -1;
@@ -97,6 +97,7 @@ public sealed partial class Game : Node2D
         World.Root.AddChild(Lighting);
         Lighting.Configure(World.HeatSources, Assets.LoadTexture(Assets.FxLightSoftPng), Fx);
         Lighting.SetTimeOfDay(_startTime);
+        _time.Configure(Lighting);
 
         // ambience api & pemulihan: nyala 4-frame, bara, abu, tunas (murni visual)
         Ambience = new FireAmbience();
@@ -340,8 +341,8 @@ public sealed partial class Game : Node2D
         // asap yang menempel di dunia: ikut titik tengah kamera (termasuk smoothing)
         var camCenter = _cameraRig.ScreenCenter;
         Fx?.SetCameraCenter(camCenter);
-        // jam dunia berjalan (ambient + kedip cahaya api); Fx.NightAmount ikut terisi
-        Lighting?.Advance(delta);
+        // jam dunia + denyut visual lingkungan (kedip obor, riak air)
+        _time.Advance(delta, World);
         // ambience api: nyala, bara, abu zona terbakar, tunas (murni visual)
         Ambience?.SetCameraCenter(camCenter);
         Ambience?.Advance(delta);
@@ -422,25 +423,6 @@ public sealed partial class Game : Node2D
 
         if (playing && !Player.Alive && Player.DeathTimer >= Rules.DeathDuration)
             Respawn();
-
-        // obor & lentera berkedip hangat (ambience desa/reruntuhan)
-        if (World.FlickerProps.Count > 0)
-        {
-            var seconds = (float)Time.GetTicksMsec() / 1000f;
-            foreach (var (sprite, phase) in World.FlickerProps)
-            {
-                var pulse = 0.82f + 0.18f * MathF.Sin(seconds * 6.5f + phase) * MathF.Sin(seconds * 2.7f + phase * 1.7f);
-                sprite.Modulate = new Color(pulse, pulse * 0.94f, pulse * 0.78f, 1f);
-            }
-        }
-
-        // riak air: tukar fase tile tiap 0.6 detik (shoreline & deep water)
-        _waterTimer += delta;
-        if (_waterTimer >= 0.6)
-        {
-            _waterTimer = 0;
-            World.SetWaterPhase(World.WaterPhase + 1);
-        }
 
         Hud.UpdateStats(Player.State, Player.Energy, Playtime, ZoneName, Player.State.Checkpoint);
         Hud.UpdateMinimap(Player.Position, World.Data.PixelSize);
