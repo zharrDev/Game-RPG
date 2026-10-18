@@ -7,12 +7,20 @@ __pycache__/
 .dotnet-home/
 server/**/bin/
 server/**/obj/
+game/bin/
+game/obj/
+
+# Godot: binary lokal + cache impor (dibuat ulang oleh editor/--import)
+.godot-bin/
+game/.godot/
+# hasil ekspor (game/export_presets.cfg)
+game/build/
 
 # Database save game (dibuat saat runtime)
 server/data/
 
-# Node (dipakai hanya untuk tes browser)
-web/node_modules/
+# Node (dipakai hanya untuk tes HTTP backend di tests/)
+tests/node_modules/
 
 # Hasil generate tools/*.py — bisa dibuat ulang:
 #   python3 tools/generate_character_frames.py && python3 tools/make_spritesheet.py
