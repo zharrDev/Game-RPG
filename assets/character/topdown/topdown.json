@@ -1,0 +1,37 @@
+{
+  "cell": {
+    "w": 64,
+    "h": 40
+  },
+  "foot": {
+    "x": 32,
+    "y": 36
+  },
+  "directions": [
+    "down",
+    "up",
+    "left",
+    "right"
+  ],
+  "animations": {
+    "idle": 2,
+    "walk": 4,
+    "run": 4
+  },
+  "frames": 40,
+  "source": "tools/generate_topdown_frames.py",
+  "keys": [
+    "down_idle",
+    "down_run",
+    "down_walk",
+    "left_idle",
+    "left_run",
+    "left_walk",
+    "right_idle",
+    "right_run",
+    "right_walk",
+    "up_idle",
+    "up_run",
+    "up_walk"
+  ]
+}
