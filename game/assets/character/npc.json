@@ -1,0 +1,187 @@
+{
+  "cell": {
+    "w": 64,
+    "h": 40
+  },
+  "foot": {
+    "x": 32,
+    "y": 36
+  },
+  "atlas": {
+    "file": "npc_atlas.png",
+    "columns": 6,
+    "rows": 2,
+    "width": 384,
+    "height": 80
+  },
+  "frame_count": 12,
+  "frames": {
+    "mira:idle_down_1": {
+      "col": 0,
+      "row": 0,
+      "x": 0,
+      "y": 0,
+      "w": 64,
+      "h": 40
+    },
+    "mira:idle_down_2": {
+      "col": 1,
+      "row": 0,
+      "x": 64,
+      "y": 0,
+      "w": 64,
+      "h": 40
+    },
+    "mira:idle_side_1": {
+      "col": 2,
+      "row": 0,
+      "x": 128,
+      "y": 0,
+      "w": 64,
+      "h": 40
+    },
+    "mira:idle_side_2": {
+      "col": 3,
+      "row": 0,
+      "x": 192,
+      "y": 0,
+      "w": 64,
+      "h": 40
+    },
+    "bram:idle_down_1": {
+      "col": 4,
+      "row": 0,
+      "x": 256,
+      "y": 0,
+      "w": 64,
+      "h": 40
+    },
+    "bram:idle_down_2": {
+      "col": 5,
+      "row": 0,
+      "x": 320,
+      "y": 0,
+      "w": 64,
+      "h": 40
+    },
+    "bram:idle_side_1": {
+      "col": 0,
+      "row": 1,
+      "x": 0,
+      "y": 40,
+      "w": 64,
+      "h": 40
+    },
+    "bram:idle_side_2": {
+      "col": 1,
+      "row": 1,
+      "x": 64,
+      "y": 40,
+      "w": 64,
+      "h": 40
+    },
+    "sari:idle_down_1": {
+      "col": 2,
+      "row": 1,
+      "x": 128,
+      "y": 40,
+      "w": 64,
+      "h": 40
+    },
+    "sari:idle_down_2": {
+      "col": 3,
+      "row": 1,
+      "x": 192,
+      "y": 40,
+      "w": 64,
+      "h": 40
+    },
+    "sari:idle_side_1": {
+      "col": 4,
+      "row": 1,
+      "x": 256,
+      "y": 40,
+      "w": 64,
+      "h": 40
+    },
+    "sari:idle_side_2": {
+      "col": 5,
+      "row": 1,
+      "x": 320,
+      "y": 40,
+      "w": 64,
+      "h": 40
+    }
+  },
+  "animations": {
+    "mira": {
+      "idle_down": [
+        "mira:idle_down_1",
+        "mira:idle_down_2"
+      ],
+      "idle_side": [
+        "mira:idle_side_1",
+        "mira:idle_side_2"
+      ]
+    },
+    "bram": {
+      "idle_down": [
+        "bram:idle_down_1",
+        "bram:idle_down_2"
+      ],
+      "idle_side": [
+        "bram:idle_side_1",
+        "bram:idle_side_2"
+      ]
+    },
+    "sari": {
+      "idle_down": [
+        "sari:idle_down_1",
+        "sari:idle_down_2"
+      ],
+      "idle_side": [
+        "sari:idle_side_1",
+        "sari:idle_side_2"
+      ]
+    }
+  },
+  "palettes": {
+    "mira": {
+      "TUNIC": "#4F7A4A",
+      "TUNIC_S": "#365733",
+      "TUNIC_H": "#729E68",
+      "HAIR": "#3A2A22",
+      "HAIR_S": "#271B16",
+      "HAIR_H": "#553E31",
+      "ARMOR": "#C9B386",
+      "ARMOR_S": "#937E58",
+      "ARMOR_H": "#EAD6A8",
+      "LEATHER": "#7A4F2C",
+      "LEATHER_S": "#54351C",
+      "LEATHER_H": "#996B3D"
+    },
+    "bram": {
+      "TUNIC": "#8C3D33",
+      "TUNIC_S": "#632922",
+      "TUNIC_H": "#B05346",
+      "HAIR": "#5A3A20",
+      "HAIR_S": "#3D2614",
+      "HAIR_H": "#7A512E",
+      "ARMOR": "#9AA6B2",
+      "ARMOR_S": "#6B7682",
+      "ARMOR_H": "#CFD8E2"
+    },
+    "sari": {
+      "TUNIC": "#C7BEA2",
+      "TUNIC_S": "#978F76",
+      "TUNIC_H": "#E4DCC2",
+      "HAIR": "#D8D4C8",
+      "HAIR_S": "#A8A498",
+      "HAIR_H": "#F2EFE6",
+      "ARMOR": "#C7BEA2",
+      "ARMOR_S": "#978F76",
+      "ARMOR_H": "#E4DCC2"
+    }
+  },
+  "source": "tools/build_npc_sprites.py"
+}

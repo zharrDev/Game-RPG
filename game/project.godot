@@ -1,0 +1,37 @@
+; Proyek Godot 4 (.NET) — Arga: Open World RPG (top-down 16-bit)
+; Semua scene dibangun dari kode (lihat scripts/Game.cs) supaya data peta,
+; tileset, dan sprite tetap satu sumber kebenaran: aset hasil tools/generate_*.py.
+
+config_version=5
+
+[application]
+
+config/name="Arga: Open World RPG"
+config/description="RPG solo top-down 16-bit. Backend save/load: ASP.NET Core + SQLite (server/RpgServer)."
+run/main_scene="res://scenes/Main.tscn"
+config/features=PackedStringArray("4.4", "C#", "Forward Plus")
+boot_splash/show_image=false
+config/icon="res://icon.svg"
+
+[dotnet]
+
+project/assembly_name="RpgGame"
+
+[display]
+
+window/size/viewport_width=480
+window/size/viewport_height=270
+window/size/window_width_override=960
+window/size/window_height_override=540
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+2d/snap/snap_2d_transforms_to_pixel=true
+environment/defaults/default_clear_color=Color(0.09, 0.09, 0.11, 1)
+
+[physics]
+
+common/physics_ticks_per_second=60

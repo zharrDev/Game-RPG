@@ -1,0 +1,731 @@
+{
+  "cell": {
+    "w": 64,
+    "h": 40
+  },
+  "foot": {
+    "x": 32,
+    "y": 36
+  },
+  "atlas": {
+    "file": "hero_atlas.png",
+    "columns": 8,
+    "rows": 7,
+    "width": 512,
+    "height": 280
+  },
+  "frame_count": 53,
+  "frames": {
+    "down_idle_1": {
+      "col": 0,
+      "row": 0,
+      "x": 0,
+      "y": 0,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "down"
+    },
+    "down_idle_2": {
+      "col": 1,
+      "row": 0,
+      "x": 64,
+      "y": 0,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "down"
+    },
+    "down_walk_1": {
+      "col": 2,
+      "row": 0,
+      "x": 128,
+      "y": 0,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "down"
+    },
+    "down_walk_2": {
+      "col": 3,
+      "row": 0,
+      "x": 192,
+      "y": 0,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "down"
+    },
+    "down_walk_3": {
+      "col": 4,
+      "row": 0,
+      "x": 256,
+      "y": 0,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "down"
+    },
+    "down_walk_4": {
+      "col": 5,
+      "row": 0,
+      "x": 320,
+      "y": 0,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "down"
+    },
+    "down_run_1": {
+      "col": 6,
+      "row": 0,
+      "x": 384,
+      "y": 0,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "down"
+    },
+    "down_run_2": {
+      "col": 7,
+      "row": 0,
+      "x": 448,
+      "y": 0,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "down"
+    },
+    "down_run_3": {
+      "col": 0,
+      "row": 1,
+      "x": 0,
+      "y": 40,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "down"
+    },
+    "down_run_4": {
+      "col": 1,
+      "row": 1,
+      "x": 64,
+      "y": 40,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "down"
+    },
+    "up_idle_1": {
+      "col": 2,
+      "row": 1,
+      "x": 128,
+      "y": 40,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "up"
+    },
+    "up_idle_2": {
+      "col": 3,
+      "row": 1,
+      "x": 192,
+      "y": 40,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "up"
+    },
+    "up_walk_1": {
+      "col": 4,
+      "row": 1,
+      "x": 256,
+      "y": 40,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "up"
+    },
+    "up_walk_2": {
+      "col": 5,
+      "row": 1,
+      "x": 320,
+      "y": 40,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "up"
+    },
+    "up_walk_3": {
+      "col": 6,
+      "row": 1,
+      "x": 384,
+      "y": 40,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "up"
+    },
+    "up_walk_4": {
+      "col": 7,
+      "row": 1,
+      "x": 448,
+      "y": 40,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "up"
+    },
+    "up_run_1": {
+      "col": 0,
+      "row": 2,
+      "x": 0,
+      "y": 80,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "up"
+    },
+    "up_run_2": {
+      "col": 1,
+      "row": 2,
+      "x": 64,
+      "y": 80,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "up"
+    },
+    "up_run_3": {
+      "col": 2,
+      "row": 2,
+      "x": 128,
+      "y": 80,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "up"
+    },
+    "up_run_4": {
+      "col": 3,
+      "row": 2,
+      "x": 192,
+      "y": 80,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "up"
+    },
+    "left_idle_1": {
+      "col": 4,
+      "row": 2,
+      "x": 256,
+      "y": 80,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "left"
+    },
+    "left_idle_2": {
+      "col": 5,
+      "row": 2,
+      "x": 320,
+      "y": 80,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "left"
+    },
+    "left_walk_1": {
+      "col": 6,
+      "row": 2,
+      "x": 384,
+      "y": 80,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "left"
+    },
+    "left_walk_2": {
+      "col": 7,
+      "row": 2,
+      "x": 448,
+      "y": 80,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "left"
+    },
+    "left_walk_3": {
+      "col": 0,
+      "row": 3,
+      "x": 0,
+      "y": 120,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "left"
+    },
+    "left_walk_4": {
+      "col": 1,
+      "row": 3,
+      "x": 64,
+      "y": 120,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "left"
+    },
+    "left_run_1": {
+      "col": 2,
+      "row": 3,
+      "x": 128,
+      "y": 120,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "left"
+    },
+    "left_run_2": {
+      "col": 3,
+      "row": 3,
+      "x": 192,
+      "y": 120,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "left"
+    },
+    "left_run_3": {
+      "col": 4,
+      "row": 3,
+      "x": 256,
+      "y": 120,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "left"
+    },
+    "left_run_4": {
+      "col": 5,
+      "row": 3,
+      "x": 320,
+      "y": 120,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "left"
+    },
+    "right_idle_1": {
+      "col": 6,
+      "row": 3,
+      "x": 384,
+      "y": 120,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "right"
+    },
+    "right_idle_2": {
+      "col": 7,
+      "row": 3,
+      "x": 448,
+      "y": 120,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "right"
+    },
+    "right_walk_1": {
+      "col": 0,
+      "row": 4,
+      "x": 0,
+      "y": 160,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "right"
+    },
+    "right_walk_2": {
+      "col": 1,
+      "row": 4,
+      "x": 64,
+      "y": 160,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "right"
+    },
+    "right_walk_3": {
+      "col": 2,
+      "row": 4,
+      "x": 128,
+      "y": 160,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "right"
+    },
+    "right_walk_4": {
+      "col": 3,
+      "row": 4,
+      "x": 192,
+      "y": 160,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "right"
+    },
+    "right_run_1": {
+      "col": 4,
+      "row": 4,
+      "x": 256,
+      "y": 160,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "right"
+    },
+    "right_run_2": {
+      "col": 5,
+      "row": 4,
+      "x": 320,
+      "y": 160,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "right"
+    },
+    "right_run_3": {
+      "col": 6,
+      "row": 4,
+      "x": 384,
+      "y": 160,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "right"
+    },
+    "right_run_4": {
+      "col": 7,
+      "row": 4,
+      "x": 448,
+      "y": 160,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "right"
+    },
+    "attack_1": {
+      "col": 0,
+      "row": 5,
+      "x": 0,
+      "y": 200,
+      "w": 64,
+      "h": 40,
+      "source": "ai",
+      "facing": "side"
+    },
+    "attack_2": {
+      "col": 1,
+      "row": 5,
+      "x": 64,
+      "y": 200,
+      "w": 64,
+      "h": 40,
+      "source": "ai",
+      "facing": "side"
+    },
+    "attack_3": {
+      "col": 2,
+      "row": 5,
+      "x": 128,
+      "y": 200,
+      "w": 64,
+      "h": 40,
+      "source": "ai",
+      "facing": "side"
+    },
+    "skill_1": {
+      "col": 3,
+      "row": 5,
+      "x": 192,
+      "y": 200,
+      "w": 64,
+      "h": 40,
+      "source": "ai",
+      "facing": "side"
+    },
+    "skill_2": {
+      "col": 4,
+      "row": 5,
+      "x": 256,
+      "y": 200,
+      "w": 64,
+      "h": 40,
+      "source": "ai",
+      "facing": "side"
+    },
+    "skill_3": {
+      "col": 5,
+      "row": 5,
+      "x": 320,
+      "y": 200,
+      "w": 64,
+      "h": 40,
+      "source": "ai",
+      "facing": "side"
+    },
+    "hurt_1": {
+      "col": 6,
+      "row": 5,
+      "x": 384,
+      "y": 200,
+      "w": 64,
+      "h": 40,
+      "source": "ai",
+      "facing": "side"
+    },
+    "death_1": {
+      "col": 7,
+      "row": 5,
+      "x": 448,
+      "y": 200,
+      "w": 64,
+      "h": 40,
+      "source": "ai",
+      "facing": "side"
+    },
+    "death_2": {
+      "col": 0,
+      "row": 6,
+      "x": 0,
+      "y": 240,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "side"
+    },
+    "death_3": {
+      "col": 1,
+      "row": 6,
+      "x": 64,
+      "y": 240,
+      "w": 64,
+      "h": 40,
+      "source": "ai",
+      "facing": "side"
+    },
+    "jump_1": {
+      "col": 2,
+      "row": 6,
+      "x": 128,
+      "y": 240,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "side"
+    },
+    "jump_2": {
+      "col": 3,
+      "row": 6,
+      "x": 192,
+      "y": 240,
+      "w": 64,
+      "h": 40,
+      "source": "procedural",
+      "facing": "side"
+    },
+    "jump_3": {
+      "col": 4,
+      "row": 6,
+      "x": 256,
+      "y": 240,
+      "w": 64,
+      "h": 40,
+      "source": "ai",
+      "facing": "side"
+    }
+  },
+  "animations": {
+    "idle_down": {
+      "frames": [
+        "down_idle_1",
+        "down_idle_2"
+      ],
+      "fps": 6,
+      "loop": true,
+      "mirror": false,
+      "kind": "movement"
+    },
+    "walk_down": {
+      "frames": [
+        "down_walk_1",
+        "down_walk_2",
+        "down_walk_3",
+        "down_walk_4"
+      ],
+      "fps": 10,
+      "loop": true,
+      "mirror": false,
+      "kind": "movement"
+    },
+    "run_down": {
+      "frames": [
+        "down_run_1",
+        "down_run_2",
+        "down_run_3",
+        "down_run_4"
+      ],
+      "fps": 12,
+      "loop": true,
+      "mirror": false,
+      "kind": "movement"
+    },
+    "idle_up": {
+      "frames": [
+        "up_idle_1",
+        "up_idle_2"
+      ],
+      "fps": 6,
+      "loop": true,
+      "mirror": false,
+      "kind": "movement"
+    },
+    "walk_up": {
+      "frames": [
+        "up_walk_1",
+        "up_walk_2",
+        "up_walk_3",
+        "up_walk_4"
+      ],
+      "fps": 10,
+      "loop": true,
+      "mirror": false,
+      "kind": "movement"
+    },
+    "run_up": {
+      "frames": [
+        "up_run_1",
+        "up_run_2",
+        "up_run_3",
+        "up_run_4"
+      ],
+      "fps": 12,
+      "loop": true,
+      "mirror": false,
+      "kind": "movement"
+    },
+    "idle_side": {
+      "frames": [
+        "right_idle_1",
+        "right_idle_2"
+      ],
+      "fps": 6,
+      "loop": true,
+      "mirror": true,
+      "kind": "movement"
+    },
+    "walk_side": {
+      "frames": [
+        "right_walk_1",
+        "right_walk_2",
+        "right_walk_3",
+        "right_walk_4"
+      ],
+      "fps": 10,
+      "loop": true,
+      "mirror": true,
+      "kind": "movement"
+    },
+    "run_side": {
+      "frames": [
+        "right_run_1",
+        "right_run_2",
+        "right_run_3",
+        "right_run_4"
+      ],
+      "fps": 12,
+      "loop": true,
+      "mirror": true,
+      "kind": "movement"
+    },
+    "attack": {
+      "frames": [
+        "attack_1",
+        "attack_2",
+        "attack_3"
+      ],
+      "fps": 12,
+      "loop": false,
+      "mirror": true,
+      "kind": "action"
+    },
+    "skill": {
+      "frames": [
+        "skill_1",
+        "skill_2",
+        "skill_3"
+      ],
+      "fps": 10,
+      "loop": false,
+      "mirror": true,
+      "kind": "action"
+    },
+    "hurt": {
+      "frames": [
+        "hurt_1"
+      ],
+      "fps": 12,
+      "loop": false,
+      "mirror": true,
+      "kind": "action"
+    },
+    "death": {
+      "frames": [
+        "death_1",
+        "death_2",
+        "death_3"
+      ],
+      "fps": 6,
+      "loop": false,
+      "mirror": true,
+      "kind": "action"
+    },
+    "jump": {
+      "frames": [
+        "jump_1",
+        "jump_2",
+        "jump_3"
+      ],
+      "fps": 10,
+      "loop": false,
+      "mirror": true,
+      "kind": "action"
+    }
+  },
+  "side_animation_faces_right": true,
+  "sources": {
+    "movement": "prosedural (tools/generate_topdown_frames.py)",
+    "action_ai": [
+      "attack_1",
+      "attack_2",
+      "attack_3",
+      "death_1",
+      "death_3",
+      "hurt_1",
+      "jump_3",
+      "skill_1",
+      "skill_2",
+      "skill_3"
+    ],
+    "action_procedural": [
+      "death_2",
+      "jump_1",
+      "jump_2"
+    ],
+    "missing_from_ai": [],
+    "ai_scale": 0.25,
+    "proc_scale": 0.3529
+  }
+}

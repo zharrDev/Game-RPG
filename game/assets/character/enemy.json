@@ -1,0 +1,299 @@
+{
+  "cell": {
+    "w": 40,
+    "h": 40
+  },
+  "foot": {
+    "x": 20,
+    "y": 38
+  },
+  "atlas": {
+    "file": "enemy_atlas.png",
+    "columns": 8,
+    "rows": 4,
+    "width": 320,
+    "height": 160
+  },
+  "frame_count": 25,
+  "frames": {
+    "slime:idle_1": {
+      "col": 0,
+      "row": 0,
+      "x": 0,
+      "y": 0,
+      "w": 40,
+      "h": 40
+    },
+    "slime:idle_2": {
+      "col": 1,
+      "row": 0,
+      "x": 40,
+      "y": 0,
+      "w": 40,
+      "h": 40
+    },
+    "slime:move_1": {
+      "col": 2,
+      "row": 0,
+      "x": 80,
+      "y": 0,
+      "w": 40,
+      "h": 40
+    },
+    "slime:move_2": {
+      "col": 3,
+      "row": 0,
+      "x": 120,
+      "y": 0,
+      "w": 40,
+      "h": 40
+    },
+    "slime:attack": {
+      "col": 4,
+      "row": 0,
+      "x": 160,
+      "y": 0,
+      "w": 40,
+      "h": 40
+    },
+    "slime:hurt": {
+      "col": 5,
+      "row": 0,
+      "x": 200,
+      "y": 0,
+      "w": 40,
+      "h": 40
+    },
+    "slime:death_1": {
+      "col": 6,
+      "row": 0,
+      "x": 240,
+      "y": 0,
+      "w": 40,
+      "h": 40
+    },
+    "slime:death_2": {
+      "col": 7,
+      "row": 0,
+      "x": 280,
+      "y": 0,
+      "w": 40,
+      "h": 40
+    },
+    "bat:idle_1": {
+      "col": 0,
+      "row": 1,
+      "x": 0,
+      "y": 40,
+      "w": 40,
+      "h": 40
+    },
+    "bat:idle_2": {
+      "col": 1,
+      "row": 1,
+      "x": 40,
+      "y": 40,
+      "w": 40,
+      "h": 40
+    },
+    "bat:move_1": {
+      "col": 2,
+      "row": 1,
+      "x": 80,
+      "y": 40,
+      "w": 40,
+      "h": 40
+    },
+    "bat:move_2": {
+      "col": 3,
+      "row": 1,
+      "x": 120,
+      "y": 40,
+      "w": 40,
+      "h": 40
+    },
+    "bat:attack": {
+      "col": 4,
+      "row": 1,
+      "x": 160,
+      "y": 40,
+      "w": 40,
+      "h": 40
+    },
+    "bat:hurt": {
+      "col": 5,
+      "row": 1,
+      "x": 200,
+      "y": 40,
+      "w": 40,
+      "h": 40
+    },
+    "bat:death_1": {
+      "col": 6,
+      "row": 1,
+      "x": 240,
+      "y": 40,
+      "w": 40,
+      "h": 40
+    },
+    "bat:death_2": {
+      "col": 7,
+      "row": 1,
+      "x": 280,
+      "y": 40,
+      "w": 40,
+      "h": 40
+    },
+    "warden:idle_1": {
+      "col": 0,
+      "row": 2,
+      "x": 0,
+      "y": 80,
+      "w": 40,
+      "h": 40
+    },
+    "warden:idle_2": {
+      "col": 1,
+      "row": 2,
+      "x": 40,
+      "y": 80,
+      "w": 40,
+      "h": 40
+    },
+    "warden:walk_1": {
+      "col": 2,
+      "row": 2,
+      "x": 80,
+      "y": 80,
+      "w": 40,
+      "h": 40
+    },
+    "warden:walk_2": {
+      "col": 3,
+      "row": 2,
+      "x": 120,
+      "y": 80,
+      "w": 40,
+      "h": 40
+    },
+    "warden:attack_1": {
+      "col": 4,
+      "row": 2,
+      "x": 160,
+      "y": 80,
+      "w": 40,
+      "h": 40
+    },
+    "warden:attack_2": {
+      "col": 5,
+      "row": 2,
+      "x": 200,
+      "y": 80,
+      "w": 40,
+      "h": 40
+    },
+    "warden:hurt_1(1)": {
+      "col": 6,
+      "row": 2,
+      "x": 240,
+      "y": 80,
+      "w": 40,
+      "h": 40
+    },
+    "warden:death_1": {
+      "col": 7,
+      "row": 2,
+      "x": 280,
+      "y": 80,
+      "w": 40,
+      "h": 40
+    },
+    "warden:death_2": {
+      "col": 0,
+      "row": 3,
+      "x": 0,
+      "y": 120,
+      "w": 40,
+      "h": 40
+    }
+  },
+  "enemies": {
+    "slime": {
+      "sprite": "slime",
+      "scale": 1.0,
+      "animations": {
+        "idle": [
+          "slime:idle_1",
+          "slime:idle_2"
+        ],
+        "move": [
+          "slime:move_1",
+          "slime:move_2"
+        ],
+        "attack": [
+          "slime:attack",
+          "slime:attack"
+        ],
+        "hurt": [
+          "slime:hurt"
+        ],
+        "death": [
+          "slime:death_1",
+          "slime:death_2"
+        ]
+      }
+    },
+    "bat": {
+      "sprite": "bat",
+      "scale": 1.0,
+      "animations": {
+        "idle": [
+          "bat:idle_1",
+          "bat:idle_2"
+        ],
+        "move": [
+          "bat:move_1",
+          "bat:move_2"
+        ],
+        "attack": [
+          "bat:attack",
+          "bat:attack"
+        ],
+        "hurt": [
+          "bat:hurt"
+        ],
+        "death": [
+          "bat:death_1",
+          "bat:death_2"
+        ]
+      }
+    },
+    "warden": {
+      "sprite": "warden",
+      "scale": 1.0,
+      "animations": {
+        "idle": [
+          "warden:idle_1",
+          "warden:idle_2"
+        ],
+        "move": [
+          "warden:walk_1",
+          "warden:walk_2"
+        ],
+        "attack": [
+          "warden:attack_1",
+          "warden:attack_2"
+        ],
+        "hurt": [
+          "warden:hurt_1(1)"
+        ],
+        "death": [
+          "warden:death_1",
+          "warden:death_2"
+        ]
+      }
+    }
+  },
+  "missing_from_ai": [],
+  "source": "tools/build_enemy_sprites.py"
+}

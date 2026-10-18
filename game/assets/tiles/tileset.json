@@ -1,0 +1,8007 @@
+{
+  "tile_size": 16,
+  "columns": 16,
+  "rows": 14,
+  "tile_count": 191,
+  "cell_count": 203,
+  "source": "tools/generate_tileset.py",
+  "palette_note": "muted earthy, palet sama dengan karakter Arga (PROMPTS.md)",
+  "tiles": {
+    "grass_1": {
+      "x": 0,
+      "y": 0,
+      "col": 0,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    "grass_2": {
+      "x": 16,
+      "y": 0,
+      "col": 1,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    "grass_3": {
+      "x": 32,
+      "y": 0,
+      "col": 2,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    "grass_4": {
+      "x": 48,
+      "y": 0,
+      "col": 3,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    "grass_flowers_w": {
+      "x": 64,
+      "y": 0,
+      "col": 4,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "grass",
+        "flower"
+      ]
+    },
+    "grass_flowers_p": {
+      "x": 80,
+      "y": 0,
+      "col": 5,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "grass",
+        "flower"
+      ]
+    },
+    "grass_flowers_b": {
+      "x": 96,
+      "y": 0,
+      "col": 6,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "grass",
+        "flower"
+      ]
+    },
+    "grass_flowers_y": {
+      "x": 112,
+      "y": 0,
+      "col": 7,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "grass",
+        "flower"
+      ]
+    },
+    "grass_tuft": {
+      "x": 128,
+      "y": 0,
+      "col": 8,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    "grass_dark": {
+      "x": 144,
+      "y": 0,
+      "col": 9,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    "grass_dirt_patch": {
+      "x": 160,
+      "y": 0,
+      "col": 10,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    "grass_rocks": {
+      "x": 176,
+      "y": 0,
+      "col": 11,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    "meadow_tall": {
+      "x": 192,
+      "y": 0,
+      "col": 12,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    "grass_flowers_mixed": {
+      "x": 208,
+      "y": 0,
+      "col": 13,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "ground",
+      "tags": [
+        "grass",
+        "flower"
+      ]
+    },
+    "dirt_0": {
+      "x": 224,
+      "y": 0,
+      "col": 14,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    "dirt_1": {
+      "x": 240,
+      "y": 0,
+      "col": 15,
+      "row": 0,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    "dirt_2": {
+      "x": 0,
+      "y": 16,
+      "col": 0,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    "dirt_3": {
+      "x": 16,
+      "y": 16,
+      "col": 1,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    "dirt_4": {
+      "x": 32,
+      "y": 16,
+      "col": 2,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    "dirt_5": {
+      "x": 48,
+      "y": 16,
+      "col": 3,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    "dirt_6": {
+      "x": 64,
+      "y": 16,
+      "col": 4,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    "dirt_7": {
+      "x": 80,
+      "y": 16,
+      "col": 5,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    "dirt_8": {
+      "x": 96,
+      "y": 16,
+      "col": 6,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    "dirt_9": {
+      "x": 112,
+      "y": 16,
+      "col": 7,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    "dirt_10": {
+      "x": 128,
+      "y": 16,
+      "col": 8,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    "dirt_11": {
+      "x": 144,
+      "y": 16,
+      "col": 9,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    "dirt_12": {
+      "x": 160,
+      "y": 16,
+      "col": 10,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    "dirt_13": {
+      "x": 176,
+      "y": 16,
+      "col": 11,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    "dirt_14": {
+      "x": 192,
+      "y": 16,
+      "col": 12,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    "dirt_15": {
+      "x": 208,
+      "y": 16,
+      "col": 13,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    "cobble_0": {
+      "x": 224,
+      "y": 16,
+      "col": 14,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    "cobble_1": {
+      "x": 240,
+      "y": 16,
+      "col": 15,
+      "row": 1,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    "cobble_2": {
+      "x": 0,
+      "y": 32,
+      "col": 0,
+      "row": 2,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    "cobble_3": {
+      "x": 16,
+      "y": 32,
+      "col": 1,
+      "row": 2,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    "cobble_4": {
+      "x": 32,
+      "y": 32,
+      "col": 2,
+      "row": 2,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    "cobble_5": {
+      "x": 48,
+      "y": 32,
+      "col": 3,
+      "row": 2,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    "cobble_6": {
+      "x": 64,
+      "y": 32,
+      "col": 4,
+      "row": 2,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    "cobble_7": {
+      "x": 80,
+      "y": 32,
+      "col": 5,
+      "row": 2,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    "cobble_8": {
+      "x": 96,
+      "y": 32,
+      "col": 6,
+      "row": 2,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    "cobble_9": {
+      "x": 112,
+      "y": 32,
+      "col": 7,
+      "row": 2,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    "cobble_10": {
+      "x": 128,
+      "y": 32,
+      "col": 8,
+      "row": 2,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    "cobble_11": {
+      "x": 144,
+      "y": 32,
+      "col": 9,
+      "row": 2,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    "cobble_12": {
+      "x": 160,
+      "y": 32,
+      "col": 10,
+      "row": 2,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    "cobble_13": {
+      "x": 176,
+      "y": 32,
+      "col": 11,
+      "row": 2,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    "cobble_14": {
+      "x": 192,
+      "y": 32,
+      "col": 12,
+      "row": 2,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    "cobble_15": {
+      "x": 208,
+      "y": 32,
+      "col": 13,
+      "row": 2,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    "sand_0": {
+      "x": 224,
+      "y": 32,
+      "col": 14,
+      "row": 2,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    "sand_1": {
+      "x": 240,
+      "y": 32,
+      "col": 15,
+      "row": 2,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    "sand_2": {
+      "x": 0,
+      "y": 48,
+      "col": 0,
+      "row": 3,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    "sand_3": {
+      "x": 16,
+      "y": 48,
+      "col": 1,
+      "row": 3,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    "sand_4": {
+      "x": 32,
+      "y": 48,
+      "col": 2,
+      "row": 3,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    "sand_5": {
+      "x": 48,
+      "y": 48,
+      "col": 3,
+      "row": 3,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    "sand_6": {
+      "x": 64,
+      "y": 48,
+      "col": 4,
+      "row": 3,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    "sand_7": {
+      "x": 80,
+      "y": 48,
+      "col": 5,
+      "row": 3,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    "sand_8": {
+      "x": 96,
+      "y": 48,
+      "col": 6,
+      "row": 3,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    "sand_9": {
+      "x": 112,
+      "y": 48,
+      "col": 7,
+      "row": 3,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    "sand_10": {
+      "x": 128,
+      "y": 48,
+      "col": 8,
+      "row": 3,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    "sand_11": {
+      "x": 144,
+      "y": 48,
+      "col": 9,
+      "row": 3,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    "sand_12": {
+      "x": 160,
+      "y": 48,
+      "col": 10,
+      "row": 3,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    "sand_13": {
+      "x": 176,
+      "y": 48,
+      "col": 11,
+      "row": 3,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    "sand_14": {
+      "x": 192,
+      "y": 48,
+      "col": 12,
+      "row": 3,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    "sand_15": {
+      "x": 208,
+      "y": 48,
+      "col": 13,
+      "row": 3,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    "stone_floor_1": {
+      "x": 224,
+      "y": 48,
+      "col": 14,
+      "row": 3,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "floor",
+      "tags": [
+        "floor"
+      ]
+    },
+    "stone_floor_2": {
+      "x": 240,
+      "y": 48,
+      "col": 15,
+      "row": 3,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "floor",
+      "tags": [
+        "floor"
+      ]
+    },
+    "stone_floor_3": {
+      "x": 0,
+      "y": 64,
+      "col": 0,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "floor",
+      "tags": [
+        "floor"
+      ]
+    },
+    "stone_floor_4": {
+      "x": 16,
+      "y": 64,
+      "col": 1,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "floor",
+      "tags": [
+        "floor"
+      ]
+    },
+    "stone_floor_cracked": {
+      "x": 32,
+      "y": 64,
+      "col": 2,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "floor",
+      "tags": [
+        "floor"
+      ]
+    },
+    "water_0": {
+      "x": 48,
+      "y": 64,
+      "col": 3,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    "water_0_b": {
+      "x": 64,
+      "y": 64,
+      "col": 4,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    "water_1": {
+      "x": 80,
+      "y": 64,
+      "col": 5,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    "water_1_b": {
+      "x": 96,
+      "y": 64,
+      "col": 6,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    "water_2": {
+      "x": 112,
+      "y": 64,
+      "col": 7,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    "water_2_b": {
+      "x": 128,
+      "y": 64,
+      "col": 8,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    "water_3": {
+      "x": 144,
+      "y": 64,
+      "col": 9,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    "water_3_b": {
+      "x": 160,
+      "y": 64,
+      "col": 10,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    "water_4": {
+      "x": 176,
+      "y": 64,
+      "col": 11,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    "water_4_b": {
+      "x": 192,
+      "y": 64,
+      "col": 12,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    "water_5": {
+      "x": 208,
+      "y": 64,
+      "col": 13,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    "water_5_b": {
+      "x": 224,
+      "y": 64,
+      "col": 14,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    "water_6": {
+      "x": 240,
+      "y": 64,
+      "col": 15,
+      "row": 4,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    "water_6_b": {
+      "x": 0,
+      "y": 80,
+      "col": 0,
+      "row": 5,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    "water_7": {
+      "x": 16,
+      "y": 80,
+      "col": 1,
+      "row": 5,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    "water_7_b": {
+      "x": 32,
+      "y": 80,
+      "col": 2,
+      "row": 5,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    "water_8": {
+      "x": 48,
+      "y": 80,
+      "col": 3,
+      "row": 5,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    "water_8_b": {
+      "x": 64,
+      "y": 80,
+      "col": 4,
+      "row": 5,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    "water_9": {
+      "x": 80,
+      "y": 80,
+      "col": 5,
+      "row": 5,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    "water_9_b": {
+      "x": 96,
+      "y": 80,
+      "col": 6,
+      "row": 5,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    "water_10": {
+      "x": 112,
+      "y": 80,
+      "col": 7,
+      "row": 5,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    "water_10_b": {
+      "x": 128,
+      "y": 80,
+      "col": 8,
+      "row": 5,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    "water_11": {
+      "x": 144,
+      "y": 80,
+      "col": 9,
+      "row": 5,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    "water_11_b": {
+      "x": 160,
+      "y": 80,
+      "col": 10,
+      "row": 5,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    "water_12": {
+      "x": 176,
+      "y": 80,
+      "col": 11,
+      "row": 5,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    "water_12_b": {
+      "x": 192,
+      "y": 80,
+      "col": 12,
+      "row": 5,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    "water_13": {
+      "x": 208,
+      "y": 80,
+      "col": 13,
+      "row": 5,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    "water_13_b": {
+      "x": 224,
+      "y": 80,
+      "col": 14,
+      "row": 5,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    "water_14": {
+      "x": 240,
+      "y": 80,
+      "col": 15,
+      "row": 5,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    "water_14_b": {
+      "x": 0,
+      "y": 96,
+      "col": 0,
+      "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    "water_15": {
+      "x": 16,
+      "y": 96,
+      "col": 1,
+      "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    "water_15_b": {
+      "x": 32,
+      "y": 96,
+      "col": 2,
+      "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    "water_deep_0": {
+      "x": 48,
+      "y": 96,
+      "col": 3,
+      "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "animated",
+        "water"
+      ]
+    },
+    "water_deep_1": {
+      "x": 64,
+      "y": 96,
+      "col": 4,
+      "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "animated",
+        "water"
+      ]
+    },
+    "water_deep_2": {
+      "x": 80,
+      "y": 96,
+      "col": 5,
+      "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "water",
+      "tags": [
+        "animated",
+        "water"
+      ]
+    },
+    "cliff_top": {
+      "x": 96,
+      "y": 96,
+      "col": 6,
+      "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "cliff",
+      "tags": []
+    },
+    "cliff_top_l": {
+      "x": 112,
+      "y": 96,
+      "col": 7,
+      "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "cliff",
+      "tags": []
+    },
+    "cliff_top_r": {
+      "x": 128,
+      "y": 96,
+      "col": 8,
+      "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "cliff",
+      "tags": []
+    },
+    "cliff_top_m": {
+      "x": 144,
+      "y": 96,
+      "col": 9,
+      "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "cliff",
+      "tags": []
+    },
+    "cliff_face": {
+      "x": 160,
+      "y": 96,
+      "col": 10,
+      "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "cliff",
+      "tags": []
+    },
+    "cliff_face_l": {
+      "x": 176,
+      "y": 96,
+      "col": 11,
+      "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "cliff",
+      "tags": []
+    },
+    "cliff_face_r": {
+      "x": 192,
+      "y": 96,
+      "col": 12,
+      "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "cliff",
+      "tags": []
+    },
+    "cliff_face_m": {
+      "x": 208,
+      "y": 96,
+      "col": 13,
+      "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "cliff",
+      "tags": []
+    },
+    "cliff_base": {
+      "x": 224,
+      "y": 96,
+      "col": 14,
+      "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "cliff",
+      "tags": []
+    },
+    "cave_floor": {
+      "x": 240,
+      "y": 96,
+      "col": 15,
+      "row": 6,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "cave",
+      "tags": []
+    },
+    "cave_void": {
+      "x": 0,
+      "y": 112,
+      "col": 0,
+      "row": 7,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "cave",
+      "tags": []
+    },
+    "cave_wall": {
+      "x": 16,
+      "y": 112,
+      "col": 1,
+      "row": 7,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "cave",
+      "tags": []
+    },
+    "oak_small": {
+      "x": 32,
+      "y": 112,
+      "col": 2,
+      "row": 7,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "tree",
+      "tags": [
+        "tree"
+      ]
+    },
+    "oak_large": {
+      "x": 48,
+      "y": 112,
+      "col": 3,
+      "row": 7,
+      "w": 2,
+      "h": 2,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "above": true,
+      "base_row": 1,
+      "sort_y": 32,
+      "kind": "tree",
+      "tags": [
+        "tree"
+      ]
+    },
+    "pine_small": {
+      "x": 80,
+      "y": 112,
+      "col": 5,
+      "row": 7,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "tree",
+      "tags": [
+        "tree"
+      ]
+    },
+    "pine_large": {
+      "x": 96,
+      "y": 112,
+      "col": 6,
+      "row": 7,
+      "w": 2,
+      "h": 2,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "above": true,
+      "base_row": 1,
+      "sort_y": 32,
+      "kind": "tree",
+      "tags": [
+        "tree"
+      ]
+    },
+    "bush_1": {
+      "x": 128,
+      "y": 112,
+      "col": 8,
+      "row": 7,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "bush"
+      ]
+    },
+    "bush_2": {
+      "x": 144,
+      "y": 112,
+      "col": 9,
+      "row": 7,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "bush"
+      ]
+    },
+    "bush_flowers": {
+      "x": 160,
+      "y": 112,
+      "col": 10,
+      "row": 7,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "bush"
+      ]
+    },
+    "bush_berry": {
+      "x": 176,
+      "y": 112,
+      "col": 11,
+      "row": 7,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "bush"
+      ]
+    },
+    "boulder_1": {
+      "x": 192,
+      "y": 112,
+      "col": 12,
+      "row": 7,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "rock"
+      ]
+    },
+    "boulder_2": {
+      "x": 208,
+      "y": 112,
+      "col": 13,
+      "row": 7,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "rock"
+      ]
+    },
+    "rock_small": {
+      "x": 224,
+      "y": 112,
+      "col": 14,
+      "row": 7,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "rock"
+      ]
+    },
+    "pebbles": {
+      "x": 240,
+      "y": 112,
+      "col": 15,
+      "row": 7,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "dressing",
+      "tags": [
+        "rock"
+      ]
+    },
+    "stump": {
+      "x": 0,
+      "y": 128,
+      "col": 0,
+      "row": 8,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "wood"
+      ]
+    },
+    "log": {
+      "x": 16,
+      "y": 128,
+      "col": 1,
+      "row": 8,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "wood"
+      ]
+    },
+    "fence_h": {
+      "x": 32,
+      "y": 128,
+      "col": 2,
+      "row": 8,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "fence"
+      ]
+    },
+    "fence_v": {
+      "x": 80,
+      "y": 128,
+      "col": 5,
+      "row": 8,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "fence"
+      ]
+    },
+    "fence_post": {
+      "x": 128,
+      "y": 128,
+      "col": 8,
+      "row": 8,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "fence"
+      ]
+    },
+    "gate_closed": {
+      "x": 144,
+      "y": 128,
+      "col": 9,
+      "row": 8,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "fence"
+      ]
+    },
+    "gate_open": {
+      "x": 160,
+      "y": 128,
+      "col": 10,
+      "row": 8,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "fence"
+      ]
+    },
+    "signpost": {
+      "x": 176,
+      "y": 128,
+      "col": 11,
+      "row": 8,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "detail"
+      ]
+    },
+    "signpost_r": {
+      "x": 192,
+      "y": 128,
+      "col": 12,
+      "row": 8,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "detail"
+      ]
+    },
+    "wall_wood": {
+      "x": 208,
+      "y": 128,
+      "col": 13,
+      "row": 8,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "wall",
+      "tags": []
+    },
+    "wall_wood_window": {
+      "x": 224,
+      "y": 128,
+      "col": 14,
+      "row": 8,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "wall",
+      "tags": []
+    },
+    "wall_wood_door": {
+      "x": 240,
+      "y": 128,
+      "col": 15,
+      "row": 8,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "wall",
+      "tags": []
+    },
+    "wall_stone": {
+      "x": 0,
+      "y": 144,
+      "col": 0,
+      "row": 9,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "wall",
+      "tags": []
+    },
+    "wall_stone_window": {
+      "x": 16,
+      "y": 144,
+      "col": 1,
+      "row": 9,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "wall",
+      "tags": []
+    },
+    "wall_plaster": {
+      "x": 32,
+      "y": 144,
+      "col": 2,
+      "row": 9,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "wall",
+      "tags": []
+    },
+    "wall_plaster_window": {
+      "x": 48,
+      "y": 144,
+      "col": 3,
+      "row": 9,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "wall",
+      "tags": []
+    },
+    "roof_thatch_ridge_l": {
+      "x": 64,
+      "y": 144,
+      "col": 4,
+      "row": 9,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_thatch_ridge_m": {
+      "x": 80,
+      "y": 144,
+      "col": 5,
+      "row": 9,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_thatch_ridge_r": {
+      "x": 96,
+      "y": 144,
+      "col": 6,
+      "row": 9,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_thatch_mid_l": {
+      "x": 112,
+      "y": 144,
+      "col": 7,
+      "row": 9,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_thatch_mid_m": {
+      "x": 128,
+      "y": 144,
+      "col": 8,
+      "row": 9,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_thatch_mid_r": {
+      "x": 144,
+      "y": 144,
+      "col": 9,
+      "row": 9,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_thatch_eave_l": {
+      "x": 160,
+      "y": 144,
+      "col": 10,
+      "row": 9,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_thatch_eave_m": {
+      "x": 176,
+      "y": 144,
+      "col": 11,
+      "row": 9,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_thatch_eave_r": {
+      "x": 192,
+      "y": 144,
+      "col": 12,
+      "row": 9,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_thatch_edge_l": {
+      "x": 208,
+      "y": 144,
+      "col": 13,
+      "row": 9,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_thatch_edge_r": {
+      "x": 224,
+      "y": 144,
+      "col": 14,
+      "row": 9,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_slate_ridge_l": {
+      "x": 240,
+      "y": 144,
+      "col": 15,
+      "row": 9,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_slate_ridge_m": {
+      "x": 0,
+      "y": 160,
+      "col": 0,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_slate_ridge_r": {
+      "x": 16,
+      "y": 160,
+      "col": 1,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_slate_mid_l": {
+      "x": 32,
+      "y": 160,
+      "col": 2,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_slate_mid_m": {
+      "x": 48,
+      "y": 160,
+      "col": 3,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_slate_mid_r": {
+      "x": 64,
+      "y": 160,
+      "col": 4,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_slate_eave_l": {
+      "x": 80,
+      "y": 160,
+      "col": 5,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_slate_eave_m": {
+      "x": 96,
+      "y": 160,
+      "col": 6,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_slate_eave_r": {
+      "x": 112,
+      "y": 160,
+      "col": 7,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_slate_edge_l": {
+      "x": 128,
+      "y": 160,
+      "col": 8,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "roof_slate_edge_r": {
+      "x": 144,
+      "y": 160,
+      "col": 9,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "roof",
+      "tags": []
+    },
+    "chimney_top": {
+      "x": 160,
+      "y": 160,
+      "col": 10,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "house"
+      ]
+    },
+    "chimney_body": {
+      "x": 176,
+      "y": 160,
+      "col": 11,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "house"
+      ]
+    },
+    "stair_stone": {
+      "x": 192,
+      "y": 160,
+      "col": 12,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "stair",
+      "tags": [
+        "house"
+      ]
+    },
+    "stair_wood": {
+      "x": 208,
+      "y": 160,
+      "col": 13,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "stair",
+      "tags": [
+        "house"
+      ]
+    },
+    "bridge_deck_l": {
+      "x": 224,
+      "y": 160,
+      "col": 14,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    "bridge_deck_m": {
+      "x": 240,
+      "y": 160,
+      "col": 15,
+      "row": 10,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    "bridge_deck_r": {
+      "x": 0,
+      "y": 176,
+      "col": 0,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    "bridge_rail_l": {
+      "x": 16,
+      "y": 176,
+      "col": 1,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    "bridge_rail_m": {
+      "x": 32,
+      "y": 176,
+      "col": 2,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    "bridge_rail_r": {
+      "x": 48,
+      "y": 176,
+      "col": 3,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    "bridge_v": {
+      "x": 64,
+      "y": 176,
+      "col": 4,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    "bridge_v_end": {
+      "x": 80,
+      "y": 176,
+      "col": 5,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": false,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    "well": {
+      "x": 96,
+      "y": 176,
+      "col": 6,
+      "row": 11,
+      "w": 2,
+      "h": 2,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "above": true,
+      "base_row": 1,
+      "sort_y": 32,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    "barrel": {
+      "x": 128,
+      "y": 176,
+      "col": 8,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    "crate": {
+      "x": 144,
+      "y": 176,
+      "col": 9,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    "crate_stack": {
+      "x": 160,
+      "y": 176,
+      "col": 10,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    "chest_closed": {
+      "x": 176,
+      "y": 176,
+      "col": 11,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    "chest_open": {
+      "x": 192,
+      "y": 176,
+      "col": 12,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    "lantern": {
+      "x": 208,
+      "y": 176,
+      "col": 13,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "light"
+      ]
+    },
+    "torch": {
+      "x": 224,
+      "y": 176,
+      "col": 14,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "light"
+      ]
+    },
+    "campfire_1": {
+      "x": 240,
+      "y": 176,
+      "col": 15,
+      "row": 11,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "light",
+        "animated"
+      ]
+    },
+    "campfire_2": {
+      "x": 0,
+      "y": 192,
+      "col": 0,
+      "row": 12,
+      "w": 1,
+      "h": 1,
+      "solid": false,
+      "solid_cells": [],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "light",
+        "animated"
+      ]
+    },
+    "campfire_off": {
+      "x": 16,
+      "y": 192,
+      "col": 1,
+      "row": 12,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    "haystack": {
+      "x": 32,
+      "y": 192,
+      "col": 2,
+      "row": 12,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    "pot": {
+      "x": 48,
+      "y": 192,
+      "col": 3,
+      "row": 12,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    "market_stall": {
+      "x": 64,
+      "y": 192,
+      "col": 4,
+      "row": 12,
+      "w": 1,
+      "h": 1,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 0,
+      "sort_y": 16,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    "cave_entrance": {
+      "x": 128,
+      "y": 192,
+      "col": 8,
+      "row": 12,
+      "w": 2,
+      "h": 2,
+      "solid": true,
+      "solid_cells": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "above": true,
+      "base_row": 1,
+      "sort_y": 32,
+      "kind": "prop",
+      "tags": [
+        "cave"
+      ]
+    }
+  },
+  "cells": [
+    {
+      "name": "grass_1__0_0",
+      "group": "grass_1",
+      "dx": 0,
+      "dy": 0,
+      "col": 0,
+      "row": 0,
+      "rect": [
+        0,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    {
+      "name": "grass_2__0_0",
+      "group": "grass_2",
+      "dx": 0,
+      "dy": 0,
+      "col": 1,
+      "row": 0,
+      "rect": [
+        16,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    {
+      "name": "grass_3__0_0",
+      "group": "grass_3",
+      "dx": 0,
+      "dy": 0,
+      "col": 2,
+      "row": 0,
+      "rect": [
+        32,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    {
+      "name": "grass_4__0_0",
+      "group": "grass_4",
+      "dx": 0,
+      "dy": 0,
+      "col": 3,
+      "row": 0,
+      "rect": [
+        48,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    {
+      "name": "grass_flowers_w__0_0",
+      "group": "grass_flowers_w",
+      "dx": 0,
+      "dy": 0,
+      "col": 4,
+      "row": 0,
+      "rect": [
+        64,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "grass",
+        "flower"
+      ]
+    },
+    {
+      "name": "grass_flowers_p__0_0",
+      "group": "grass_flowers_p",
+      "dx": 0,
+      "dy": 0,
+      "col": 5,
+      "row": 0,
+      "rect": [
+        80,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "grass",
+        "flower"
+      ]
+    },
+    {
+      "name": "grass_flowers_b__0_0",
+      "group": "grass_flowers_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 6,
+      "row": 0,
+      "rect": [
+        96,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "grass",
+        "flower"
+      ]
+    },
+    {
+      "name": "grass_flowers_y__0_0",
+      "group": "grass_flowers_y",
+      "dx": 0,
+      "dy": 0,
+      "col": 7,
+      "row": 0,
+      "rect": [
+        112,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "grass",
+        "flower"
+      ]
+    },
+    {
+      "name": "grass_tuft__0_0",
+      "group": "grass_tuft",
+      "dx": 0,
+      "dy": 0,
+      "col": 8,
+      "row": 0,
+      "rect": [
+        128,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    {
+      "name": "grass_dark__0_0",
+      "group": "grass_dark",
+      "dx": 0,
+      "dy": 0,
+      "col": 9,
+      "row": 0,
+      "rect": [
+        144,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    {
+      "name": "grass_dirt_patch__0_0",
+      "group": "grass_dirt_patch",
+      "dx": 0,
+      "dy": 0,
+      "col": 10,
+      "row": 0,
+      "rect": [
+        160,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    {
+      "name": "grass_rocks__0_0",
+      "group": "grass_rocks",
+      "dx": 0,
+      "dy": 0,
+      "col": 11,
+      "row": 0,
+      "rect": [
+        176,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    {
+      "name": "meadow_tall__0_0",
+      "group": "meadow_tall",
+      "dx": 0,
+      "dy": 0,
+      "col": 12,
+      "row": 0,
+      "rect": [
+        192,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "grass"
+      ]
+    },
+    {
+      "name": "grass_flowers_mixed__0_0",
+      "group": "grass_flowers_mixed",
+      "dx": 0,
+      "dy": 0,
+      "col": 13,
+      "row": 0,
+      "rect": [
+        208,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "ground",
+      "tags": [
+        "grass",
+        "flower"
+      ]
+    },
+    {
+      "name": "dirt_0__0_0",
+      "group": "dirt_0",
+      "dx": 0,
+      "dy": 0,
+      "col": 14,
+      "row": 0,
+      "rect": [
+        224,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    {
+      "name": "dirt_1__0_0",
+      "group": "dirt_1",
+      "dx": 0,
+      "dy": 0,
+      "col": 15,
+      "row": 0,
+      "rect": [
+        240,
+        0,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    {
+      "name": "dirt_2__0_0",
+      "group": "dirt_2",
+      "dx": 0,
+      "dy": 0,
+      "col": 0,
+      "row": 1,
+      "rect": [
+        0,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    {
+      "name": "dirt_3__0_0",
+      "group": "dirt_3",
+      "dx": 0,
+      "dy": 0,
+      "col": 1,
+      "row": 1,
+      "rect": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    {
+      "name": "dirt_4__0_0",
+      "group": "dirt_4",
+      "dx": 0,
+      "dy": 0,
+      "col": 2,
+      "row": 1,
+      "rect": [
+        32,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    {
+      "name": "dirt_5__0_0",
+      "group": "dirt_5",
+      "dx": 0,
+      "dy": 0,
+      "col": 3,
+      "row": 1,
+      "rect": [
+        48,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    {
+      "name": "dirt_6__0_0",
+      "group": "dirt_6",
+      "dx": 0,
+      "dy": 0,
+      "col": 4,
+      "row": 1,
+      "rect": [
+        64,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    {
+      "name": "dirt_7__0_0",
+      "group": "dirt_7",
+      "dx": 0,
+      "dy": 0,
+      "col": 5,
+      "row": 1,
+      "rect": [
+        80,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    {
+      "name": "dirt_8__0_0",
+      "group": "dirt_8",
+      "dx": 0,
+      "dy": 0,
+      "col": 6,
+      "row": 1,
+      "rect": [
+        96,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    {
+      "name": "dirt_9__0_0",
+      "group": "dirt_9",
+      "dx": 0,
+      "dy": 0,
+      "col": 7,
+      "row": 1,
+      "rect": [
+        112,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    {
+      "name": "dirt_10__0_0",
+      "group": "dirt_10",
+      "dx": 0,
+      "dy": 0,
+      "col": 8,
+      "row": 1,
+      "rect": [
+        128,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    {
+      "name": "dirt_11__0_0",
+      "group": "dirt_11",
+      "dx": 0,
+      "dy": 0,
+      "col": 9,
+      "row": 1,
+      "rect": [
+        144,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    {
+      "name": "dirt_12__0_0",
+      "group": "dirt_12",
+      "dx": 0,
+      "dy": 0,
+      "col": 10,
+      "row": 1,
+      "rect": [
+        160,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    {
+      "name": "dirt_13__0_0",
+      "group": "dirt_13",
+      "dx": 0,
+      "dy": 0,
+      "col": 11,
+      "row": 1,
+      "rect": [
+        176,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    {
+      "name": "dirt_14__0_0",
+      "group": "dirt_14",
+      "dx": 0,
+      "dy": 0,
+      "col": 12,
+      "row": 1,
+      "rect": [
+        192,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    {
+      "name": "dirt_15__0_0",
+      "group": "dirt_15",
+      "dx": 0,
+      "dy": 0,
+      "col": 13,
+      "row": 1,
+      "rect": [
+        208,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "path",
+      "tags": [
+        "autotile",
+        "dirt"
+      ]
+    },
+    {
+      "name": "cobble_0__0_0",
+      "group": "cobble_0",
+      "dx": 0,
+      "dy": 0,
+      "col": 14,
+      "row": 1,
+      "rect": [
+        224,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    {
+      "name": "cobble_1__0_0",
+      "group": "cobble_1",
+      "dx": 0,
+      "dy": 0,
+      "col": 15,
+      "row": 1,
+      "rect": [
+        240,
+        16,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    {
+      "name": "cobble_2__0_0",
+      "group": "cobble_2",
+      "dx": 0,
+      "dy": 0,
+      "col": 0,
+      "row": 2,
+      "rect": [
+        0,
+        32,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    {
+      "name": "cobble_3__0_0",
+      "group": "cobble_3",
+      "dx": 0,
+      "dy": 0,
+      "col": 1,
+      "row": 2,
+      "rect": [
+        16,
+        32,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    {
+      "name": "cobble_4__0_0",
+      "group": "cobble_4",
+      "dx": 0,
+      "dy": 0,
+      "col": 2,
+      "row": 2,
+      "rect": [
+        32,
+        32,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    {
+      "name": "cobble_5__0_0",
+      "group": "cobble_5",
+      "dx": 0,
+      "dy": 0,
+      "col": 3,
+      "row": 2,
+      "rect": [
+        48,
+        32,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    {
+      "name": "cobble_6__0_0",
+      "group": "cobble_6",
+      "dx": 0,
+      "dy": 0,
+      "col": 4,
+      "row": 2,
+      "rect": [
+        64,
+        32,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    {
+      "name": "cobble_7__0_0",
+      "group": "cobble_7",
+      "dx": 0,
+      "dy": 0,
+      "col": 5,
+      "row": 2,
+      "rect": [
+        80,
+        32,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    {
+      "name": "cobble_8__0_0",
+      "group": "cobble_8",
+      "dx": 0,
+      "dy": 0,
+      "col": 6,
+      "row": 2,
+      "rect": [
+        96,
+        32,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    {
+      "name": "cobble_9__0_0",
+      "group": "cobble_9",
+      "dx": 0,
+      "dy": 0,
+      "col": 7,
+      "row": 2,
+      "rect": [
+        112,
+        32,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    {
+      "name": "cobble_10__0_0",
+      "group": "cobble_10",
+      "dx": 0,
+      "dy": 0,
+      "col": 8,
+      "row": 2,
+      "rect": [
+        128,
+        32,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    {
+      "name": "cobble_11__0_0",
+      "group": "cobble_11",
+      "dx": 0,
+      "dy": 0,
+      "col": 9,
+      "row": 2,
+      "rect": [
+        144,
+        32,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    {
+      "name": "cobble_12__0_0",
+      "group": "cobble_12",
+      "dx": 0,
+      "dy": 0,
+      "col": 10,
+      "row": 2,
+      "rect": [
+        160,
+        32,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    {
+      "name": "cobble_13__0_0",
+      "group": "cobble_13",
+      "dx": 0,
+      "dy": 0,
+      "col": 11,
+      "row": 2,
+      "rect": [
+        176,
+        32,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    {
+      "name": "cobble_14__0_0",
+      "group": "cobble_14",
+      "dx": 0,
+      "dy": 0,
+      "col": 12,
+      "row": 2,
+      "rect": [
+        192,
+        32,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    {
+      "name": "cobble_15__0_0",
+      "group": "cobble_15",
+      "dx": 0,
+      "dy": 0,
+      "col": 13,
+      "row": 2,
+      "rect": [
+        208,
+        32,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "road",
+      "tags": [
+        "autotile",
+        "cobble"
+      ]
+    },
+    {
+      "name": "sand_0__0_0",
+      "group": "sand_0",
+      "dx": 0,
+      "dy": 0,
+      "col": 14,
+      "row": 2,
+      "rect": [
+        224,
+        32,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    {
+      "name": "sand_1__0_0",
+      "group": "sand_1",
+      "dx": 0,
+      "dy": 0,
+      "col": 15,
+      "row": 2,
+      "rect": [
+        240,
+        32,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    {
+      "name": "sand_2__0_0",
+      "group": "sand_2",
+      "dx": 0,
+      "dy": 0,
+      "col": 0,
+      "row": 3,
+      "rect": [
+        0,
+        48,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    {
+      "name": "sand_3__0_0",
+      "group": "sand_3",
+      "dx": 0,
+      "dy": 0,
+      "col": 1,
+      "row": 3,
+      "rect": [
+        16,
+        48,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    {
+      "name": "sand_4__0_0",
+      "group": "sand_4",
+      "dx": 0,
+      "dy": 0,
+      "col": 2,
+      "row": 3,
+      "rect": [
+        32,
+        48,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    {
+      "name": "sand_5__0_0",
+      "group": "sand_5",
+      "dx": 0,
+      "dy": 0,
+      "col": 3,
+      "row": 3,
+      "rect": [
+        48,
+        48,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    {
+      "name": "sand_6__0_0",
+      "group": "sand_6",
+      "dx": 0,
+      "dy": 0,
+      "col": 4,
+      "row": 3,
+      "rect": [
+        64,
+        48,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    {
+      "name": "sand_7__0_0",
+      "group": "sand_7",
+      "dx": 0,
+      "dy": 0,
+      "col": 5,
+      "row": 3,
+      "rect": [
+        80,
+        48,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    {
+      "name": "sand_8__0_0",
+      "group": "sand_8",
+      "dx": 0,
+      "dy": 0,
+      "col": 6,
+      "row": 3,
+      "rect": [
+        96,
+        48,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    {
+      "name": "sand_9__0_0",
+      "group": "sand_9",
+      "dx": 0,
+      "dy": 0,
+      "col": 7,
+      "row": 3,
+      "rect": [
+        112,
+        48,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    {
+      "name": "sand_10__0_0",
+      "group": "sand_10",
+      "dx": 0,
+      "dy": 0,
+      "col": 8,
+      "row": 3,
+      "rect": [
+        128,
+        48,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    {
+      "name": "sand_11__0_0",
+      "group": "sand_11",
+      "dx": 0,
+      "dy": 0,
+      "col": 9,
+      "row": 3,
+      "rect": [
+        144,
+        48,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    {
+      "name": "sand_12__0_0",
+      "group": "sand_12",
+      "dx": 0,
+      "dy": 0,
+      "col": 10,
+      "row": 3,
+      "rect": [
+        160,
+        48,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    {
+      "name": "sand_13__0_0",
+      "group": "sand_13",
+      "dx": 0,
+      "dy": 0,
+      "col": 11,
+      "row": 3,
+      "rect": [
+        176,
+        48,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    {
+      "name": "sand_14__0_0",
+      "group": "sand_14",
+      "dx": 0,
+      "dy": 0,
+      "col": 12,
+      "row": 3,
+      "rect": [
+        192,
+        48,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    {
+      "name": "sand_15__0_0",
+      "group": "sand_15",
+      "dx": 0,
+      "dy": 0,
+      "col": 13,
+      "row": 3,
+      "rect": [
+        208,
+        48,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "sand",
+      "tags": [
+        "autotile",
+        "sand"
+      ]
+    },
+    {
+      "name": "stone_floor_1__0_0",
+      "group": "stone_floor_1",
+      "dx": 0,
+      "dy": 0,
+      "col": 14,
+      "row": 3,
+      "rect": [
+        224,
+        48,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "floor",
+      "tags": [
+        "floor"
+      ]
+    },
+    {
+      "name": "stone_floor_2__0_0",
+      "group": "stone_floor_2",
+      "dx": 0,
+      "dy": 0,
+      "col": 15,
+      "row": 3,
+      "rect": [
+        240,
+        48,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "floor",
+      "tags": [
+        "floor"
+      ]
+    },
+    {
+      "name": "stone_floor_3__0_0",
+      "group": "stone_floor_3",
+      "dx": 0,
+      "dy": 0,
+      "col": 0,
+      "row": 4,
+      "rect": [
+        0,
+        64,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "floor",
+      "tags": [
+        "floor"
+      ]
+    },
+    {
+      "name": "stone_floor_4__0_0",
+      "group": "stone_floor_4",
+      "dx": 0,
+      "dy": 0,
+      "col": 1,
+      "row": 4,
+      "rect": [
+        16,
+        64,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "floor",
+      "tags": [
+        "floor"
+      ]
+    },
+    {
+      "name": "stone_floor_cracked__0_0",
+      "group": "stone_floor_cracked",
+      "dx": 0,
+      "dy": 0,
+      "col": 2,
+      "row": 4,
+      "rect": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "floor",
+      "tags": [
+        "floor"
+      ]
+    },
+    {
+      "name": "water_0__0_0",
+      "group": "water_0",
+      "dx": 0,
+      "dy": 0,
+      "col": 3,
+      "row": 4,
+      "rect": [
+        48,
+        64,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    {
+      "name": "water_0_b__0_0",
+      "group": "water_0_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 4,
+      "row": 4,
+      "rect": [
+        64,
+        64,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    {
+      "name": "water_1__0_0",
+      "group": "water_1",
+      "dx": 0,
+      "dy": 0,
+      "col": 5,
+      "row": 4,
+      "rect": [
+        80,
+        64,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    {
+      "name": "water_1_b__0_0",
+      "group": "water_1_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 6,
+      "row": 4,
+      "rect": [
+        96,
+        64,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    {
+      "name": "water_2__0_0",
+      "group": "water_2",
+      "dx": 0,
+      "dy": 0,
+      "col": 7,
+      "row": 4,
+      "rect": [
+        112,
+        64,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    {
+      "name": "water_2_b__0_0",
+      "group": "water_2_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 8,
+      "row": 4,
+      "rect": [
+        128,
+        64,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    {
+      "name": "water_3__0_0",
+      "group": "water_3",
+      "dx": 0,
+      "dy": 0,
+      "col": 9,
+      "row": 4,
+      "rect": [
+        144,
+        64,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    {
+      "name": "water_3_b__0_0",
+      "group": "water_3_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 10,
+      "row": 4,
+      "rect": [
+        160,
+        64,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    {
+      "name": "water_4__0_0",
+      "group": "water_4",
+      "dx": 0,
+      "dy": 0,
+      "col": 11,
+      "row": 4,
+      "rect": [
+        176,
+        64,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    {
+      "name": "water_4_b__0_0",
+      "group": "water_4_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 12,
+      "row": 4,
+      "rect": [
+        192,
+        64,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    {
+      "name": "water_5__0_0",
+      "group": "water_5",
+      "dx": 0,
+      "dy": 0,
+      "col": 13,
+      "row": 4,
+      "rect": [
+        208,
+        64,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    {
+      "name": "water_5_b__0_0",
+      "group": "water_5_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 14,
+      "row": 4,
+      "rect": [
+        224,
+        64,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    {
+      "name": "water_6__0_0",
+      "group": "water_6",
+      "dx": 0,
+      "dy": 0,
+      "col": 15,
+      "row": 4,
+      "rect": [
+        240,
+        64,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    {
+      "name": "water_6_b__0_0",
+      "group": "water_6_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 0,
+      "row": 5,
+      "rect": [
+        0,
+        80,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    {
+      "name": "water_7__0_0",
+      "group": "water_7",
+      "dx": 0,
+      "dy": 0,
+      "col": 1,
+      "row": 5,
+      "rect": [
+        16,
+        80,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    {
+      "name": "water_7_b__0_0",
+      "group": "water_7_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 2,
+      "row": 5,
+      "rect": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    {
+      "name": "water_8__0_0",
+      "group": "water_8",
+      "dx": 0,
+      "dy": 0,
+      "col": 3,
+      "row": 5,
+      "rect": [
+        48,
+        80,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    {
+      "name": "water_8_b__0_0",
+      "group": "water_8_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 4,
+      "row": 5,
+      "rect": [
+        64,
+        80,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    {
+      "name": "water_9__0_0",
+      "group": "water_9",
+      "dx": 0,
+      "dy": 0,
+      "col": 5,
+      "row": 5,
+      "rect": [
+        80,
+        80,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    {
+      "name": "water_9_b__0_0",
+      "group": "water_9_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 6,
+      "row": 5,
+      "rect": [
+        96,
+        80,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    {
+      "name": "water_10__0_0",
+      "group": "water_10",
+      "dx": 0,
+      "dy": 0,
+      "col": 7,
+      "row": 5,
+      "rect": [
+        112,
+        80,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    {
+      "name": "water_10_b__0_0",
+      "group": "water_10_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 8,
+      "row": 5,
+      "rect": [
+        128,
+        80,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    {
+      "name": "water_11__0_0",
+      "group": "water_11",
+      "dx": 0,
+      "dy": 0,
+      "col": 9,
+      "row": 5,
+      "rect": [
+        144,
+        80,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    {
+      "name": "water_11_b__0_0",
+      "group": "water_11_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 10,
+      "row": 5,
+      "rect": [
+        160,
+        80,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    {
+      "name": "water_12__0_0",
+      "group": "water_12",
+      "dx": 0,
+      "dy": 0,
+      "col": 11,
+      "row": 5,
+      "rect": [
+        176,
+        80,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    {
+      "name": "water_12_b__0_0",
+      "group": "water_12_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 12,
+      "row": 5,
+      "rect": [
+        192,
+        80,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    {
+      "name": "water_13__0_0",
+      "group": "water_13",
+      "dx": 0,
+      "dy": 0,
+      "col": 13,
+      "row": 5,
+      "rect": [
+        208,
+        80,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    {
+      "name": "water_13_b__0_0",
+      "group": "water_13_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 14,
+      "row": 5,
+      "rect": [
+        224,
+        80,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    {
+      "name": "water_14__0_0",
+      "group": "water_14",
+      "dx": 0,
+      "dy": 0,
+      "col": 15,
+      "row": 5,
+      "rect": [
+        240,
+        80,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    {
+      "name": "water_14_b__0_0",
+      "group": "water_14_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 0,
+      "row": 6,
+      "rect": [
+        0,
+        96,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    {
+      "name": "water_15__0_0",
+      "group": "water_15",
+      "dx": 0,
+      "dy": 0,
+      "col": 1,
+      "row": 6,
+      "rect": [
+        16,
+        96,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water"
+      ]
+    },
+    {
+      "name": "water_15_b__0_0",
+      "group": "water_15_b",
+      "dx": 0,
+      "dy": 0,
+      "col": 2,
+      "row": 6,
+      "rect": [
+        32,
+        96,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "autotile",
+        "water",
+        "animated"
+      ]
+    },
+    {
+      "name": "water_deep_0__0_0",
+      "group": "water_deep_0",
+      "dx": 0,
+      "dy": 0,
+      "col": 3,
+      "row": 6,
+      "rect": [
+        48,
+        96,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "animated",
+        "water"
+      ]
+    },
+    {
+      "name": "water_deep_1__0_0",
+      "group": "water_deep_1",
+      "dx": 0,
+      "dy": 0,
+      "col": 4,
+      "row": 6,
+      "rect": [
+        64,
+        96,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "animated",
+        "water"
+      ]
+    },
+    {
+      "name": "water_deep_2__0_0",
+      "group": "water_deep_2",
+      "dx": 0,
+      "dy": 0,
+      "col": 5,
+      "row": 6,
+      "rect": [
+        80,
+        96,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "water",
+      "tags": [
+        "animated",
+        "water"
+      ]
+    },
+    {
+      "name": "cliff_top__0_0",
+      "group": "cliff_top",
+      "dx": 0,
+      "dy": 0,
+      "col": 6,
+      "row": 6,
+      "rect": [
+        96,
+        96,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "cliff",
+      "tags": []
+    },
+    {
+      "name": "cliff_top_l__0_0",
+      "group": "cliff_top_l",
+      "dx": 0,
+      "dy": 0,
+      "col": 7,
+      "row": 6,
+      "rect": [
+        112,
+        96,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "cliff",
+      "tags": []
+    },
+    {
+      "name": "cliff_top_r__0_0",
+      "group": "cliff_top_r",
+      "dx": 0,
+      "dy": 0,
+      "col": 8,
+      "row": 6,
+      "rect": [
+        128,
+        96,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "cliff",
+      "tags": []
+    },
+    {
+      "name": "cliff_top_m__0_0",
+      "group": "cliff_top_m",
+      "dx": 0,
+      "dy": 0,
+      "col": 9,
+      "row": 6,
+      "rect": [
+        144,
+        96,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "cliff",
+      "tags": []
+    },
+    {
+      "name": "cliff_face__0_0",
+      "group": "cliff_face",
+      "dx": 0,
+      "dy": 0,
+      "col": 10,
+      "row": 6,
+      "rect": [
+        160,
+        96,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "cliff",
+      "tags": []
+    },
+    {
+      "name": "cliff_face_l__0_0",
+      "group": "cliff_face_l",
+      "dx": 0,
+      "dy": 0,
+      "col": 11,
+      "row": 6,
+      "rect": [
+        176,
+        96,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "cliff",
+      "tags": []
+    },
+    {
+      "name": "cliff_face_r__0_0",
+      "group": "cliff_face_r",
+      "dx": 0,
+      "dy": 0,
+      "col": 12,
+      "row": 6,
+      "rect": [
+        192,
+        96,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "cliff",
+      "tags": []
+    },
+    {
+      "name": "cliff_face_m__0_0",
+      "group": "cliff_face_m",
+      "dx": 0,
+      "dy": 0,
+      "col": 13,
+      "row": 6,
+      "rect": [
+        208,
+        96,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "cliff",
+      "tags": []
+    },
+    {
+      "name": "cliff_base__0_0",
+      "group": "cliff_base",
+      "dx": 0,
+      "dy": 0,
+      "col": 14,
+      "row": 6,
+      "rect": [
+        224,
+        96,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "cliff",
+      "tags": []
+    },
+    {
+      "name": "cave_floor__0_0",
+      "group": "cave_floor",
+      "dx": 0,
+      "dy": 0,
+      "col": 15,
+      "row": 6,
+      "rect": [
+        240,
+        96,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "cave",
+      "tags": []
+    },
+    {
+      "name": "cave_void__0_0",
+      "group": "cave_void",
+      "dx": 0,
+      "dy": 0,
+      "col": 0,
+      "row": 7,
+      "rect": [
+        0,
+        112,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "cave",
+      "tags": []
+    },
+    {
+      "name": "cave_wall__0_0",
+      "group": "cave_wall",
+      "dx": 0,
+      "dy": 0,
+      "col": 1,
+      "row": 7,
+      "rect": [
+        16,
+        112,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "cave",
+      "tags": []
+    },
+    {
+      "name": "oak_small__0_0",
+      "group": "oak_small",
+      "dx": 0,
+      "dy": 0,
+      "col": 2,
+      "row": 7,
+      "rect": [
+        32,
+        112,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "tree",
+      "tags": [
+        "tree"
+      ]
+    },
+    {
+      "name": "oak_large__0_0",
+      "group": "oak_large",
+      "dx": 0,
+      "dy": 0,
+      "col": 3,
+      "row": 7,
+      "rect": [
+        48,
+        112,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 32,
+      "above": true,
+      "kind": "tree",
+      "tags": [
+        "tree"
+      ]
+    },
+    {
+      "name": "oak_large__1_0",
+      "group": "oak_large",
+      "dx": 1,
+      "dy": 0,
+      "col": 4,
+      "row": 7,
+      "rect": [
+        64,
+        112,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 32,
+      "above": true,
+      "kind": "tree",
+      "tags": [
+        "tree"
+      ]
+    },
+    {
+      "name": "oak_large__0_1",
+      "group": "oak_large",
+      "dx": 0,
+      "dy": 1,
+      "col": 3,
+      "row": 8,
+      "rect": [
+        48,
+        128,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "tree",
+      "tags": [
+        "tree"
+      ]
+    },
+    {
+      "name": "oak_large__1_1",
+      "group": "oak_large",
+      "dx": 1,
+      "dy": 1,
+      "col": 4,
+      "row": 8,
+      "rect": [
+        64,
+        128,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "tree",
+      "tags": [
+        "tree"
+      ]
+    },
+    {
+      "name": "pine_small__0_0",
+      "group": "pine_small",
+      "dx": 0,
+      "dy": 0,
+      "col": 5,
+      "row": 7,
+      "rect": [
+        80,
+        112,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "tree",
+      "tags": [
+        "tree"
+      ]
+    },
+    {
+      "name": "pine_large__0_0",
+      "group": "pine_large",
+      "dx": 0,
+      "dy": 0,
+      "col": 6,
+      "row": 7,
+      "rect": [
+        96,
+        112,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 32,
+      "above": true,
+      "kind": "tree",
+      "tags": [
+        "tree"
+      ]
+    },
+    {
+      "name": "pine_large__1_0",
+      "group": "pine_large",
+      "dx": 1,
+      "dy": 0,
+      "col": 7,
+      "row": 7,
+      "rect": [
+        112,
+        112,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 32,
+      "above": true,
+      "kind": "tree",
+      "tags": [
+        "tree"
+      ]
+    },
+    {
+      "name": "pine_large__0_1",
+      "group": "pine_large",
+      "dx": 0,
+      "dy": 1,
+      "col": 6,
+      "row": 8,
+      "rect": [
+        96,
+        128,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "tree",
+      "tags": [
+        "tree"
+      ]
+    },
+    {
+      "name": "pine_large__1_1",
+      "group": "pine_large",
+      "dx": 1,
+      "dy": 1,
+      "col": 7,
+      "row": 8,
+      "rect": [
+        112,
+        128,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "tree",
+      "tags": [
+        "tree"
+      ]
+    },
+    {
+      "name": "bush_1__0_0",
+      "group": "bush_1",
+      "dx": 0,
+      "dy": 0,
+      "col": 8,
+      "row": 7,
+      "rect": [
+        128,
+        112,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "bush"
+      ]
+    },
+    {
+      "name": "bush_2__0_0",
+      "group": "bush_2",
+      "dx": 0,
+      "dy": 0,
+      "col": 9,
+      "row": 7,
+      "rect": [
+        144,
+        112,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "bush"
+      ]
+    },
+    {
+      "name": "bush_flowers__0_0",
+      "group": "bush_flowers",
+      "dx": 0,
+      "dy": 0,
+      "col": 10,
+      "row": 7,
+      "rect": [
+        160,
+        112,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "bush"
+      ]
+    },
+    {
+      "name": "bush_berry__0_0",
+      "group": "bush_berry",
+      "dx": 0,
+      "dy": 0,
+      "col": 11,
+      "row": 7,
+      "rect": [
+        176,
+        112,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "bush"
+      ]
+    },
+    {
+      "name": "boulder_1__0_0",
+      "group": "boulder_1",
+      "dx": 0,
+      "dy": 0,
+      "col": 12,
+      "row": 7,
+      "rect": [
+        192,
+        112,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "rock"
+      ]
+    },
+    {
+      "name": "boulder_2__0_0",
+      "group": "boulder_2",
+      "dx": 0,
+      "dy": 0,
+      "col": 13,
+      "row": 7,
+      "rect": [
+        208,
+        112,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "rock"
+      ]
+    },
+    {
+      "name": "rock_small__0_0",
+      "group": "rock_small",
+      "dx": 0,
+      "dy": 0,
+      "col": 14,
+      "row": 7,
+      "rect": [
+        224,
+        112,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "rock"
+      ]
+    },
+    {
+      "name": "pebbles__0_0",
+      "group": "pebbles",
+      "dx": 0,
+      "dy": 0,
+      "col": 15,
+      "row": 7,
+      "rect": [
+        240,
+        112,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "dressing",
+      "tags": [
+        "rock"
+      ]
+    },
+    {
+      "name": "stump__0_0",
+      "group": "stump",
+      "dx": 0,
+      "dy": 0,
+      "col": 0,
+      "row": 8,
+      "rect": [
+        0,
+        128,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "wood"
+      ]
+    },
+    {
+      "name": "log__0_0",
+      "group": "log",
+      "dx": 0,
+      "dy": 0,
+      "col": 1,
+      "row": 8,
+      "rect": [
+        16,
+        128,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "wood"
+      ]
+    },
+    {
+      "name": "fence_h__0_0",
+      "group": "fence_h",
+      "dx": 0,
+      "dy": 0,
+      "col": 2,
+      "row": 8,
+      "rect": [
+        32,
+        128,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "fence"
+      ]
+    },
+    {
+      "name": "fence_v__0_0",
+      "group": "fence_v",
+      "dx": 0,
+      "dy": 0,
+      "col": 5,
+      "row": 8,
+      "rect": [
+        80,
+        128,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "fence"
+      ]
+    },
+    {
+      "name": "fence_post__0_0",
+      "group": "fence_post",
+      "dx": 0,
+      "dy": 0,
+      "col": 8,
+      "row": 8,
+      "rect": [
+        128,
+        128,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "fence"
+      ]
+    },
+    {
+      "name": "gate_closed__0_0",
+      "group": "gate_closed",
+      "dx": 0,
+      "dy": 0,
+      "col": 9,
+      "row": 8,
+      "rect": [
+        144,
+        128,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "fence"
+      ]
+    },
+    {
+      "name": "gate_open__0_0",
+      "group": "gate_open",
+      "dx": 0,
+      "dy": 0,
+      "col": 10,
+      "row": 8,
+      "rect": [
+        160,
+        128,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "fence"
+      ]
+    },
+    {
+      "name": "signpost__0_0",
+      "group": "signpost",
+      "dx": 0,
+      "dy": 0,
+      "col": 11,
+      "row": 8,
+      "rect": [
+        176,
+        128,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "detail"
+      ]
+    },
+    {
+      "name": "signpost_r__0_0",
+      "group": "signpost_r",
+      "dx": 0,
+      "dy": 0,
+      "col": 12,
+      "row": 8,
+      "rect": [
+        192,
+        128,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "detail"
+      ]
+    },
+    {
+      "name": "wall_wood__0_0",
+      "group": "wall_wood",
+      "dx": 0,
+      "dy": 0,
+      "col": 13,
+      "row": 8,
+      "rect": [
+        208,
+        128,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "wall",
+      "tags": []
+    },
+    {
+      "name": "wall_wood_window__0_0",
+      "group": "wall_wood_window",
+      "dx": 0,
+      "dy": 0,
+      "col": 14,
+      "row": 8,
+      "rect": [
+        224,
+        128,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "wall",
+      "tags": []
+    },
+    {
+      "name": "wall_wood_door__0_0",
+      "group": "wall_wood_door",
+      "dx": 0,
+      "dy": 0,
+      "col": 15,
+      "row": 8,
+      "rect": [
+        240,
+        128,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "wall",
+      "tags": []
+    },
+    {
+      "name": "wall_stone__0_0",
+      "group": "wall_stone",
+      "dx": 0,
+      "dy": 0,
+      "col": 0,
+      "row": 9,
+      "rect": [
+        0,
+        144,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "wall",
+      "tags": []
+    },
+    {
+      "name": "wall_stone_window__0_0",
+      "group": "wall_stone_window",
+      "dx": 0,
+      "dy": 0,
+      "col": 1,
+      "row": 9,
+      "rect": [
+        16,
+        144,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "wall",
+      "tags": []
+    },
+    {
+      "name": "wall_plaster__0_0",
+      "group": "wall_plaster",
+      "dx": 0,
+      "dy": 0,
+      "col": 2,
+      "row": 9,
+      "rect": [
+        32,
+        144,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "wall",
+      "tags": []
+    },
+    {
+      "name": "wall_plaster_window__0_0",
+      "group": "wall_plaster_window",
+      "dx": 0,
+      "dy": 0,
+      "col": 3,
+      "row": 9,
+      "rect": [
+        48,
+        144,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": false,
+      "kind": "wall",
+      "tags": []
+    },
+    {
+      "name": "roof_thatch_ridge_l__0_0",
+      "group": "roof_thatch_ridge_l",
+      "dx": 0,
+      "dy": 0,
+      "col": 4,
+      "row": 9,
+      "rect": [
+        64,
+        144,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_thatch_ridge_m__0_0",
+      "group": "roof_thatch_ridge_m",
+      "dx": 0,
+      "dy": 0,
+      "col": 5,
+      "row": 9,
+      "rect": [
+        80,
+        144,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_thatch_ridge_r__0_0",
+      "group": "roof_thatch_ridge_r",
+      "dx": 0,
+      "dy": 0,
+      "col": 6,
+      "row": 9,
+      "rect": [
+        96,
+        144,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_thatch_mid_l__0_0",
+      "group": "roof_thatch_mid_l",
+      "dx": 0,
+      "dy": 0,
+      "col": 7,
+      "row": 9,
+      "rect": [
+        112,
+        144,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_thatch_mid_m__0_0",
+      "group": "roof_thatch_mid_m",
+      "dx": 0,
+      "dy": 0,
+      "col": 8,
+      "row": 9,
+      "rect": [
+        128,
+        144,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_thatch_mid_r__0_0",
+      "group": "roof_thatch_mid_r",
+      "dx": 0,
+      "dy": 0,
+      "col": 9,
+      "row": 9,
+      "rect": [
+        144,
+        144,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_thatch_eave_l__0_0",
+      "group": "roof_thatch_eave_l",
+      "dx": 0,
+      "dy": 0,
+      "col": 10,
+      "row": 9,
+      "rect": [
+        160,
+        144,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_thatch_eave_m__0_0",
+      "group": "roof_thatch_eave_m",
+      "dx": 0,
+      "dy": 0,
+      "col": 11,
+      "row": 9,
+      "rect": [
+        176,
+        144,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_thatch_eave_r__0_0",
+      "group": "roof_thatch_eave_r",
+      "dx": 0,
+      "dy": 0,
+      "col": 12,
+      "row": 9,
+      "rect": [
+        192,
+        144,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_thatch_edge_l__0_0",
+      "group": "roof_thatch_edge_l",
+      "dx": 0,
+      "dy": 0,
+      "col": 13,
+      "row": 9,
+      "rect": [
+        208,
+        144,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_thatch_edge_r__0_0",
+      "group": "roof_thatch_edge_r",
+      "dx": 0,
+      "dy": 0,
+      "col": 14,
+      "row": 9,
+      "rect": [
+        224,
+        144,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_slate_ridge_l__0_0",
+      "group": "roof_slate_ridge_l",
+      "dx": 0,
+      "dy": 0,
+      "col": 15,
+      "row": 9,
+      "rect": [
+        240,
+        144,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_slate_ridge_m__0_0",
+      "group": "roof_slate_ridge_m",
+      "dx": 0,
+      "dy": 0,
+      "col": 0,
+      "row": 10,
+      "rect": [
+        0,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_slate_ridge_r__0_0",
+      "group": "roof_slate_ridge_r",
+      "dx": 0,
+      "dy": 0,
+      "col": 1,
+      "row": 10,
+      "rect": [
+        16,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_slate_mid_l__0_0",
+      "group": "roof_slate_mid_l",
+      "dx": 0,
+      "dy": 0,
+      "col": 2,
+      "row": 10,
+      "rect": [
+        32,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_slate_mid_m__0_0",
+      "group": "roof_slate_mid_m",
+      "dx": 0,
+      "dy": 0,
+      "col": 3,
+      "row": 10,
+      "rect": [
+        48,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_slate_mid_r__0_0",
+      "group": "roof_slate_mid_r",
+      "dx": 0,
+      "dy": 0,
+      "col": 4,
+      "row": 10,
+      "rect": [
+        64,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_slate_eave_l__0_0",
+      "group": "roof_slate_eave_l",
+      "dx": 0,
+      "dy": 0,
+      "col": 5,
+      "row": 10,
+      "rect": [
+        80,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_slate_eave_m__0_0",
+      "group": "roof_slate_eave_m",
+      "dx": 0,
+      "dy": 0,
+      "col": 6,
+      "row": 10,
+      "rect": [
+        96,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_slate_eave_r__0_0",
+      "group": "roof_slate_eave_r",
+      "dx": 0,
+      "dy": 0,
+      "col": 7,
+      "row": 10,
+      "rect": [
+        112,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_slate_edge_l__0_0",
+      "group": "roof_slate_edge_l",
+      "dx": 0,
+      "dy": 0,
+      "col": 8,
+      "row": 10,
+      "rect": [
+        128,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "roof_slate_edge_r__0_0",
+      "group": "roof_slate_edge_r",
+      "dx": 0,
+      "dy": 0,
+      "col": 9,
+      "row": 10,
+      "rect": [
+        144,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "roof",
+      "tags": []
+    },
+    {
+      "name": "chimney_top__0_0",
+      "group": "chimney_top",
+      "dx": 0,
+      "dy": 0,
+      "col": 10,
+      "row": 10,
+      "rect": [
+        160,
+        160,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "house"
+      ]
+    },
+    {
+      "name": "chimney_body__0_0",
+      "group": "chimney_body",
+      "dx": 0,
+      "dy": 0,
+      "col": 11,
+      "row": 10,
+      "rect": [
+        176,
+        160,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "house"
+      ]
+    },
+    {
+      "name": "stair_stone__0_0",
+      "group": "stair_stone",
+      "dx": 0,
+      "dy": 0,
+      "col": 12,
+      "row": 10,
+      "rect": [
+        192,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "stair",
+      "tags": [
+        "house"
+      ]
+    },
+    {
+      "name": "stair_wood__0_0",
+      "group": "stair_wood",
+      "dx": 0,
+      "dy": 0,
+      "col": 13,
+      "row": 10,
+      "rect": [
+        208,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "stair",
+      "tags": [
+        "house"
+      ]
+    },
+    {
+      "name": "bridge_deck_l__0_0",
+      "group": "bridge_deck_l",
+      "dx": 0,
+      "dy": 0,
+      "col": 14,
+      "row": 10,
+      "rect": [
+        224,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    {
+      "name": "bridge_deck_m__0_0",
+      "group": "bridge_deck_m",
+      "dx": 0,
+      "dy": 0,
+      "col": 15,
+      "row": 10,
+      "rect": [
+        240,
+        160,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    {
+      "name": "bridge_deck_r__0_0",
+      "group": "bridge_deck_r",
+      "dx": 0,
+      "dy": 0,
+      "col": 0,
+      "row": 11,
+      "rect": [
+        0,
+        176,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    {
+      "name": "bridge_rail_l__0_0",
+      "group": "bridge_rail_l",
+      "dx": 0,
+      "dy": 0,
+      "col": 1,
+      "row": 11,
+      "rect": [
+        16,
+        176,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    {
+      "name": "bridge_rail_m__0_0",
+      "group": "bridge_rail_m",
+      "dx": 0,
+      "dy": 0,
+      "col": 2,
+      "row": 11,
+      "rect": [
+        32,
+        176,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    {
+      "name": "bridge_rail_r__0_0",
+      "group": "bridge_rail_r",
+      "dx": 0,
+      "dy": 0,
+      "col": 3,
+      "row": 11,
+      "rect": [
+        48,
+        176,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    {
+      "name": "bridge_v__0_0",
+      "group": "bridge_v",
+      "dx": 0,
+      "dy": 0,
+      "col": 4,
+      "row": 11,
+      "rect": [
+        64,
+        176,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    {
+      "name": "bridge_v_end__0_0",
+      "group": "bridge_v_end",
+      "dx": 0,
+      "dy": 0,
+      "col": 5,
+      "row": 11,
+      "rect": [
+        80,
+        176,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": false,
+      "kind": "bridge",
+      "tags": [
+        "bridge"
+      ]
+    },
+    {
+      "name": "well__0_0",
+      "group": "well",
+      "dx": 0,
+      "dy": 0,
+      "col": 6,
+      "row": 11,
+      "rect": [
+        96,
+        176,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 32,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "well__1_0",
+      "group": "well",
+      "dx": 1,
+      "dy": 0,
+      "col": 7,
+      "row": 11,
+      "rect": [
+        112,
+        176,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 32,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "well__0_1",
+      "group": "well",
+      "dx": 0,
+      "dy": 1,
+      "col": 6,
+      "row": 12,
+      "rect": [
+        96,
+        192,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "well__1_1",
+      "group": "well",
+      "dx": 1,
+      "dy": 1,
+      "col": 7,
+      "row": 12,
+      "rect": [
+        112,
+        192,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "barrel__0_0",
+      "group": "barrel",
+      "dx": 0,
+      "dy": 0,
+      "col": 8,
+      "row": 11,
+      "rect": [
+        128,
+        176,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "crate__0_0",
+      "group": "crate",
+      "dx": 0,
+      "dy": 0,
+      "col": 9,
+      "row": 11,
+      "rect": [
+        144,
+        176,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "crate_stack__0_0",
+      "group": "crate_stack",
+      "dx": 0,
+      "dy": 0,
+      "col": 10,
+      "row": 11,
+      "rect": [
+        160,
+        176,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "chest_closed__0_0",
+      "group": "chest_closed",
+      "dx": 0,
+      "dy": 0,
+      "col": 11,
+      "row": 11,
+      "rect": [
+        176,
+        176,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "chest_open__0_0",
+      "group": "chest_open",
+      "dx": 0,
+      "dy": 0,
+      "col": 12,
+      "row": 11,
+      "rect": [
+        192,
+        176,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "lantern__0_0",
+      "group": "lantern",
+      "dx": 0,
+      "dy": 0,
+      "col": 13,
+      "row": 11,
+      "rect": [
+        208,
+        176,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "light"
+      ]
+    },
+    {
+      "name": "torch__0_0",
+      "group": "torch",
+      "dx": 0,
+      "dy": 0,
+      "col": 14,
+      "row": 11,
+      "rect": [
+        224,
+        176,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "light"
+      ]
+    },
+    {
+      "name": "campfire_1__0_0",
+      "group": "campfire_1",
+      "dx": 0,
+      "dy": 0,
+      "col": 15,
+      "row": 11,
+      "rect": [
+        240,
+        176,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "light",
+        "animated"
+      ]
+    },
+    {
+      "name": "campfire_2__0_0",
+      "group": "campfire_2",
+      "dx": 0,
+      "dy": 0,
+      "col": 0,
+      "row": 12,
+      "rect": [
+        0,
+        192,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "light",
+        "animated"
+      ]
+    },
+    {
+      "name": "campfire_off__0_0",
+      "group": "campfire_off",
+      "dx": 0,
+      "dy": 0,
+      "col": 1,
+      "row": 12,
+      "rect": [
+        16,
+        192,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "haystack__0_0",
+      "group": "haystack",
+      "dx": 0,
+      "dy": 0,
+      "col": 2,
+      "row": 12,
+      "rect": [
+        32,
+        192,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "pot__0_0",
+      "group": "pot",
+      "dx": 0,
+      "dy": 0,
+      "col": 3,
+      "row": 12,
+      "rect": [
+        48,
+        192,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "market_stall__0_0",
+      "group": "market_stall",
+      "dx": 0,
+      "dy": 0,
+      "col": 4,
+      "row": 12,
+      "rect": [
+        64,
+        192,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "prop"
+      ]
+    },
+    {
+      "name": "cave_entrance__0_0",
+      "group": "cave_entrance",
+      "dx": 0,
+      "dy": 0,
+      "col": 8,
+      "row": 12,
+      "rect": [
+        128,
+        192,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 32,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "cave"
+      ]
+    },
+    {
+      "name": "cave_entrance__1_0",
+      "group": "cave_entrance",
+      "dx": 1,
+      "dy": 0,
+      "col": 9,
+      "row": 12,
+      "rect": [
+        144,
+        192,
+        16,
+        16
+      ],
+      "solid": true,
+      "sort_y": 32,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "cave"
+      ]
+    },
+    {
+      "name": "cave_entrance__0_1",
+      "group": "cave_entrance",
+      "dx": 0,
+      "dy": 1,
+      "col": 8,
+      "row": 13,
+      "rect": [
+        128,
+        208,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "cave"
+      ]
+    },
+    {
+      "name": "cave_entrance__1_1",
+      "group": "cave_entrance",
+      "dx": 1,
+      "dy": 1,
+      "col": 9,
+      "row": 13,
+      "rect": [
+        144,
+        208,
+        16,
+        16
+      ],
+      "solid": false,
+      "sort_y": 16,
+      "above": true,
+      "kind": "prop",
+      "tags": [
+        "cave"
+      ]
+    }
+  ]
+}

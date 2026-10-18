@@ -1,0 +1,9 @@
+{
+  "name": "arga-server-tests",
+  "private": true,
+  "type": "module",
+  "description": "Tes kontrak HTTP untuk backend RpgServer (C#). Frontend game adalah aplikasi Godot di ./game.",
+  "scripts": {
+    "test": "node --test"
+  }
+}

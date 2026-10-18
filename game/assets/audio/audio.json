@@ -1,0 +1,73 @@
+{
+  "sample_rate": 22050,
+  "sfx": {
+    "step": {
+      "file": "step.wav",
+      "seconds": 0.035,
+      "bytes": 1542,
+      "loop": false
+    },
+    "slash": {
+      "file": "slash.wav",
+      "seconds": 0.11,
+      "bytes": 4850,
+      "loop": false
+    },
+    "hit": {
+      "file": "hit.wav",
+      "seconds": 0.1,
+      "bytes": 4410,
+      "loop": false
+    },
+    "hurt": {
+      "file": "hurt.wav",
+      "seconds": 0.16,
+      "bytes": 7056,
+      "loop": false
+    },
+    "death": {
+      "file": "death.wav",
+      "seconds": 0.74,
+      "bytes": 32634,
+      "loop": false
+    },
+    "levelup": {
+      "file": "levelup.wav",
+      "seconds": 0.49,
+      "bytes": 21606,
+      "loop": false
+    },
+    "quest": {
+      "file": "quest.wav",
+      "seconds": 0.47,
+      "bytes": 20726,
+      "loop": false
+    },
+    "rest": {
+      "file": "rest.wav",
+      "seconds": 0.38,
+      "bytes": 16758,
+      "loop": false
+    },
+    "skill": {
+      "file": "skill.wav",
+      "seconds": 0.22,
+      "bytes": 9702,
+      "loop": false
+    }
+  },
+  "music": {
+    "music_village": {
+      "file": "music_village.wav",
+      "seconds": 6.3,
+      "bytes": 277820,
+      "loop": true
+    },
+    "music_wilds": {
+      "file": "music_wilds.wav",
+      "seconds": 7.749,
+      "bytes": 341744,
+      "loop": true
+    }
+  }
+}
