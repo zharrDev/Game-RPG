@@ -43,6 +43,7 @@ public sealed partial class Game : Node2D
     private readonly CameraRig _cameraRig = new();
     private readonly TimeSystem _time = new();
     private UiManager _ui = null!;
+    private SaveSystem _save = null!;
     private bool _testPending;
     private double _stepTimer;
     private bool _airborne;
@@ -84,6 +85,7 @@ public sealed partial class Game : Node2D
 
         Hud.EnsurePixelFont();   // sebelum BuildWorld: NPC memakai font pixel untuk penanda "!"
         SetupInput();
+        _save = new SaveSystem(this);
         BuildWorld();
 
         // pipeline FX (asap, bloom, grading) + heat haze di tiap titik api
@@ -275,11 +277,7 @@ public sealed partial class Game : Node2D
     }
 
     /// <summary>Catat peristiwa ke catatan perjalanan (dilakukan server, bukan client).</summary>
-    public void LogEvent(string kind, string detail)
-    {
-        if (ProfileId is null) return;
-        Api?.AddEvent(ProfileId, kind, detail);
-    }
+    public void LogEvent(string kind, string detail) => _save.LogEvent(kind, detail);
 
     private void OnMobRemoved(Mob mob)
     {
@@ -655,7 +653,7 @@ public sealed partial class Game : Node2D
         else ShowDialogLine();
     }
 
-    private void CloseDialog()
+    public void CloseDialog()
     {
         _dialog.Clear();
         _dialogNpc = null;
@@ -766,23 +764,10 @@ public sealed partial class Game : Node2D
     // -------------------------------------------------------------- save/load
 
     /// <summary>Simpan otomatis; true kalau berhasil (server atau penyimpanan lokal).</summary>
-    public bool Autosave(string reason)
-    {
-        if (ProfileId is null || Api is null || Player is null) return false;
-        var info = Api.Save(ProfileId, CurrentSlot, BuildState());
-        var target = Api.Offline ? "lokal" : $"slot {CurrentSlot}";
-        if (info is not null) Hud?.Toast($"Tersimpan ({reason}) · {target}");
-        else Hud?.Toast($"Gagal menyimpan ({reason}): {Api.LastError}");
-        return info is not null;
-    }
+    public bool Autosave(string reason) => _save.Autosave(reason);
 
     /// <summary>Simpan sebelum game ditutup (tombol Keluar maupun jendela ditutup).</summary>
-    public bool SaveOnExit()
-    {
-        if (ProfileId is null) return false;
-        AutosaveTimer = 0;
-        return Autosave("keluar");
-    }
+    public bool SaveOnExit() => _save.SaveOnExit();
 
     public override void _Notification(int what)
     {
@@ -796,119 +781,19 @@ public sealed partial class Game : Node2D
 
     public override void _ExitTree() => Sfx?.StopAll();
 
-    public GameState BuildState()
-    {
-        var state = Player!.State;
-        state.X = Player.Position.X;
-        state.Y = Player.Position.Y;
-        state.Zone = ZoneId;
-        state.Playtime = Playtime;
-        return state;
-    }
+    public GameState BuildState() => _save.BuildState();
 
-    public void SaveToSlot(int slot)
-    {
-        if (ProfileId is null || Api is null || Player is null) return;
-        CurrentSlot = slot;
-        var info = Api.Save(ProfileId, slot, BuildState());
-        Hud?.Toast(info is null
-            ? $"Gagal menyimpan slot {slot}: {Api.LastError}"
-            : $"Perjalanan tersimpan di slot {slot}");
-        if (info is not null) Hud?.SetJournal(Api.Journey(ProfileId));
-    }
+    public void SaveToSlot(int slot) => _save.SaveToSlot(slot);
 
-    public void LoadFromSlot(int slot)
-    {
-        if (ProfileId is null || Api is null) return;
-        var state = Api.Load(ProfileId, slot);
-        if (state is null)
-        {
-            Hud?.Toast($"Slot {slot} kosong.");
-            return;
-        }
-        ApplyLoadedState(state);
-        Hud?.Toast($"Lanjut dari slot {slot} — {state.Zone}");
-        CloseMenus();
-    }
-
-    private void ApplyLoadedState(GameState state)
-    {
-        if (Player is null || World is null) return;
-        Player.State.Hp = state.Hp;
-        Player.State.MaxHp = state.MaxHp;
-        Player.State.Level = state.Level;
-        Player.State.Xp = state.Xp;
-        Player.State.SkillLevel = state.SkillLevel;
-        Player.State.Skills = state.Skills;
-        Player.State.Zone = state.Zone;
-        Player.State.Checkpoint = state.Checkpoint;
-        Player.State.Flags = state.Flags;
-        Player.State.Defeated = state.Defeated;
-        Player.State.Gold = state.Gold;
-        Player.State.Potions = state.Potions;
-        Player.State.Deaths = state.Deaths;
-        Player.State.Kills = state.Kills;
-        Playtime = state.Playtime;
-        Player.ApplyState(state);
-        CloseDialog();
-        // tampilkan peti yang sudah dibuka sesuai flag tersimpan
-        foreach (var chest in World.Data.Chests)
-        {
-            if (ChestOpened(chest)) World.SetPropTile(chest.Col, chest.Row, "chest_open");
-        }
-        World.ZoneAt(Player.Position);
-        ZoneId = state.Zone;
-        ZoneName = World.Data.Zones.FirstOrDefault(z => z.Id == state.Zone)?.Name ?? state.Zone;
-    }
+    public void LoadFromSlot(int slot) => _save.LoadFromSlot(slot);
 
     // ------------------------------------------------------------------ menu
 
-    private void ShowProfiles()
-    {
-        if (Hud is null || Api is null) return;
-        Hud.ShowPauseMenu(false);
-        Hud.ShowProfileMenu(true);
-        var profiles = Api.ListProfiles();
-        var status = profiles.Count > 0
-            ? "Pilih profil di bawah, atau buat yang baru:"
-            : "Belum ada profil. Tulis nama lalu tekan \"Buat profil\".";
-        Hud.SetProfiles(profiles, status);
-    }
+    private void ShowProfiles() => _save.ShowProfiles();
 
-    private void CreateProfile(string name)
-    {
-        if (Api is null || Hud is null) return;
-        var profile = Api.CreateProfile(name);
-        if (profile is null)
-        {
-            Hud.Toast($"Gagal membuat profil: {Api.LastError}");
-            ShowProfiles();
-            return;
-        }
-        StartProfile(profile.Id);
-    }
+    private void CreateProfile(string name) => _save.CreateProfile(name);
 
-    private void StartProfile(string profileId)
-    {
-        if (Api is null || Hud is null) return;
-        ProfileId = profileId;
-        var profiles = Api.ListProfiles();
-        ProfileName = profiles.FirstOrDefault(p => p.Id == profileId)?.Name ?? profileId;
-        Hud.ShowProfileMenu(false);
-        Hud.SetJournal(Api.Journey(profileId));
-
-        var resume = Api.Resume(profileId);
-        if (resume is { } saved)
-        {
-            CurrentSlot = saved.Slot;
-            ApplyLoadedState(saved.State);
-            Hud.Toast($"Lanjut perjalanan {ProfileName} — slot {saved.Slot}");
-        }
-        else
-        {
-            Hud.Toast($"Petualangan baru dimulai, {ProfileName}. Tekan F untuk menyimpan.");
-        }
-    }
+    private void StartProfile(string profileId) => _save.StartProfile(profileId);
 
     // ---------------------------------------------------------------- UI/menu
 
