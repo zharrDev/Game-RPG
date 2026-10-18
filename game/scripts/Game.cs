@@ -27,6 +27,7 @@ public sealed partial class Game : Node2D
     public EventBus Bus { get; private set; } = null!;
     public ProgressSystem Progress { get; private set; } = null!;
     public SpawnSystem Spawn { get; private set; } = null!;
+    public CombatSystem Combat { get; private set; } = null!;
     private readonly List<string> _dialog = new();
     private Npc? _dialogNpc;
     private int _dialogIndex;
@@ -92,6 +93,7 @@ public sealed partial class Game : Node2D
         Bus = new EventBus();
         Progress = new ProgressSystem(this);
         Spawn = new SpawnSystem(this);
+        Combat = new CombatSystem(this);
         BuildWorld();
 
         // pipeline FX (asap, bloom, grading) + heat haze di tiap titik api
@@ -138,6 +140,9 @@ public sealed partial class Game : Node2D
         Sfx = new AudioPlayer();
         AddChild(Sfx);
         Sfx.PlayMusic("music_village");
+
+        // umpan balik damage: sistem mengirim event, efek visual/audio dipasang di sini
+        Bus.PlayerDamaged += OnPlayerDamagedFeedback;
 
         if (World is not null) Hud.SetMinimap(World.Minimap);
 
@@ -355,18 +360,14 @@ public sealed partial class Game : Node2D
 
         if (!frozen)
         {
-            foreach (var mob in Mobs.ToArray())
-            {
-                if (!IsInstanceValid(mob)) continue;
-                mob.Tick(delta, Player.Center, Player.Alive && playing, World.Grid, OnMobHitsPlayer);
-            }
+            Combat.TickMobs(delta, playing);
         }
 
         // warga mondar-mandir singkat (tahap 2f, murni visual); berhenti saat dialog/menu/hit-stop
         Spawn.TickNpcs(delta, !playing || frozen || DialogOpen || !Player.Alive);
 
         if (playing && !Player.Alive && Player.DeathTimer >= Rules.DeathDuration)
-            Respawn();
+            Combat.Respawn();
 
         // HUD selalu hidup (jam, minimap, tracker) — termasuk saat dialog/menu
         _ui.UpdateHud();
@@ -616,89 +617,24 @@ public sealed partial class Game : Node2D
         return true;
     }
 
-    private void OnMobHitsPlayer(Mob mob, int damage)
+    // ------------------------------------------------------------- tempur (facade)
+
+    /// <summary>Selesaikan serangan pemain (dipakai Player.Strike & tes).</summary>
+    public void ApplyStrike(Vector2 origin, string facing, int damage, string kind) =>
+        Combat.ApplyStrike(origin, facing, damage, kind);
+
+    /// <summary>Tick semua musuh (dipakai tes headless supaya timer kematian berjalan).</summary>
+    public void MobsTickForTest(double delta) => Combat.MobsTickForTest(delta);
+
+    /// <summary>Umpan balik saat pemain terluka: audio, shake, hit-stop, flash HUD.</summary>
+    private void OnPlayerDamagedFeedback(Mob mob, int damage, bool died)
     {
-        if (Player is null || !Player.Alive) return;
-        var died = Player.TakeDamage(damage);
         Sfx?.Play(died ? "death" : "hurt");
         Feel?.Shake(died ? 5.5f : 4f);
         Feel?.HitStop(0.085);
-        Feel?.Burst(Player.Center, new Color(1f, 0.42f, 0.36f, 0.95f), 6);
+        if (Player is not null) Feel?.Burst(Player.Center, new Color(1f, 0.42f, 0.36f, 0.95f), 6);
         Hud?.FlashDamage();
         Hud?.Toast($"{mob.Stats.Display} menyerangmu  ·  -{damage} HP");
-        if (died)
-        {
-            Player.State.Deaths++;
-            LogEvent("death", $"dikalahkan {mob.Stats.Display} di {ZoneName}");
-        }
-    }
-
-    private void Respawn()
-    {
-        if (Player is null || World is null) return;
-        var checkpoint = World.Data.Checkpoints.FirstOrDefault(c => c.Id == Player.State.Checkpoint)
-                         ?? World.Data.Checkpoints.FirstOrDefault();
-        var pos = checkpoint is null
-            ? new Vector2((World.Data.Spawn.X + 0.5f) * World.TileSize, (World.Data.Spawn.Y + 1f) * World.TileSize)
-            : new Vector2((checkpoint.Col + 0.5f) * World.TileSize, (checkpoint.Row + 1f) * World.TileSize);
-        Player.Position = pos;
-        Player.Action = "idle";
-        Player.DeathTimer = 0;
-        Player.JumpTimer = 0;
-        Player.State.Hp = Math.Max(1, Player.State.MaxHp / 2);
-        CloseDialog();
-        Player.SyncFromState();
-        Hud?.Toast("Kau tumbang... bangkit di checkpoint terakhir.");
-        Autosave("kebangkitan");
-    }
-
-    /// <summary>Selesaikan serangan pemain: cari musuh yang kena, kurangi HP.</summary>
-    public void ApplyStrike(Vector2 origin, string facing, int damage, string kind)
-    {
-        if (World is null) return;
-        var dir = facing switch
-        {
-            "left" => new Vector2(-1, 0),
-            "right" => new Vector2(1, 0),
-            "up" => new Vector2(0, -1),
-            _ => new Vector2(0, 1),
-        };
-        var range = kind == "skill" ? Rules.SkillRange : Rules.AttackRange;
-        Sfx?.Play(kind == "skill" ? "skill" : "slash");
-        var hit = 0;
-        Vector2? firstHit = null;
-        foreach (var mob in Mobs.ToArray())
-        {
-            if (mob.Dead || !IsInstanceValid(mob)) continue;
-            var offset = mob.Position - origin;
-            var distance = offset.Length();
-            if (distance > range) continue;
-            if (kind != "skill" && distance > 0.5f && dir.Dot(offset.Normalized()) < Rules.AttackArcDot) continue;
-            hit++;
-            firstHit ??= mob.Position - new Vector2(0, 8);
-            var died = mob.TakeDamage(damage);
-            var label = kind == "skill" ? "Aura Slash" : "Serangan";
-            Hud?.Toast($"{label}: {mob.Stats.Display} -{damage} HP" + (died ? " (tumbang)" : ""));
-        }
-        if (hit > 0)
-        {
-            Sfx?.Play("hit");
-            Feel?.Shake(kind == "skill" ? 3.2f : 2.4f);
-            Feel?.HitStop(0.055);
-            if (firstHit is not null) Feel?.Burst(firstHit.Value, new Color(1f, 0.86f, 0.5f, 0.95f), 6);
-        }
-        if (hit == 0 && kind == "skill") Hud?.Toast("Aura Slash: tidak ada musuh di jangkauan");
-    }
-
-    /// <summary>Tick semua musuh (dipakai tes headless supaya timer kematian berjalan).</summary>
-    public void MobsTickForTest(double delta)
-    {
-        if (World is null || Player is null) return;
-        foreach (var mob in Mobs.ToArray())
-        {
-            if (!IsInstanceValid(mob)) continue;
-            mob.Tick(delta, Player.Center, false, World.Grid, (_, _) => { });
-        }
     }
 
     // -------------------------------------------------------------- save/load
