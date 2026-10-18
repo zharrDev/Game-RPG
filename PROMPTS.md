@@ -1,4 +1,11 @@
 # 📜 PROMPTS.md — Character Bible & Prompt Library
+
+> ⚠️ **Status (M1): dokumen legacy.** Arah proyek sekarang **top-down
+> survival-investigasi "Arga: Api & Asap"** (lihat `docs/GDD.md`). Bibli
+> side-view di bawah tetap dipakai hanya untuk frame pelengkap yang sudah ada
+> (attack/skill/hurt/death/jump hero, frame AI musuh & NPC). Untuk aset baru
+> ikuti gaya top-down di `docs/GDD.md` dan generator `tools/generate_*.py`.
+
 ## Proyek: Open World RPG Pixel Art (Medieval Fantasy · Side-view · Warrior)
 
 _Dokumen 2 dari 3 · Semua prompt dalam bahasa Inggris (optimal untuk AI image generator)_

@@ -120,7 +120,11 @@ game/                      proyek Godot 4 (.NET)
   project.godot            viewport 480x270 (di-scale 2x), filter piksel = nearest
   scenes/Main.tscn         root; seluruh dunia dibangun dari kode
   scripts/
-    Game.cs                orkestrator: dunia, loop, zona, checkpoint, save otomatis
+    Game.cs                composition root + facade: argumen CLI, urutan _Process,
+                           penyambung event; logika per domain ada di systems/
+    systems/               (M1) EventBus, WorldManager, SpawnSystem, CombatSystem,
+                           ProgressSystem, DialogSystem, InteractionSystem,
+                           SaveSystem, TimeSystem, UiManager, CameraRig
     World.cs               TileMapLayer tanah, prop (y-sort), CollisionGrid, SpriteFrames
     Actors.cs              Player (4 arah, lari, serang, skill, lompat, hurt, mati) + Mob (AI)
     Npc.cs                 warga desa: sprite idle, penanda quest, menghadap pemain
@@ -162,8 +166,9 @@ tests/                     tes HTTP backend (node --test), tanpa browser
    api-persistence.test.mjs  dibuktikan setelah server direstart (SQLite)
 game/assets/font/          pixel.png + pixel.fnt (font HUD, ikut diekspor lewat
                            include_filter di game/export_presets.cfg)
-docs/                      pratinjau (tileset, peta, hero, musuh, NPC, tahap visual
-                           preview-stage-*) — bisa dibuka di
+docs/                      GDD.md (desain "Arga: Api & Asap"), ARCHITECTURE.md (peta
+                           modul & kontrak sistem), pratinjau (tileset, peta, hero,
+                           musuh, NPC, tahap visual preview-stage-*) — bisa dibuka di
                            http://127.0.0.1:5080/preview/preview-world.png
 ```
 
