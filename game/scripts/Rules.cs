@@ -27,6 +27,14 @@ public static class Rules
     public const int MaxPotions = 9;
     public const double DeathDuration = 1.6;
     public const double InteractRange = 26;
+    public const double ExtinguishRange = 34;     // radius semprot air (pemadaman)
+    public const double ExtinguishCost = 12;      // napas yang dipakai sekali semprot
+    public const double ExtinguishCooldown = 0.6;
+    public const double RunEnergyDrain = 7;       // napas terkuras saat berlari
+    public const double RunMinEnergy = 4;         // di bawah ini otomatis berjalan
+    public const double SmokeEnergyDrain = 26;    // napas terkuras di dalam asap
+    public const int SmokeHurt = 3;               // HP per detik saat napas habis di asap
+    public const int FireBaseDamage = 4;
     public const double AutosaveInterval = 30;
     public const int SlotCount = 3;
 

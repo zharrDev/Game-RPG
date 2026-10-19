@@ -24,6 +24,7 @@ public sealed class UiManager
         game.Hud.UpdateStats(game.Player.State, game.Player.Energy, game.Playtime, game.ZoneName, game.Player.State.Checkpoint);
         game.Hud.UpdateMinimap(game.Player.Position, game.World.Data.PixelSize);
         game.Hud.UpdateClock(game.Lighting?.TimeOfDay ?? 0.5f);
+        if (game.Weather is not null) game.Hud.SetWeather(game.Weather.Label, game.Weather.RainAmount);
         RefreshQuestTracker();
     }
 

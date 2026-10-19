@@ -132,6 +132,8 @@ public sealed class WorldData
 {
     public int TileSize = 16, Width, Height;
     public List<string> TileNames = new();
+    public List<string> TerrainNames = new();
+    public int[][] Terrain = Array.Empty<int[]>();
     public int[][] Ground = Array.Empty<int[]>();
     public List<PropPlacement> Props = new();
     public bool[][] Walkable = Array.Empty<bool[]>();
@@ -159,6 +161,15 @@ public sealed class WorldData
 
         foreach (var name in root.GetProperty("tile_names").EnumerateArray())
             data.TileNames.Add(name.GetString() ?? "");
+
+        if (root.TryGetProperty("terrain_names", out var terrainNames))
+            foreach (var name in terrainNames.EnumerateArray())
+                data.TerrainNames.Add(name.GetString() ?? "");
+
+        if (root.TryGetProperty("terrain", out var terrain))
+            data.Terrain = terrain.EnumerateArray()
+                .Select(row => row.EnumerateArray().Select(v => v.GetInt32()).ToArray())
+                .ToArray();
 
         data.Ground = root.GetProperty("ground_tiles").EnumerateArray()
             .Select(row => row.EnumerateArray().Select(v => v.GetInt32()).ToArray())

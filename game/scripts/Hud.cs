@@ -9,7 +9,7 @@ public sealed partial class Hud : CanvasLayer
 {
     private ColorRect _hpBar = null!, _energyBar = null!, _xpBar = null!;
     private Label _hpText = null!, _statsText = null!, _zoneText = null!, _toast = null!, _hint = null!;
-    private Label _clock = null!, _questText = null!;
+    private Label _clock = null!, _weather = null!, _questText = null!;
     private TextureRect _vignette = null!;
     private Panel _pausePanel = null!, _profilePanel = null!;
     private VBoxContainer _pauseBox = null!, _profileBox = null!;
@@ -18,6 +18,7 @@ public sealed partial class Hud : CanvasLayer
     private Label _dialogSpeaker = null!, _dialogText = null!;
     private TextureRect _minimap = null!;
     private MinimapFog _minimapFog = null!;
+    private RainOverlay _rain = null!;
     private ColorRect _minimapDot = null!;
     private LineEdit _nameInput = null!;
     private double _toastTimer;
@@ -38,6 +39,8 @@ public sealed partial class Hud : CanvasLayer
     public string DialogSpeaker => _dialogSpeaker.Text;
     public bool MinimapVisible => _minimap.Texture is not null;
     public string ClockText => _clock.Text;
+    public string WeatherText => _weather.Text;
+    public bool RainVisible => _rain.Visible;
     public string QuestTrackerText => _questText.Text;
     public string PauseSummaryText => _pauseSummary.Text;
     public float VignetteAlpha { get; private set; }
@@ -77,6 +80,16 @@ public sealed partial class Hud : CanvasLayer
         }
         AddChild(_vignette);
 
+        _rain = new RainOverlay
+        {
+            Name = "Rain",
+            Position = Vector2.Zero,
+            Size = new Vector2(480, 270),
+            MouseFilter = Control.MouseFilterEnum.Ignore,
+            Visible = false,
+        };
+        AddChild(_rain);
+
         var top = new Panel { Position = new Vector2(4, 4), Size = new Vector2(196, 40) };
         AddChild(top);
         _hpText = MakeLabel(new Vector2(8, 6), 10);
@@ -97,6 +110,10 @@ public sealed partial class Hud : CanvasLayer
         _clock.Modulate = new Color(0.95f, 0.88f, 0.6f);
         AddChild(_clock);
 
+        _weather = MakeLabel(new Vector2(286, 34), 8);
+        _weather.Modulate = new Color(0.72f, 0.86f, 0.95f);
+        AddChild(_weather);
+
         _questText = MakeLabel(new Vector2(206, 46), 8);
         _questText.Modulate = new Color(0.85f, 0.92f, 1f);
         _questText.Visible = false;
@@ -108,7 +125,7 @@ public sealed partial class Hud : CanvasLayer
 
         _hint = MakeLabel(new Vector2(8, 252), 9);
         _hint.Modulate = new Color(0.85f, 0.85f, 0.9f, 0.85f);
-        _hint.Text = "WASD gerak · Shift lari · J serang · K skill · Spasi lompat · E bicara/istirahat/peti · Q potion · F simpan · Esc menu";
+        _hint.Text = "WASD gerak · Shift lari (napas) · J serang · K skill · R semprot api · E bicara/istirahat/peti · Q potion · F simpan · Esc menu";
         AddChild(_hint);
 
         BuildPauseMenu();
@@ -152,6 +169,13 @@ public sealed partial class Hud : CanvasLayer
     }
 
     public void SetMinimap(Texture2D texture) => _minimap.Texture = texture;
+
+    /// <summary>Cuaca + arah angin (M4); hujan juga menggambar butir layar.</summary>
+    public void SetWeather(string label, float rainAmount)
+    {
+        if (_weather.Text != label) _weather.Text = label;
+        _rain.SetAmount(rainAmount);
+    }
 
     public void ConfigureMinimapFog(ChunkSystem chunks, Vector2 worldSize) =>
         _minimapFog.Configure(chunks, worldSize);

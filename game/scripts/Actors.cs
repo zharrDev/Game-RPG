@@ -21,6 +21,9 @@ public sealed partial class Player : Node2D
     public string Action = "idle";
     public double Energy = Rules.MaxEnergy;
     public double Playtime;
+    /// <summary>Paparan asap 0..1 dari FireSystem; menguras napas dan menahan regen.</summary>
+    public float SmokeExposure;
+    private bool _exhausted;
 
     public double AttackTimer, SkillTimer, HurtTimer, InvulnerableTimer, DeathTimer, JumpTimer;
     public int LevelFlash;
@@ -100,7 +103,11 @@ public sealed partial class Player : Node2D
     public void Tick(double delta, InputState input, CollisionGrid grid)
     {
         Playtime += delta;
-        Energy = Math.Min(Rules.MaxEnergy, Energy + Rules.EnergyRegen * delta);
+        var runningNow = input.Run && input.AnyMovement && !_exhausted && Energy > 0;
+        if (!runningNow && SmokeExposure <= 0.05f)
+            Energy = Math.Min(Rules.MaxEnergy, Energy + Rules.EnergyRegen * delta);
+        if (SmokeExposure > 0.05f)
+            Energy = Math.Max(0, Energy - Rules.SmokeEnergyDrain * SmokeExposure * delta);
         AttackTimer = Math.Max(0, AttackTimer - delta);
         SkillTimer = Math.Max(0, SkillTimer - delta);
         HurtTimer = Math.Max(0, HurtTimer - delta);
@@ -178,10 +185,21 @@ public sealed partial class Player : Node2D
             dir = dir.Normalized();
             Facing = FacingFromVector(dir);
             State.Facing = Facing == "left" ? -1 : 1;
-            var speed = input.Run ? Rules.RunSpeed : Rules.WalkSpeed;
+            var running = input.Run && !_exhausted && Energy > 0;
+            if (running) Energy = Math.Max(0, Energy - Rules.RunEnergyDrain * delta);
+            if (Energy <= 0.01)
+            {
+                _exhausted = true;
+                running = false;
+            }
+            else if (_exhausted && Energy >= 25)
+            {
+                _exhausted = false;
+            }
+            var speed = running ? Rules.RunSpeed : Rules.WalkSpeed;
             var next = grid.Move(Position, dir * (float)(speed * delta), _half);
             Position = grid.Clamp(next, _half);
-            SetAction(input.Run ? "run" : "walk");
+            SetAction(running ? "run" : "walk");
         }
         else
         {

@@ -33,6 +33,9 @@ public sealed partial class Game : Node2D
     public WorldManager Worlds { get; private set; } = null!;
     public ChunkSystem Chunks { get; private set; } = null!;
     public FogOfWar Fog { get; private set; } = null!;
+    public WeatherSystem Weather { get; private set; } = null!;
+    public FireSystem Fire { get; private set; } = null!;
+    public FireVisuals FireVisuals { get; private set; } = null!;
 
     /// <summary>Kotak dialog sedang terbuka (permainan dijeda).</summary>
     public bool DialogOpen => Dialog.Open;
@@ -52,6 +55,7 @@ public sealed partial class Game : Node2D
     private SaveSystem _save = null!;
     private bool _testPending;
     private double _stepTimer;
+    private double _extinguishCooldown;
     private bool _airborne;
     private string? _shotPath;
     private double _shotDelay = 1.5;
@@ -100,12 +104,18 @@ public sealed partial class Game : Node2D
         InteractSystem = new InteractionSystem(this);
         Worlds = new WorldManager(this);
         Chunks = new ChunkSystem();
+        Weather = new WeatherSystem();
+        Weather.SetStage(0);
         BuildWorld();
 
         // fog of war dunia: chunk belum dijelajahi digelapkan (di atas dunia, di bawah HUD)
         Fog = new FogOfWar();
         World.Root.AddChild(Fog);
         Fog.Configure(Chunks);
+
+        // api gameplay: bahan bakar/kelembapan dari terrain, angin & hujan dari cuaca
+        Fire = new FireSystem();
+        Fire.Configure(this);
 
         // pipeline FX (asap, bloom, grading) + heat haze di tiap titik api
         Fx = new Fx();
@@ -123,6 +133,11 @@ public sealed partial class Game : Node2D
         Ambience = new FireAmbience();
         World.Root.AddChild(Ambience);
         Ambience.Configure(World);
+
+        // nyala api gameplay mengikuti sel api (bara memakai kolam Ambience)
+        FireVisuals = new FireVisuals();
+        World.Root.AddChild(FireVisuals);
+        FireVisuals.Configure(this);
 
         Api = new SaveApi(_serverUrl);
         var version = "";
@@ -208,6 +223,7 @@ public sealed partial class Game : Node2D
         Register("potion", Key.Q);
         Register("interact", Key.E);
         Register("quick_save", Key.F);
+        Register("extinguish", Key.R);
         Register("menu", Key.Escape);
     }
 
@@ -299,6 +315,7 @@ public sealed partial class Game : Node2D
         Feel?.Advance(delta);
         if (Feel is not null) _cameraRig.ApplyOffset(Feel.CameraOffset);
         var frozen = Feel?.Frozen == true;
+        _extinguishCooldown = Math.Max(0, _extinguishCooldown - delta);
         // asap yang menempel di dunia: ikut titik tengah kamera (termasuk smoothing)
         var camCenter = _cameraRig.ScreenCenter;
         Fx?.SetCameraCenter(camCenter);
@@ -307,7 +324,8 @@ public sealed partial class Game : Node2D
         // ambience api: nyala, bara, abu zona terbakar, tunas (murni visual)
         Ambience?.SetCameraCenter(camCenter);
         Ambience?.Advance(delta);
-        if (Fx is not null && Ambience is not null) Fx.AshDensity = _ashBase + Ambience.AshBoost;
+        if (Fx is not null && Ambience is not null)
+            Fx.AshDensity = _ashBase + Ambience.AshBoost + (Fire?.SmokeAt(camCenter) ?? 0f) * 0.3f;
 
         var menuPressed = Input.IsActionJustPressed("menu");
         if (menuPressed)
@@ -324,9 +342,14 @@ public sealed partial class Game : Node2D
         if (playing && Input.IsActionJustPressed("interact") && !Interact())
             Hud.Toast("Tidak ada yang bisa diajak bicara di dekat sini");
         if (playing && Input.IsActionJustPressed("potion")) DrinkPotion();
+        if (playing && Player.Alive && !frozen && Input.IsActionJustPressed("extinguish")) TryExtinguish();
         if (playing && Player.Alive && !frozen)
         {
+            Weather.Advance(delta);
+            Fire.Advance(delta);
+            Player.SmokeExposure = Fire.SmokeAt(Player.Position);
             Player.Tick(delta, ReadInput(), World.Grid);
+            Fire.TickPlayer(delta);
             if (Player.JumpTimer > 0)
             {
                 _airborne = true;
@@ -363,6 +386,7 @@ public sealed partial class Game : Node2D
         }
         else if (playing && !frozen)
         {
+            Player.SmokeExposure = 0;
             Player.Tick(delta, default, World.Grid);
         }
 
@@ -453,6 +477,47 @@ public sealed partial class Game : Node2D
 
     /// <summary>Tick semua musuh (dipakai tes headless supaya timer kematian berjalan).</summary>
     public void MobsTickForTest(double delta) => Combat.MobsTickForTest(delta);
+
+    /// <summary>Semprot air (R): padamkan api di sekitar pemain dengan biaya napas.</summary>
+    public bool TryExtinguish()
+    {
+        if (Player is null || !Player.Alive || Fire is null) return false;
+        if (_extinguishCooldown > 0) return false;
+        if (Player.Energy < Rules.ExtinguishCost)
+        {
+            Hud?.Toast("Napas habis — berhenti sebentar untuk mengisi.");
+            return false;
+        }
+        var removed = Fire.Extinguish(Player.Position, (float)Rules.ExtinguishRange);
+        if (removed == 0)
+        {
+            Hud?.Toast("Tidak ada api di dekat sini.");
+            return false;
+        }
+        Player.Energy = Math.Max(0, Player.Energy - Rules.ExtinguishCost);
+        _extinguishCooldown = Rules.ExtinguishCooldown;
+        Sfx?.Play("step", -4f);
+        Feel?.Burst(Player.Position, new Color(0.52f, 0.82f, 1f, 0.95f), 10);
+        Hud?.Toast($"Api padam · {removed} titik");
+        return true;
+    }
+
+    /// <summary>Damage dari bahaya lingkungan (api/asap): tanpa musuh, tetap umpan balik penuh.</summary>
+    public void DamageFromHazard(int damage, string cause)
+    {
+        if (Player is null || !Player.Alive) return;
+        var died = Player.TakeDamage(damage);
+        if (died)
+        {
+            Player.State.Deaths++;
+            LogEvent("death", $"{cause} di {ZoneName}");
+        }
+        Sfx?.Play(died ? "death" : "hurt");
+        Feel?.Shake(died ? 5.5f : 3.2f);
+        Feel?.HitStop(0.06);
+        Hud?.FlashDamage();
+        Hud?.Toast($"{(cause.Length > 0 ? char.ToUpper(cause[0]) + cause[1..] : cause)} · -{damage} HP");
+    }
 
     /// <summary>Umpan balik saat pemain terluka: audio, shake, hit-stop, flash HUD.</summary>
     private void OnPlayerDamagedFeedback(Mob mob, int damage, bool died)
