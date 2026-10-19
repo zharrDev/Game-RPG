@@ -143,6 +143,12 @@ game/                      proyek Godot 4 (.NET)
   assets/                  hasil generate (tileset, peta, atlas) + tekstur FX + shader
 
 server/RpgServer/          ASP.NET Core + SQLite (profil, 3 slot save, resume, journey)
+  Endpoints/               Health, Profile, Save, Journey (minimal API per domain)
+  Data/GameDb.cs           SQLite: skema, meta schema_version, CRUD, backup VACUUM INTO
+  Validation/StateValidator  validasi/normalisasi GameState v1
+  Contracts/               DTO request + bentuk error {error}
+  appsettings.json         Rpg:Host/Port/DatabasePath (env RPG_* tetap menang)
+server/RpgServer.Tests/    harness unit konsol tanpa NuGet (dijalankan test-all)
 tools/                     generator aset + verifikator
    generate_tileset.py     194 tile / 206 cell: rumput, jalan (autotile 16), cobble,
                            air + tepi, tebing, pohon, rumah, atap, jembatan, sumur, gua,
@@ -209,7 +215,9 @@ Yang dijalankan:
    shader termuat, uniform `night`),
    tanah hangus (3 varian, gelap), zona bekas terbakar (di dalam peta + cukup tile
    walkable), dan `include_filter` ekspor mencakup semua aset mentah yang dibaca game.
-2. **build backend C#** dan **build game Godot C#**.
+2. **build backend C#**, **unit test server** (`server/RpgServer.Tests`, harness konsol
+   tanpa NuGet: StateValidator, GameDb, `schema_version`, backup `VACUUM INTO`), dan
+   **build game Godot C#**.
 3. **tes API** (`tests/api.test.mjs`) + **persistensi setelah server direstart**
    (`tests/api-persistence.test.mjs`). Termasuk penjaga bahwa server tidak lagi
    menyajikan HTML/halaman web: `/` harus JSON, `/index.html` & `/prototype.html` 404.
@@ -236,7 +244,10 @@ Yang dijalankan:
     berhenti saat dialog/menu); HUD 2g: jam dunia mengikuti fase (Pagi/Siang/Senja/
     Malam), tracker quest tampil-baru-hilang sesuai progres & flag, vignette kedip
     saat terluka lalu mereda, denyut vignette saat HP < 30%, dan menu jeda memuat
-    ringkasan profil. Keluar dengan exit code ≠ 0 kalau ada yang gagal.
+    ringkasan profil. Seksi "sistem M1" memastikan EventBus, Spawn/Combat/Progress/
+    Dialog/Interaction/WorldManager terpasang, event `mob_killed`/`zone_changed`
+    tercatat deterministik, dan facade dialog/save tetap sama. Keluar dengan exit
+    code ≠ 0 kalau ada yang gagal.
 
 ---
 
