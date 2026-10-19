@@ -1513,6 +1513,9 @@ public static class HeadlessTest
             player.State.Flags.GetValueOrDefault("ending_dalang_lolos"), game.Hud.EndingTitle);
         game.Hud.HideEnding();
 
+        Check("tombol E penutup dialog tidak memicu interaksi baru",
+            !Game.ShouldStartInteraction(true, true, true) && !Game.ShouldStartInteraction(false, true, false) &&
+            Game.ShouldStartInteraction(true, true, false), "aturan frame dialog");
         game.ShowTitleScreen();
         Check("layar judul + intro tampil sebelum profil",
             game.Hud.TitleOpen && !game.Hud.ProfileMenuOpen && game.Hud.TitleText.Contains("API & ASAP"),

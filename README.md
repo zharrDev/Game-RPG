@@ -53,7 +53,7 @@ bash scripts/shot.sh docs/shot-malam.png --time=0.05 --shot-ash=0.3
 | `J` | serang (pedang) |
 | `Spasi` | lompat (frame pose `jump_1`→`jump_3`) |
 | `K` | skill **Aura Slash** — terbuka di level 3, memakai energi |
-| `E` | bicara dengan NPC · buka peti harta · istirahat di api unggun (HP+napas penuh, otomatis simpan) |
+| `E` | bicara dengan NPC · lanjut/tutup dialog · buka peti harta · istirahat di api unggun |
 | `R` | semprot air: padamkan api sekitar (biaya napas; pompa memperluas) |
 | `C` | crafting: tas + resep (bahan dari peti: kain/tali/arang) |
 | `M` | pakai peta sketsa: buka fog sekitar |
@@ -62,7 +62,7 @@ bash scripts/shot.sh docs/shot-malam.png --time=0.05 --shot-ash=0.3
 | `V` | papan bukti: status insiden, bukti terkumpul, skor tersangka |
 | `Q` | minum potion (+40 HP) |
 | `F` | simpan cepat ke slot terakhir |
-| `Esc` | menu: simpan/muat 3 slot, catatan perjalanan, ganti profil, keluar |
+| `Esc` | tutup dialog (saat bicara) · menu: simpan/muat 3 slot, catatan perjalanan, ganti profil, keluar |
 
 ### Alur bermain & penyimpanan
 

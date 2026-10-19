@@ -350,32 +350,37 @@ public sealed partial class Game : Node2D
         var menuPressed = Input.IsActionJustPressed("menu");
         if (menuPressed)
         {
-            if (Hud.ProfileMenuOpen) { }
+            if (DialogOpen) CloseDialog();
+            else if (Hud.ProfileMenuOpen) { }
             else if (Hud.MenuOpen) CloseMenus();
             else OpenPauseMenu();
         }
         if (Input.IsActionJustPressed("quick_save") && ProfileId is not null) SaveToSlot(CurrentSlot);
         if (Input.IsActionJustPressed("craft") && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !DialogOpen)
             ToggleCraftMenu();
-        if (Input.IsActionJustPressed("board") && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !DialogOpen &&
+        var boardPressed = Input.IsActionJustPressed("board");
+        if (boardPressed && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !Hud.CraftOpen && !DialogOpen &&
             !Hud.TitleOpen)
         {
             if (Hud.EndingOpen) Hud.HideEnding();
             else ShowBoardMenu(!Hud.BoardOpen);
         }
-        if (Hud.TitleOpen && Input.IsActionJustPressed("interact")) StartFromTitle();
+        var interactPressed = Input.IsActionJustPressed("interact");
+        if (Hud.TitleOpen && interactPressed) StartFromTitle();
 
-        if (DialogOpen && Input.IsActionJustPressed("interact")) AdvanceDialog();
+        // Penting: tombol yang menutup dialog terakhir tidak boleh langsung
+        // mengajak bicara lagi di frame yang sama (bug "tidak bisa keluar dialog").
+        var dialogWasOpen = DialogOpen;
+        if (dialogWasOpen && interactPressed) AdvanceDialog();
 
         var playing = ProfileId is not null && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !Hud.CraftOpen &&
             !Hud.BoardOpen && !Hud.EndingOpen && !DialogOpen;
-        if (playing && Input.IsActionJustPressed("interact") && !Interact())
+        if (ShouldStartInteraction(playing, interactPressed, dialogWasOpen) && !Interact())
             Hud.Toast("Tidak ada yang bisa diajak bicara di dekat sini");
         if (playing && Input.IsActionJustPressed("potion")) DrinkPotion();
         if (playing && Input.IsActionJustPressed("sketch")) UseMapSketch();
         if (playing && Input.IsActionJustPressed("barrier")) PlaceBarrier();
         if (playing && Input.IsActionJustPressed("plant")) PlantSeed();
-        if (playing && Input.IsActionJustPressed("board")) ShowBoardMenu(!Hud.BoardOpen);
         if (playing && Player.Alive && !frozen && Input.IsActionJustPressed("extinguish")) TryExtinguish();
         if (playing && Player.Alive && !frozen)
         {
@@ -497,6 +502,13 @@ public sealed partial class Game : Node2D
     public bool BuyPotion() => InteractSystem.BuyPotion();
 
     public void OpenDialog(NpcInfo info, IReadOnlyList<string>? lines = null) => Dialog.OpenWith(info, lines);
+
+    /// <summary>
+    /// Aturan frame: tombol E yang menutup dialog terakhir tidak boleh langsung
+    /// memicu interaksi baru di frame yang sama (dulu dialog tak bisa ditutup).
+    /// </summary>
+    public static bool ShouldStartInteraction(bool playing, bool interactPressed, bool dialogWasOpen) =>
+        playing && interactPressed && !dialogWasOpen;
 
     public void AdvanceDialog() => Dialog.Advance();
 
