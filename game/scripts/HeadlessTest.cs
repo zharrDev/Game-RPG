@@ -1107,7 +1107,7 @@ public static class HeadlessTest
             player.State.Flags.Remove(key);
         game.Objectives.Configure();
 
-        Check("katalog barang & resep termuat", ItemCatalog.Items.Count >= 8 && ItemCatalog.Recipes.Count == 4,
+        Check("katalog barang & resep termuat", ItemCatalog.Items.Count >= 10 && ItemCatalog.Recipes.Count >= 5,
             $"{ItemCatalog.Items.Count} barang, {ItemCatalog.Recipes.Count} resep");
         Check("misi awal aktif", game.Objectives.ActiveId == "kain" && game.Objectives.TrackerLine.Contains("ain"),
             $"{game.Objectives.ActiveId}: {game.Objectives.TrackerLine}");
@@ -1265,7 +1265,7 @@ public static class HeadlessTest
         Check("konfrontasi tersangka membuka dialog khusus", confronted && game.DialogOpen &&
             game.Hud.DialogText.Contains("Lena"), game.Hud.DialogText);
         Check("kasus Pos Loji ditandai & hadiah masuk",
-            player.State.Flags.GetValueOrDefault("kasus_pos_loji") && game.Objectives.ActiveId.Length == 0,
+            player.State.Flags.GetValueOrDefault("kasus_pos_loji") && game.Objectives.ActiveId == "pos_bukit",
             $"{game.Objectives.ActiveId} gold={player.State.Gold}");
         while (game.DialogOpen) game.AdvanceDialog();
 
@@ -1275,8 +1275,8 @@ public static class HeadlessTest
             game.Incidents.Done, $"{game.Fire.TotalIgnitions}");
 
         game.RefreshQuestTracker();
-        Check("tracker menampilkan semua misi selesai",
-            game.Objectives.TrackerLine.Contains("Semua misi"), game.Objectives.TrackerLine);
+        Check("tracker melanjutkan ke misi Pos Bukit",
+            game.Objectives.TrackerLine.Contains("Bukit"), game.Objectives.TrackerLine);
 
         var caseState = game.BuildState();
         var caseJson = caseState.ToJson().ToJsonString();
@@ -1297,6 +1297,122 @@ public static class HeadlessTest
         game.Objectives.Configure();
         game.Incidents.Configure();
         game.CloseDialog();
+
+        GD.Print("=== M7: investigasi penuh, papan bukti & pemulihan ===");
+        var savedInventory7 = new Dictionary<string, int>(player.State.Inventory);
+        var savedFlags7 = new Dictionary<string, bool>(player.State.Flags);
+        var savedExplored7 = game.Chunks.Snapshot();
+        var savedRestored7 = player.State.Restored;
+        var savedGold7 = player.State.Gold;
+        var savedXp7 = player.State.Xp;
+        var savedLevel7 = player.State.Level;
+        var savedMaxHp7 = player.State.MaxHp;
+        var savedPos7 = player.Position;
+
+        Check("tiga insiden data-driven termuat", game.Incidents.All.Count >= 3 &&
+            game.Incidents.All.All(i => i.Evidence.Length > 0 && i.Suspect.Length > 0),
+            string.Join(",", game.Incidents.All.Select(i => i.Id)));
+        Check("quest warga baru (Tomas) ada di dunia",
+            game.World.Data.Npcs.Any(n => n.Id == "tomas" && n.Quest is not null && n.Quest.Target == "bat"));
+
+        foreach (var flag in new[] { "misi_kain", "misi_tali", "misi_pompa", "misi_peta", "misi_jelajah",
+            "misi_api", "misi_posloji", "misi_bukti", "misi_kasus" })
+            player.State.Flags[flag] = true;
+        game.Objectives.Configure();
+        Check("rantai misi lanjut ke Pos Bukit", game.Objectives.ActiveId == "pos_bukit", game.Objectives.ActiveId);
+
+        game.Fire.Configure(game);
+        var bukit = game.Incidents.Find("pos_bukit")!;
+        player.Position = game.Incidents.Center(bukit) + new Vector2(2 * World.TileSize, 0);
+        game.Worlds.UpdateZone(true);
+        game.Incidents.Advance();
+        Check("insiden Pos Bukit menyala", player.State.Flags.GetValueOrDefault("incident_pos_bukit_started") &&
+            game.Fire.BurningCount >= 3, $"{game.Fire.BurningCount} sel");
+        game.Fire.Extinguish(game.Incidents.Center(bukit), 6 * World.TileSize);
+        game.Incidents.Advance();
+        Check("bukti korek kuningan didapat", player.State.Flags.GetValueOrDefault("incident_pos_bukit_done") &&
+            game.Inventory.Has("korek_kuningan") && player.State.Flags.GetValueOrDefault("misi_pos_bukit"),
+            $"korek={game.Inventory.Count("korek_kuningan")}");
+
+        var bramNpc = game.World.Data.Npcs.First(n => n.Id == "bram");
+        player.Position = new Vector2((bramNpc.Col + 0.5f) * World.TileSize, (bramNpc.Row + 0.5f) * World.TileSize);
+        game.Worlds.UpdateZone(false);
+        game.Interact();
+        Check("konfrontasi Bram membuka pengakuan",
+            game.DialogOpen && game.Hud.DialogText.Contains("Bram") &&
+            player.State.Flags.GetValueOrDefault("kasus_pos_bukit"), game.Hud.DialogText);
+        while (game.DialogOpen) game.AdvanceDialog();
+        Check("misi lanjut ke Pos Lembah", game.Objectives.ActiveId == "pos_lembah", game.Objectives.ActiveId);
+
+        game.Fire.Configure(game);
+        var lembah = game.Incidents.Find("pos_lembah")!;
+        player.Position = game.Incidents.Center(lembah) + new Vector2(2 * World.TileSize, 0);
+        game.Worlds.UpdateZone(true);
+        game.Incidents.Advance();
+        game.Fire.Extinguish(game.Incidents.Center(lembah), 6 * World.TileSize);
+        game.Incidents.Advance();
+        Check("bukti nota tanah didapat", player.State.Flags.GetValueOrDefault("incident_pos_lembah_done") &&
+            game.Inventory.Has("nota_tanah") && player.State.Flags.GetValueOrDefault("misi_pos_lembah"),
+            $"nota={game.Inventory.Count("nota_tanah")}");
+
+        var tomasNpc = game.World.Data.Npcs.First(n => n.Id == "tomas");
+        player.Position = new Vector2((tomasNpc.Col + 0.5f) * World.TileSize, (tomasNpc.Row + 0.5f) * World.TileSize);
+        game.Worlds.UpdateZone(false);
+        game.Interact();
+        Check("konfrontasi Tomas menutup kasus ketiga",
+            game.Hud.DialogText.Contains("Tomas") && player.State.Flags.GetValueOrDefault("kasus_pos_lembah") &&
+            game.Objectives.ActiveId == "pemulihan", game.Objectives.ActiveId);
+        while (game.DialogOpen) game.AdvanceDialog();
+
+        game.ShowBoardMenu(true);
+        Check("papan bukti terbuka dengan status insiden", game.Hud.BoardOpen &&
+            game.Hud.BoardText.Contains("Pos Bukit") && game.Hud.BoardText.Contains("Korek") &&
+            game.Hud.BoardText.Contains("Bram"), game.Hud.BoardText.Split('\n')[2]);
+        game.ShowBoardMenu(false);
+        Check("papan bukti bisa ditutup", !game.Hud.BoardOpen);
+
+        game.Inventory.Add("benih", 3);
+        var scorch = game.World.Data.BurntZones[0];
+        var scorchCenter = scorch.RectPx(World.TileSize).GetCenter();
+        var plantedCount = 0;
+        for (var i = 0; i < 3; i++)
+        {
+            player.Position = scorchCenter + new Vector2((i - 1) * 20, i * 8);
+            if (game.PlantSeed()) plantedCount++;
+        }
+        Check("menanam 3 benih memulihkan tanah", plantedCount == 3 && player.State.Restored >= 3,
+            $"tanam={plantedCount} restored={player.State.Restored}");
+        game.Objectives.Advance();
+        Check("misi pemulihan selesai & rantai tuntas", player.State.Flags.GetValueOrDefault("misi_pemulihan") &&
+            game.Objectives.ActiveId.Length == 0 && game.Objectives.TrackerLine.Contains("Semua misi"),
+            game.Objectives.TrackerLine);
+
+        game.ShowBoardMenu(true);
+        Check("papan bukti menampilkan skor tersangka & tunas",
+            game.Hud.BoardText.Contains("3 tunas") || game.Hud.BoardText.Contains($"{player.State.Restored} tunas"),
+            "papan");
+        game.ShowBoardMenu(false);
+
+        var restoredState = game.BuildState();
+        var restoredJson = GameState.FromJson(JsonDocument.Parse(restoredState.ToJson().ToJsonString()).RootElement);
+        Check("jumlah tunas bertahan lewat JSON save", restoredJson.Restored == restoredState.Restored,
+            $"{restoredJson.Restored}");
+
+        game.Fire.Clear();
+        player.State.Flags = savedFlags7;
+        player.State.Inventory = savedInventory7;
+        player.State.Restored = savedRestored7;
+        player.State.Gold = savedGold7;
+        player.State.Xp = savedXp7;
+        player.State.Level = savedLevel7;
+        player.State.MaxHp = savedMaxHp7;
+        player.Position = savedPos7;
+        game.Chunks.Restore(savedExplored7);
+        game.Chunks.Update(player.Position);
+        game.Objectives.Configure();
+        game.Incidents.Configure();
+        game.CloseDialog();
+        game.ShowBoardMenu(false);
 
         GD.Print("");
         GD.Print($"=== hasil: {_pass} lulus, {Failures.Count} gagal ===");
