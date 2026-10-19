@@ -220,7 +220,7 @@ public sealed partial class Game : Node2D
         }
 
         if (ProfileId is not null) StartProfile(ProfileId);
-        else ShowProfiles();
+        else ShowTitleScreen();
     }
 
     // ------------------------------------------------------------------- setup
@@ -357,11 +357,13 @@ public sealed partial class Game : Node2D
         if (Input.IsActionJustPressed("quick_save") && ProfileId is not null) SaveToSlot(CurrentSlot);
         if (Input.IsActionJustPressed("craft") && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !DialogOpen)
             ToggleCraftMenu();
-        if (Input.IsActionJustPressed("board") && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !DialogOpen)
+        if (Input.IsActionJustPressed("board") && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !DialogOpen &&
+            !Hud.TitleOpen)
         {
             if (Hud.EndingOpen) Hud.HideEnding();
             else ShowBoardMenu(!Hud.BoardOpen);
         }
+        if (Hud.TitleOpen && Input.IsActionJustPressed("interact")) StartFromTitle();
 
         if (DialogOpen && Input.IsActionJustPressed("interact")) AdvanceDialog();
 
@@ -693,6 +695,19 @@ public sealed partial class Game : Node2D
     // ------------------------------------------------------------------ menu
 
     private void ShowProfiles() => _save.ShowProfiles();
+
+    /// <summary>Layar judul + intro singkat (sisa M2) sebelum memilih profil.</summary>
+    public void ShowTitleScreen()
+    {
+        Hud?.ShowTitle(true);
+        Hud?.ShowProfileMenu(false);
+    }
+
+    public void StartFromTitle()
+    {
+        Hud?.ShowTitle(false);
+        ShowProfiles();
+    }
 
     private void CreateProfile(string name) => _save.CreateProfile(name);
 

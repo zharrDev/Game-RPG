@@ -11,7 +11,7 @@ public sealed partial class Hud : CanvasLayer
     private Label _hpText = null!, _statsText = null!, _zoneText = null!, _toast = null!, _hint = null!;
     private Label _clock = null!, _weather = null!, _questText = null!;
     private TextureRect _vignette = null!;
-    private Panel _pausePanel = null!, _profilePanel = null!, _craftPanel = null!, _boardPanel = null!, _endingPanel = null!;
+    private Panel _pausePanel = null!, _profilePanel = null!, _craftPanel = null!, _boardPanel = null!, _endingPanel = null!, _titlePanel = null!;
     private VBoxContainer _pauseBox = null!, _profileBox = null!, _craftBox = null!;
     private Label _craftInv = null!, _craftStatus = null!, _boardText = null!, _endingTitle = null!, _endingBody = null!;
     private readonly Dictionary<string, Button> _craftButtons = new();
@@ -37,6 +37,7 @@ public sealed partial class Hud : CanvasLayer
 
     public bool MenuOpen => _pausePanel.Visible;
     public bool ProfileMenuOpen => _profilePanel.Visible;
+    public bool TitleOpen => _titlePanel.Visible;
     public bool CraftOpen => _craftPanel.Visible;
     public bool BoardOpen => _boardPanel.Visible;
     public bool EndingOpen => _endingPanel.Visible;
@@ -140,6 +141,7 @@ public sealed partial class Hud : CanvasLayer
         BuildCraftMenu();
         BuildBoardPanel();
         BuildEndingPanel();
+        BuildTitleScreen();
         BuildProfileMenu();
         BuildDialog();
         BuildMinimap();
@@ -455,6 +457,35 @@ public sealed partial class Hud : CanvasLayer
         _profileStatus.Modulate = new Color(1f, 0.85f, 0.6f);
         _profileBox.AddChild(_profileStatus);
     }
+
+    private void BuildTitleScreen()
+    {
+        _titlePanel = new Panel { Position = new Vector2(40, 30), Size = new Vector2(400, 210), Visible = false };
+        AddChild(_titlePanel);
+        var box = new VBoxContainer { Position = new Vector2(16, 12), Size = new Vector2(368, 186) };
+        box.AddThemeConstantOverride("separation", 4);
+        _titlePanel.AddChild(box);
+
+        var title = MakeLabel(Vector2.Zero, 16);
+        title.Text = "ARGA: API & ASAP";
+        title.Modulate = new Color(1f, 0.82f, 0.42f);
+        box.AddChild(title);
+        var sub = MakeLabel(Vector2.Zero, 9);
+        sub.Text = "Greenwoods terbakar. Seorang pembakar menyembunyikan jejak.\nKau Arga — jaga hutan, kumpulkan bukti, buka kasus.";
+        box.AddChild(sub);
+        var intro = MakeLabel(Vector2.Zero, 8);
+        intro.Text = "Kekeringan panjang membuat api menjalar cepat. Gunakan pompa (R),\nbahan bakar jelajah (M/B/N), dan papan bukti (V). Hujan datang tiap pergantian\ncuaca — manfaatkan tanah yang diguyur hujan.";
+        intro.Modulate = new Color(0.85f, 0.9f, 0.82f);
+        box.AddChild(intro);
+        var hint = MakeLabel(Vector2.Zero, 9);
+        hint.Text = "Tekan E untuk mulai";
+        hint.Modulate = new Color(0.8f, 0.88f, 1f);
+        box.AddChild(hint);
+    }
+
+    public void ShowTitle(bool visible) => _titlePanel.Visible = visible;
+
+    public string TitleText => "ARGA: API & ASAP";
 
     private static Button MakeButton(string text, float width)
     {

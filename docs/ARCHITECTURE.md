@@ -122,9 +122,11 @@ Prinsip:
   dinormalisasi server dan ikut semua save.
 - `world.explored` menyimpan indeks chunk yang sudah dijelajahi (fog of war).
   Nilainya dinormalisasi server (unik, urut, maks 2048) dan ikut semua save.
-- `state.version == "1"` sekarang; Save v2 (M8) menaikkan ke `"2"` dengan
-  migrasi otomatis `v1 → v2` di `StateValidator` **dan** di klien
-  (`SaveApi.Load`). Tes lama harus tetap lulus tanpa perubahan bentuk.
+- `world.restored` menghitung tunas yang ditanam pemain (0..10000, default 0);
+  dipakai objective tipe `counter` untuk misi pemulihan lahan (M7).
+- `state.version == "1"` sekarang; seluruh progres M3–M8 (fog, tas, tunas,
+  flag misi/insiden/ending) sudah muat di v1, jadi Save v2 hanya diperlukan bila
+  nanti menyimpan kondisi tile terbakar per-tile (belum ada, sengaja ditunda).
 - Bentuk error tetap `{ "error": "..." }`; health tetap `{ ok, version, ... }`
   dengan tambahan `schemaVersion` (aditif, tidak menghapus field lama).
 

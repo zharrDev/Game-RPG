@@ -1513,6 +1513,13 @@ public static class HeadlessTest
             player.State.Flags.GetValueOrDefault("ending_dalang_lolos"), game.Hud.EndingTitle);
         game.Hud.HideEnding();
 
+        game.ShowTitleScreen();
+        Check("layar judul + intro tampil sebelum profil",
+            game.Hud.TitleOpen && !game.Hud.ProfileMenuOpen && game.Hud.TitleText.Contains("API & ASAP"),
+            game.Hud.TitleText);
+        game.Hud.ShowTitle(false);
+        Check("layar judul bisa dilewati", !game.Hud.TitleOpen);
+
         game.Fire.Clear();
         player.State.Flags = savedFlags8;
         player.State.Inventory = savedInventory8;
