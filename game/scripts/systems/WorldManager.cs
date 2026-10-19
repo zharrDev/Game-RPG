@@ -24,7 +24,7 @@ public sealed class WorldManager
         game.ZoneId = id;
         game.ZoneName = name;
         game.Player.State.Zone = id;
-        game.Sfx?.PlayMusic(id == "greenwood_vale" ? "music_village" : "music_wilds");
+        game.Sfx?.PlayMusic(zone?.Music ?? (id == "greenwood_vale" ? "music_village" : "music_wilds"));
         if (!first)
         {
             game.Hud?.Toast($"Masuk zona: {name}");

@@ -349,10 +349,14 @@ for y in range(H):
 # --------------------------------------------------------------------------- #
 # urutan penting: zona paling spesifik di depan (dipakai "zona pertama yang cocok")
 zones = [
-    {"id": "ancient_ruins", "name": "Ancient Ruins", "rect": [RX - 3, RY - 5, RW + 8, RH + 11]},
-    {"id": "greenwood_vale", "name": "Greenwood Vale", "rect": [VX - 14, VY - 6, 42, 36]},
-    {"id": "old_road", "name": "Old Road", "rect": [VX + 26, VY + 2, 24, 42]},
-    {"id": "north_woods", "name": "North Woods", "rect": [0, 0, W, 24]},
+    {"id": "ancient_ruins", "name": "Ancient Ruins", "biome": "ruins",
+     "music": "music_wilds", "rect": [RX - 3, RY - 5, RW + 8, RH + 11]},
+    {"id": "greenwood_vale", "name": "Greenwood Vale", "biome": "village",
+     "music": "music_village", "rect": [VX - 14, VY - 6, 42, 36]},
+    {"id": "old_road", "name": "Old Road", "biome": "road",
+     "music": "music_wilds", "rect": [VX + 26, VY + 2, 24, 42]},
+    {"id": "north_woods", "name": "North Woods", "biome": "forest",
+     "music": "music_wilds", "rect": [0, 0, W, 24]},
 ]
 
 checkpoints = [

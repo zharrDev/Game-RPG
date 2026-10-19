@@ -77,7 +77,7 @@ public sealed class PropPlacement
 
 public sealed class ZoneInfo
 {
-    public string Id = "", Name = "";
+    public string Id = "", Name = "", Biome = "forest", Music = "music_wilds";
     public int X, Y, W, H;
 }
 
@@ -190,6 +190,8 @@ public sealed class WorldData
             {
                 Id = zone.GetProperty("id").GetString() ?? "",
                 Name = zone.GetProperty("name").GetString() ?? "",
+                Biome = zone.TryGetProperty("biome", out var biome) ? biome.GetString() ?? "forest" : "forest",
+                Music = zone.TryGetProperty("music", out var music) ? music.GetString() ?? "music_wilds" : "music_wilds",
                 X = rect[0], Y = rect[1], W = rect[2], H = rect[3],
             });
         }
