@@ -23,8 +23,9 @@ pilihan akhir pemain menentukan nasib hutan.
 2. **Padamkan** api kecil sebelum membesar; selamatkan properti/warga.
 3. **Kumpulkan bukti** dari titik api yang dipadamkan (jerigen, nota, korek).
 4. **Tanyai warga**; beberapa hanya bicara setelah bukti/kondisi tertentu.
-5. **Pulihkan** hutan: tanam tunas, bersihkan arang, ganti sekat yang rusak.
-6. **Kunci bukti** di Pos ke X → investigasi naik tingkat → pos berikutnya.
+5. **Pulihkan** hutan: tanam tunas di tanah terbakar (N).
+6. **Konfrontasi** tersangka tiap Pos → nama dalang terungkap → pos berikutnya;
+   serahkan berkas ke Mira untuk memicu ending.
 
 Loop pendek (2–4 menit) = padam/pulihkan satu kejadian.
 Loop panjang (satu pos) = 20–30 menit: bukti + kesaksian → tersangka pos.
@@ -41,61 +42,59 @@ Sesi penuh (5 pos + finale) = 4–6 jam.
   menyembunyikan jejak.
 - **Inventory & crafting** (M5): air, pompa, sekat, benih; crafting alat
   pemadam sederhana dan barang investigasi (kertas arang, peta sketsa).
-- **Investigasi** (M5–M8): papan bukti di Pos; bukti punya asal, kondisi rusak,
-  dan tingkat kepercayaan. Kesimpulan salah mengarah ke ending yang lebih buruk.
-- **Warga & quest** (M7): jadwal harian, dialog bercabang; reputasi desa
-  memengaruhi akses bukti dan bantuan saat pemadaman besar.
-- **Save v2** (M8): state dunia (tile terbakar/pulih), inventori, papan bukti —
-  dimigrasi dari v1 tanpa kehilangan profil lama.
+- **Investigasi** (M5–M8): papan bukti (V) merangkum status tiap insiden,
+  barang bukti, dan skor kecurigaan warga; bukti didapat dari insiden yang
+  dipadamkan, konfrontasi tersangka membuka babak berikutnya. Ending ditentukan
+  jumlah bukti saat berkas diserahkan ke Mira (3 tingkat).
+- **Warga & quest** (M7): quest kill berhadiah (Mira, Tomas), dialog konfrontasi
+  per tersangka; pemulihan lahan lewat menanam benih di tanah bekas terbakar.
+- **Save** (M3–M7): fog, tas, tunas, flag misi/insiden/ending sudah muat di
+  skema v1; Save v2 hanya perlu bila kelak menyimpan kondisi tile per-tile.
 
-## 4. Lima Pos Pantau
+## 4. Lima Pos Pantau (implementasi)
 
-| # | Nama | Biome | Kunci | Boss/Bukti Kunci |
-|---|------|-------|-------|------------------|
-| 1 | Pos Loji | pinggir desa | padam 3 titik, pompa pertama | tukang arang; jerigen tak bertuan |
-| 2 | Pos Gambut | rawa kering | api gambut tak terlihat | kebakaran bawah tanah; arang asin berkode |
-| 3 | Pos Bukit | punggung bukit | angin kencang | jalur sekat rusak; jejak sepatu kerja |
-| 4 | Pos Lembah | lembah sempit | api tepi sungai | warga menyembunyikan sesuatu; map hotspot |
-| 5 | Pos Inti | hutan dalam | pemadaman besar + finale | panggung dalang; penentuan ending |
+| # | Nama | Zona | Tersangka | Bukti Kunci |
+|---|------|------|-----------|-------------|
+| 1 | Pos Loji | greenwood_vale | Lena | Jerigen tanpa label |
+| 2 | Pos Bukit | north_woods | Bram | Korek kuningan berkarat |
+| 3 | Pos Lembah | ancient_ruins | Tomas | Nota pembelian tanah |
+| 4 | Pos Jembatan | old_road | Sari | Sarung tangan berlumur oli |
+| 5 | Pos Gerbang | greenwood_vale | Lena (pengakuan) | Surat sewa tanah |
 
-Setiap pos: peta lebih tajam (fog makin kecil), API lebih ganas, tersangka baru,
-dan bukti yang saling mengunci. Pos 5 adalah panggung **finale**: pemain harus
-**memilih** mana bukti yang dibawa saat konfrontasi.
+Setiap pos: pemain memadamkan titik api (R), mendapat bukti, lalu mengonfrontasi
+tersangkanya; rantai misi menuntun pos demi pos. Finale: serahkan seluruh berkas
+ke **Mira** kapan saja setelah ada bukti — tingkat ending mengikuti persentase
+bukti (Dalang Lolos <40%, Tertangkap 40–79%, Hutan Pulih ≥80%).
 
-## 5. Tersangka & Red Herring
+## 5. Tersangka (implementasi)
 
-- **Pak Wira** — juru arang. Punggung dekat ke semua titik kebakaran; tapi
-  tungku arangnya legal dan ia justru rugi bila hutan habis. Red herring awal.
-- **Bu Sari** — pemilik warung. Membeli kayu bakar murah dari siapa pun;
-  panik saat diaudit. Peluang uang, bukan pembakar.
-- **Jagas** — pemburu muda, mudah marah, pernah dipenjara. Banyak jejak
-  sepatu kebetulan mirip. Bisa jadi sekutu atau gagal paham.
-- **Rangga Kelabu (dalang)** — bukan warga. Nama samaran penyewa jasa: aktor
-  intelektual di balik ekspansi lahan, pembakar profesional yang memanfaatkan
-  kemarau. Penyewa sebenarnya adalah seorang figur desa yang selama ini
-  "membantu" pemadaman (diungkap dari bukti yang saling mengunci di Pos 4–5).
+- **Lena** — Pos Loji & Pos Gerbang; menandatangani surat sewa karena tertekan,
+  akhirnya membuka nama dalang.
+- **Bram** — Pos Bukit; menolak menyewakan jalur sekat, petunjuk mengarah ke
+  penyewa jasa.
+- **Tomas** — Pos Lembah; saksi mesin di malam hari, nota tanah membongkar
+  pemilik tungku arang.
+- **Sari** — Pos Jembatan; diperintah lewat surat, upah benih impor.
+- **Rangga Kelabu (dalang)** — pemilik tungku arang di balik semua surat;
+  namanya terungkap menjelang finale, wujudnya sengaja tidak ditampilkan.
 
-## 6. Daftar Bukti (klon; diperluas saat produksi)
+## 6. Daftar Bukti (implementasi)
 
 | # | Bukti | Ditemukan | Berkaitan |
 |---|-------|-----------|-----------|
-| 1 | Jerigen minyak tanpa label | titik api Pos 1 | siapa pun dengan akses pasar |
-| 2 | Nota pembelian tanah | peti di Pos 1 | ekspansi lahan (motive) |
-| 3 | Korek kuningan berkarat | semak Pos 1 | kebiasaan merokok (Jagas/Pak Wira) |
-| 4 | Jejak sepatu kerja | jalur sekat Pos 2 | ukuran 42, dua orang |
-| 5 | Arang asin (garam laut) | rawa Pos 2 | siapa yang punya akses garam |
-| 6 | Peta sketsa hotspot | tenda Pos 2 | pola pembakaran terencana |
-| 7 | Sekat rusak sengaja | bukit Pos 3 | arah angin diatur |
-| 8 | Kesaksian Tomas | pasar | suara mesin di malam hari |
-| 9 | Surat ancaman ke Bu Sari | warung | tekanan ekonomi |
-| 10 | Slip bayaran "Rangga" | pos inti | identitas dalang |
-| 11 | Kantong garam tua | rumah terkunci Pos 4 | mengunci tersangka |
-| 12 | Buku catatan tanah | brankas finale | ending terbaik |
+| 1 | Jerigen minyak tanpa label | titik api Pos Loji | akses bahan bakar |
+| 2 | Korek kuningan berkarat | titik api Pos Bukit | kebiasaan merokok Bram |
+| 3 | Nota pembelian tanah | titik api Pos Lembah | motif ekspansi lahan |
+| 4 | Sarung tangan oli | titik api Pos Jembatan | Sari diperintah lewat surat |
+| 5 | Surat sewa tanah | titik api Pos Gerbang | identitas Rangga |
+
+Barang bantu (bukan bukti): kain, tali, arang, pompa, sekat, benih, kertas
+arang, peta sketsa (lihat `game/assets/data/items.json`).
 
 ## 7. Ekonomi & Kesulitan
 
-- Sumber uang: menjual arang bersih, menyelamatkan properti, hadiah warga.
-- Pengeluaran: alat pemadam, benih tunas, benang sekat, perbaikan pompa.
+- Sumber uang: peti harta, hadiah quest warga, reward misi/konfrontasi.
+- Pengeluaran: potion di pasar (Esc).
 - Kurva: Pos 1 (tutorial pocket: api kecil, angin kecil) → Pos 5 (api besar
   bertingkat, waktu siang lebih singkat karena asap menutup matahari).
 - Target: 70% pemain menyelesaikan sekali; 30% kembali untuk ending terbaik.

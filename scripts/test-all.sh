@@ -39,7 +39,7 @@ cleanup() {
     kill "$SERVER_PID" 2>/dev/null || true
     wait "$SERVER_PID" 2>/dev/null || true
   fi
-  rm -f "$DB" "$DB-wal" "$DB-shm" "$MARKER"
+  rm -f "$DB" "$DB-wal" "$DB-shm" "$DB.bak" "$MARKER"
 }
 trap cleanup EXIT
 
