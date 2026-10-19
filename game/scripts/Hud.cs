@@ -11,8 +11,10 @@ public sealed partial class Hud : CanvasLayer
     private Label _hpText = null!, _statsText = null!, _zoneText = null!, _toast = null!, _hint = null!;
     private Label _clock = null!, _weather = null!, _questText = null!;
     private TextureRect _vignette = null!;
-    private Panel _pausePanel = null!, _profilePanel = null!;
-    private VBoxContainer _pauseBox = null!, _profileBox = null!;
+    private Panel _pausePanel = null!, _profilePanel = null!, _craftPanel = null!;
+    private VBoxContainer _pauseBox = null!, _profileBox = null!, _craftBox = null!;
+    private Label _craftInv = null!, _craftStatus = null!;
+    private readonly Dictionary<string, Button> _craftButtons = new();
     private Label _journalText = null!, _profileStatus = null!, _pauseSummary = null!;
     private Panel _dialogPanel = null!;
     private Label _dialogSpeaker = null!, _dialogText = null!;
@@ -31,9 +33,12 @@ public sealed partial class Hud : CanvasLayer
     public event Action<string>? ProfilePicked;
     public event Action<string>? ProfileCreated;
     public event Action? BuyPotion;
+    public event Action<string>? CraftRequested;
 
     public bool MenuOpen => _pausePanel.Visible;
     public bool ProfileMenuOpen => _profilePanel.Visible;
+    public bool CraftOpen => _craftPanel.Visible;
+    public string CraftInventoryText => _craftInv.Text;
     public bool DialogOpen => _dialogPanel.Visible;
     public string DialogText => _dialogText.Text;
     public string DialogSpeaker => _dialogSpeaker.Text;
@@ -125,10 +130,11 @@ public sealed partial class Hud : CanvasLayer
 
         _hint = MakeLabel(new Vector2(8, 252), 9);
         _hint.Modulate = new Color(0.85f, 0.85f, 0.9f, 0.85f);
-        _hint.Text = "WASD gerak · Shift lari (napas) · J serang · K skill · R semprot api · E bicara/istirahat/peti · Q potion · F simpan · Esc menu";
+        _hint.Text = "WASD gerak · Shift lari · J serang · K skill · R semprot api · C crafting · M peta · B sekat · E pakai · Q potion · F simpan · Esc menu";
         AddChild(_hint);
 
         BuildPauseMenu();
+        BuildCraftMenu();
         BuildProfileMenu();
         BuildDialog();
         BuildMinimap();
@@ -303,6 +309,63 @@ public sealed partial class Hud : CanvasLayer
         var quit = MakeButton("Keluar", 240);
         quit.Pressed += () => QuitToDesktop?.Invoke();
         _pauseBox.AddChild(quit);
+    }
+
+    private void BuildCraftMenu()
+    {
+        ItemCatalog.EnsureLoaded();
+        _craftPanel = new Panel { Position = new Vector2(84, 20), Size = new Vector2(312, 230), Visible = false };
+        AddChild(_craftPanel);
+        _craftBox = new VBoxContainer { Position = new Vector2(12, 8), Size = new Vector2(288, 214) };
+        _craftBox.AddThemeConstantOverride("separation", 2);
+        _craftPanel.AddChild(_craftBox);
+
+        var title = MakeLabel(Vector2.Zero, 11);
+        title.Text = "CRAFTING — tas & resep";
+        _craftBox.AddChild(title);
+
+        _craftInv = MakeLabel(Vector2.Zero, 8);
+        _craftInv.Size = new Vector2(284, 24);
+        _craftInv.AutowrapMode = TextServer.AutowrapMode.WordSmart;
+        _craftInv.Modulate = new Color(0.82f, 0.9f, 1f);
+        _craftBox.AddChild(_craftInv);
+
+        foreach (var recipe in ItemCatalog.Recipes)
+        {
+            var id = recipe.Id;
+            var button = MakeButton($"Buat {recipe.Name} — {ItemCatalog.CostText(recipe)}", 284);
+            button.Pressed += () => CraftRequested?.Invoke(id);
+            _craftBox.AddChild(button);
+            _craftButtons[id] = button;
+        }
+
+        _craftStatus = MakeLabel(Vector2.Zero, 8);
+        _craftStatus.Text = "Pilih resep. Bahan dari peti (E).";
+        _craftStatus.Modulate = new Color(0.9f, 0.82f, 0.6f);
+        _craftBox.AddChild(_craftStatus);
+
+        var close = MakeButton("Tutup crafting (C)", 284);
+        close.Pressed += () => CraftRequested?.Invoke("");
+        _craftBox.AddChild(close);
+    }
+
+    public void ShowCraft(bool visible, string? inventory = null, string? status = null)
+    {
+        _craftPanel.Visible = visible;
+        if (inventory is not null) _craftInv.Text = inventory;
+        if (status is not null) _craftStatus.Text = status;
+        if (visible) RefreshCraft(_craftInv.Text);
+    }
+
+    public void RefreshCraft(string inventory)
+    {
+        if (_craftInv is null) return;
+        _craftInv.Text = inventory;
+    }
+
+    public void SetCraftStatus(string status)
+    {
+        if (_craftStatus is not null) _craftStatus.Text = status;
     }
 
     private void BuildProfileMenu()

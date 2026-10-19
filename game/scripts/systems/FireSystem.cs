@@ -119,6 +119,20 @@ public sealed class FireSystem
     public float FuelAt(int col, int row) =>
         col < 0 || row < 0 || col >= Width || row >= Height ? 0f : _fuel[CellIndex(col, row)];
 
+    /// <summary>Pasang sekat api (M5): tile jadi tidak bisa terbakar.</summary>
+    public bool AddFirebreak(int col, int row)
+    {
+        if (col < 0 || row < 0 || col >= Width || row >= Height) return false;
+        var index = CellIndex(col, row);
+        _burning.Remove(index);
+        _fuel[index] = 0;
+        _moisture[index] = 1;
+        return true;
+    }
+
+    public bool AddFirebreakAt(Vector2 pixelPosition) =>
+        AddFirebreak((int)(pixelPosition.X / TileSize), (int)(pixelPosition.Y / TileSize));
+
     /// <summary>Padamkan api dalam radius (piksel); balikkan jumlah sel yang padam.</summary>
     public int Extinguish(Vector2 center, float radius)
     {

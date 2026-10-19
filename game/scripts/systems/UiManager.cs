@@ -57,11 +57,14 @@ public sealed class UiManager
         if (game.Player is null || game.World is null || game.Hud is null) return;
         var defeatedTotal = 0;
         foreach (var pair in game.Player.State.Defeated) defeatedTotal += pair.Value;
-        var signature = game.Player.State.Kills * 7 + game.Player.State.Flags.Count * 131 + defeatedTotal * 17;
+        var signature = game.Player.State.Kills * 7 + game.Player.State.Flags.Count * 131 + defeatedTotal * 17 +
+            (game.Objectives?.Version ?? 0) * 977;
         if (signature == _questTrackerSignature) return;
         _questTrackerSignature = signature;
 
         var lines = new List<string>();
+        if (game.Objectives is not null && game.Objectives.TrackerLine.Length > 0)
+            lines.Add($"- {game.Objectives.TrackerLine}");
         foreach (var npc in game.World.Data.Npcs)
         {
             var quest = npc.Quest;
@@ -72,6 +75,6 @@ public sealed class UiManager
                 ? $"- {npc.Name}: selesai, temui dia"
                 : $"- {npc.Name}: kalahkan {quest.Target} {killed}/{quest.Count}");
         }
-        game.Hud.SetQuestTracker(lines.Count == 0 ? "" : "QUEST\n" + string.Join("\n", lines));
+        game.Hud.SetQuestTracker(lines.Count == 0 ? "" : "MISI & QUEST\n" + string.Join("\n", lines));
     }
 }

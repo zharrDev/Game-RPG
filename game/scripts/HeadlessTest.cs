@@ -1093,6 +1093,128 @@ public static class HeadlessTest
         player.InvulnerableTimer = 0;
         weather.SetStage(0);
 
+        GD.Print("=== M5: inventory, crafting & misi ===");
+        var inv = game.Inventory;
+        var savedInventory = new Dictionary<string, int>(player.State.Inventory);
+        var savedFlags = new Dictionary<string, bool>(player.State.Flags);
+        var savedExplored = game.Chunks.Snapshot();
+        var savedGold = player.State.Gold;
+        var savedXp = player.State.Xp;
+        var savedLevel = player.State.Level;
+        var savedMaxHp = player.State.MaxHp;
+        player.State.Inventory.Clear();
+        foreach (var key in player.State.Flags.Keys.Where(k => k.StartsWith("misi_") || k.StartsWith("crafted_")).ToList())
+            player.State.Flags.Remove(key);
+        game.Objectives.Configure();
+
+        Check("katalog barang & resep termuat", ItemCatalog.Items.Count >= 8 && ItemCatalog.Recipes.Count == 4,
+            $"{ItemCatalog.Items.Count} barang, {ItemCatalog.Recipes.Count} resep");
+        Check("misi awal aktif", game.Objectives.ActiveId == "kain" && game.Objectives.TrackerLine.Contains("ain"),
+            $"{game.Objectives.ActiveId}: {game.Objectives.TrackerLine}");
+
+        Check("barang tak dikenal ditolak", !inv.Add("pedang_ajaib"));
+        inv.Add("kain", 2);
+        Check("tas mencatat barang", inv.Count("kain") == 2 && inv.Summary().Contains("Kain"));
+        Check("craft gagal tanpa bahan", !inv.Craft("pompa"));
+        inv.Add("tali", 2);
+        Check("craft pompa memakai bahan", inv.Craft("pompa") && inv.Count("pompa") == 1 &&
+            inv.Count("kain") == 0 && inv.Count("tali") == 0 && player.State.Flags.GetValueOrDefault("crafted_pompa"));
+        Check("misi mengikuti inventori & crafting",
+            player.State.Flags.GetValueOrDefault("misi_kain") && player.State.Flags.GetValueOrDefault("misi_tali") &&
+            player.State.Flags.GetValueOrDefault("misi_pompa") && game.Objectives.ActiveId == "peta",
+            $"{game.Objectives.ActiveId}");
+
+        inv.Add("arang", 3);
+        inv.Add("kain", 1);
+        var paper = inv.Craft("kertas_arang");
+        inv.Add("arang", 1);
+        var sketch = inv.Craft("peta_sketsa");
+        Check("craft barang investigasi", paper && sketch && inv.Has("peta_sketsa") &&
+            player.State.Flags.GetValueOrDefault("misi_peta") && game.Objectives.ActiveId == "jelajah",
+            $"{game.Objectives.ActiveId}");
+
+        player.Position = new Vector2(48 * World.TileSize, 36 * World.TileSize);
+        game.Chunks.Update(player.Position);
+        var exploredBeforeSketch = game.Chunks.ExploredCount;
+        var sketchUsed = game.UseMapSketch();
+        Check("peta sketsa membuka fog & terpakai", sketchUsed && !inv.Has("peta_sketsa") &&
+            game.Chunks.ExploredCount > exploredBeforeSketch,
+            $"{exploredBeforeSketch} -> {game.Chunks.ExploredCount}");
+
+        game.Chunks.RevealAll();
+        game.Objectives.Advance();
+        Check("misi jelajah selesai di 100%", player.State.Flags.GetValueOrDefault("misi_jelajah") &&
+            game.Objectives.ActiveId == "api", $"{game.Objectives.ActiveId}");
+
+        game.TickActionCooldowns(1.0);
+        weather.Force(WeatherKind.Dry, 0f, 0.2f);
+        fire.Configure(game);
+        var apiPos = new Vector2((grassCol + 0.5f) * World.TileSize, (grassRow + 0.5f) * World.TileSize);
+        fire.IgniteCell(grassCol, grassRow, 1f);
+        player.Position = apiPos + new Vector2(45, 0);
+        player.Energy = 100;
+        var pumpExtinguish = game.TryExtinguish();
+        Check("pompa memperluas jangkauan semprot", pumpExtinguish && fire.BurningCount == 0 &&
+            player.Energy > 100 - Rules.ExtinguishCost,
+            $"padam={pumpExtinguish} napas={player.Energy:0.0}");
+        Check("misi pemadaman selesai", player.State.Flags.GetValueOrDefault("misi_api") &&
+            game.Objectives.ActiveId.Length == 0 && game.Objectives.TrackerLine.Contains("Semua misi"),
+            game.Objectives.TrackerLine);
+
+        game.RefreshQuestTracker();
+        Check("tracker HUD menampilkan status misi", game.Hud.QuestTrackerText.Contains("MISI") &&
+            game.Hud.QuestTrackerText.Contains("Semua misi"), game.Hud.QuestTrackerText);
+
+        game.ToggleCraftMenu();
+        Check("panel crafting terbuka & berisi tas", game.Hud.CraftOpen &&
+            game.Hud.CraftInventoryText.Contains("Pompa"), game.Hud.CraftInventoryText);
+        game.ShowCraftMenu(false);
+        Check("panel crafting tertutup", !game.Hud.CraftOpen);
+
+        inv.Add("sekat", 1);
+        fire.Configure(game);
+        player.Position = apiPos;
+        player.Facing = "right";
+        var barrierCol = (int)((apiPos.X + 12f) / World.TileSize);
+        var barrier = game.PlaceBarrier();
+        Check("sekat api memutus bahan bakar", barrier && !inv.Has("sekat") &&
+            fire.FuelAt(barrierCol, grassRow) <= 0.001f,
+            $"col={barrierCol} fuel={fire.FuelAt(barrierCol, grassRow):0.00}");
+
+        var burnt = game.World.Data.BurntZones.FirstOrDefault();
+        if (burnt is not null)
+        {
+            inv.Add("benih", 1);
+            player.Position = burnt.RectPx(World.TileSize).GetCenter();
+            var planted = game.PlantSeed();
+            Check("benih tumbuh di tanah terbakar", planted && !inv.Has("benih") &&
+                game.Ambience.SproutCount >= 1, $"sprout={game.Ambience.SproutCount}");
+        }
+        else
+        {
+            Check("benih tumbuh di tanah terbakar", false, "tidak ada burnt zone");
+        }
+
+        var invState = game.BuildState();
+        var invRoundtrip = GameState.FromJson(JsonDocument.Parse(invState.ToJson().ToJsonString()).RootElement);
+        Check("inventori bertahan lewat JSON save",
+            invRoundtrip.Inventory.Count == invState.Inventory.Count &&
+            invRoundtrip.Inventory.All(p => invState.Inventory.GetValueOrDefault(p.Key) == p.Value));
+
+        fire.Clear();
+        player.State.Flags = savedFlags;
+        player.State.Inventory = savedInventory;
+        player.State.Gold = savedGold;
+        player.State.Xp = savedXp;
+        player.State.Level = savedLevel;
+        player.State.MaxHp = savedMaxHp;
+        player.Position = spawnPos;
+        player.Facing = "down";
+        player.SmokeExposure = 0;
+        game.Chunks.Restore(savedExplored);
+        game.Chunks.Update(player.Position);
+        game.Objectives.Configure();
+
         GD.Print("");
         GD.Print($"=== hasil: {_pass} lulus, {Failures.Count} gagal ===");
         foreach (var failure in Failures) GD.Print($"  GAGAL: {failure}");

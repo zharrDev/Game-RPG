@@ -1,0 +1,65 @@
+{
+  "start": "kain",
+  "objectives": [
+    {
+      "id": "kain",
+      "title": "Kumpulkan kain perca",
+      "hint": "Buka peti dengan E.",
+      "type": "item",
+      "target": "kain",
+      "count": 2,
+      "next": "tali",
+      "reward_gold": 10
+    },
+    {
+      "id": "tali",
+      "title": "Kumpulkan tali serat",
+      "hint": "Peti di sepanjang jalan menyimpan tali.",
+      "type": "item",
+      "target": "tali",
+      "count": 2,
+      "next": "pompa",
+      "reward_gold": 10
+    },
+    {
+      "id": "pompa",
+      "title": "Buat pompa tangan",
+      "hint": "C untuk crafting: kain 2 + tali 2.",
+      "type": "craft",
+      "target": "pompa",
+      "count": 1,
+      "next": "peta",
+      "reward_gold": 15,
+      "reward_xp": 20
+    },
+    {
+      "id": "peta",
+      "title": "Buat peta sketsa",
+      "hint": "Craft kertas arang lalu peta sketsa.",
+      "type": "craft",
+      "target": "peta_sketsa",
+      "count": 1,
+      "next": "jelajah",
+      "reward_gold": 15,
+      "reward_xp": 20
+    },
+    {
+      "id": "jelajah",
+      "title": "Jelajahi Greenwoods",
+      "hint": "Buka 25% peta mini.",
+      "type": "explore",
+      "count": 25,
+      "next": "api",
+      "reward_xp": 30
+    },
+    {
+      "id": "api",
+      "title": "Padamkan api pertama",
+      "hint": "R menyemprot api; pakai pompa bila punya.",
+      "type": "extinguish",
+      "count": 1,
+      "next": "",
+      "reward_xp": 40
+    }
+  ]
+}

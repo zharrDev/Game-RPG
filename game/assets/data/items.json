@@ -1,0 +1,94 @@
+{
+  "items": [
+    {
+      "id": "kain",
+      "name": "Kain perca",
+      "kind": "material",
+      "description": "Sisa kain tebal; bahan dasar pompa dan sekat."
+    },
+    {
+      "id": "tali",
+      "name": "Tali serat",
+      "kind": "material",
+      "description": "Tali dari serat kulit kayu, kuat untuk menahan alat."
+    },
+    {
+      "id": "arang",
+      "name": "Arang bersih",
+      "kind": "material",
+      "description": "Arang hasil pembakaran terkendali; bahan kertas arang."
+    },
+    {
+      "id": "pompa",
+      "name": "Pompa tangan",
+      "kind": "tool",
+      "description": "Semprotan lebih luas dan lebih hemat napas."
+    },
+    {
+      "id": "sekat",
+      "name": "Sekat api",
+      "kind": "tool",
+      "description": "Hamparan basah; pasang untuk memutus jalaran api."
+    },
+    {
+      "id": "benih",
+      "name": "Benih tunas",
+      "kind": "seed",
+      "description": "Benih pohon keras untuk memulihkan tanah terbakar."
+    },
+    {
+      "id": "kertas_arang",
+      "name": "Kertas arang",
+      "kind": "investigation",
+      "description": "Kertas gosok untuk menyalin jejak dan pola api."
+    },
+    {
+      "id": "peta_sketsa",
+      "name": "Peta sketsa",
+      "kind": "investigation",
+      "description": "Sketsa wilayah sekitar; pakai untuk membuka peta mini."
+    }
+  ],
+  "recipes": [
+    {
+      "id": "pompa",
+      "name": "Pompa tangan",
+      "result": "pompa",
+      "count": 1,
+      "cost": {
+        "kain": 2,
+        "tali": 2
+      }
+    },
+    {
+      "id": "sekat",
+      "name": "Sekat api",
+      "result": "sekat",
+      "count": 1,
+      "cost": {
+        "kain": 1,
+        "tali": 3
+      }
+    },
+    {
+      "id": "kertas_arang",
+      "name": "Kertas arang",
+      "result": "kertas_arang",
+      "count": 1,
+      "cost": {
+        "arang": 2,
+        "kain": 1
+      }
+    },
+    {
+      "id": "peta_sketsa",
+      "name": "Peta sketsa",
+      "result": "peta_sketsa",
+      "count": 1,
+      "cost": {
+        "kertas_arang": 1,
+        "arang": 1
+      }
+    }
+  ]
+}

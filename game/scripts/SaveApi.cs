@@ -46,6 +46,7 @@ public sealed class GameState
     public string Checkpoint = "village_square";
     public Dictionary<string, bool> Flags = new();
     public Dictionary<string, int> Defeated = new();
+    public Dictionary<string, int> Inventory = new();
     public List<int> Explored = new();
     public double Playtime;
     public int Deaths, Kills;
@@ -61,6 +62,8 @@ public sealed class GameState
         foreach (var (key, value) in Defeated) defeated[key] = value;
         var explored = new JsonArray();
         foreach (var index in Explored) explored.Add(index);
+        var inventory = new JsonObject();
+        foreach (var (key, value) in Inventory) inventory[key] = value;
         return new JsonObject
         {
             ["player"] = new JsonObject
@@ -83,6 +86,7 @@ public sealed class GameState
                 ["checkpoint"] = Checkpoint,
                 ["flags"] = flags,
                 ["defeated"] = defeated,
+                ["inventory"] = inventory,
                 ["explored"] = explored,
             },
             ["stats"] = new JsonObject
@@ -120,6 +124,9 @@ public sealed class GameState
                 foreach (var flag in flags.EnumerateObject()) state.Flags[flag.Name] = flag.Value.GetBoolean();
             if (world.TryGetProperty("defeated", out var defeated) && defeated.ValueKind == JsonValueKind.Object)
                 foreach (var mob in defeated.EnumerateObject()) state.Defeated[mob.Name] = mob.Value.GetInt32();
+            if (world.TryGetProperty("inventory", out var inventory) && inventory.ValueKind == JsonValueKind.Object)
+                foreach (var item in inventory.EnumerateObject())
+                    if (item.Value.ValueKind == JsonValueKind.Number) state.Inventory[item.Name] = item.Value.GetInt32();
             if (world.TryGetProperty("explored", out var explored) && explored.ValueKind == JsonValueKind.Array)
                 foreach (var chunk in explored.EnumerateArray())
                     if (chunk.ValueKind == JsonValueKind.Number) state.Explored.Add(chunk.GetInt32());

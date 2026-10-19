@@ -36,6 +36,8 @@ public sealed partial class Game : Node2D
     public WeatherSystem Weather { get; private set; } = null!;
     public FireSystem Fire { get; private set; } = null!;
     public FireVisuals FireVisuals { get; private set; } = null!;
+    public InventorySystem Inventory { get; private set; } = null!;
+    public ObjectiveSystem Objectives { get; private set; } = null!;
 
     /// <summary>Kotak dialog sedang terbuka (permainan dijeda).</summary>
     public bool DialogOpen => Dialog.Open;
@@ -117,6 +119,11 @@ public sealed partial class Game : Node2D
         Fire = new FireSystem();
         Fire.Configure(this);
 
+        // M5: tas, crafting, dan rantai misi data-driven
+        Inventory = new InventorySystem(this);
+        Objectives = new ObjectiveSystem(this);
+        Objectives.Configure();
+
         // pipeline FX (asap, bloom, grading) + heat haze di tiap titik api
         Fx = new Fx();
         AddChild(Fx);
@@ -162,6 +169,11 @@ public sealed partial class Game : Node2D
         Hud.ProfilePicked += StartProfile;
         Hud.ProfileCreated += CreateProfile;
         Hud.BuyPotion += () => BuyPotion();
+        Hud.CraftRequested += id =>
+        {
+            if (id.Length == 0) ShowCraftMenu(false);
+            else Craft(id);
+        };
 
         Sfx = new AudioPlayer();
         AddChild(Sfx);
@@ -224,6 +236,10 @@ public sealed partial class Game : Node2D
         Register("interact", Key.E);
         Register("quick_save", Key.F);
         Register("extinguish", Key.R);
+        Register("craft", Key.C);
+        Register("sketch", Key.M);
+        Register("barrier", Key.B);
+        Register("plant", Key.N);
         Register("menu", Key.Escape);
     }
 
@@ -335,13 +351,18 @@ public sealed partial class Game : Node2D
             else OpenPauseMenu();
         }
         if (Input.IsActionJustPressed("quick_save") && ProfileId is not null) SaveToSlot(CurrentSlot);
+        if (Input.IsActionJustPressed("craft") && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !DialogOpen)
+            ToggleCraftMenu();
 
         if (DialogOpen && Input.IsActionJustPressed("interact")) AdvanceDialog();
 
-        var playing = ProfileId is not null && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !DialogOpen;
+        var playing = ProfileId is not null && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !Hud.CraftOpen && !DialogOpen;
         if (playing && Input.IsActionJustPressed("interact") && !Interact())
             Hud.Toast("Tidak ada yang bisa diajak bicara di dekat sini");
         if (playing && Input.IsActionJustPressed("potion")) DrinkPotion();
+        if (playing && Input.IsActionJustPressed("sketch")) UseMapSketch();
+        if (playing && Input.IsActionJustPressed("barrier")) PlaceBarrier();
+        if (playing && Input.IsActionJustPressed("plant")) PlantSeed();
         if (playing && Player.Alive && !frozen && Input.IsActionJustPressed("extinguish")) TryExtinguish();
         if (playing && Player.Alive && !frozen)
         {
@@ -403,6 +424,7 @@ public sealed partial class Game : Node2D
 
         // chunk di sekitar pemain (aktivasi aktor + reveal fog)
         Chunks.Update(Player.Position);
+        Objectives?.Advance();
 
         // HUD selalu hidup (jam, minimap, tracker) — termasuk saat dialog/menu
         _ui.UpdateHud();
@@ -483,22 +505,106 @@ public sealed partial class Game : Node2D
     {
         if (Player is null || !Player.Alive || Fire is null) return false;
         if (_extinguishCooldown > 0) return false;
-        if (Player.Energy < Rules.ExtinguishCost)
+        var hasPump = Inventory is not null && Inventory.Has("pompa");
+        var cost = hasPump ? Rules.ExtinguishCost * 0.55 : Rules.ExtinguishCost;
+        if (Player.Energy < cost)
         {
             Hud?.Toast("Napas habis — berhenti sebentar untuk mengisi.");
             return false;
         }
-        var removed = Fire.Extinguish(Player.Position, (float)Rules.ExtinguishRange);
+        var removed = Fire.Extinguish(Player.Position, (float)(Rules.ExtinguishRange * (hasPump ? 1.55 : 1.0)));
         if (removed == 0)
         {
             Hud?.Toast("Tidak ada api di dekat sini.");
             return false;
         }
-        Player.Energy = Math.Max(0, Player.Energy - Rules.ExtinguishCost);
+        Player.Energy = Math.Max(0, Player.Energy - cost);
         _extinguishCooldown = Rules.ExtinguishCooldown;
         Sfx?.Play("step", -4f);
         Feel?.Burst(Player.Position, new Color(0.52f, 0.82f, 1f, 0.95f), 10);
         Hud?.Toast($"Api padam · {removed} titik");
+        Objectives?.NotifyExtinguished(removed);
+        return true;
+    }
+
+    public bool Craft(string recipeId) => Inventory?.Craft(recipeId) ?? false;
+
+    /// <summary>Tick cooldown aksi (dipakai _Process; tes memanggil eksplisit).</summary>
+    public void TickActionCooldowns(double delta) => _extinguishCooldown = Math.Max(0, _extinguishCooldown - delta);
+
+    /// <summary>Buka/tutup panel crafting (C); permainan dijeda seperti menu.</summary>
+    public void ToggleCraftMenu()
+    {
+        if (Hud is null || Player is null) return;
+        ShowCraftMenu(!Hud.CraftOpen);
+    }
+
+    public void ShowCraftMenu(bool visible)
+    {
+        if (Hud is null) return;
+        Hud.ShowCraft(visible, Inventory?.Detailed() ?? "", "Pilih resep. Bahan dari peti (E).");
+    }
+
+    /// <summary>Pakai peta sketsa (M): buka fog di sekitar pemain.</summary>
+    public bool UseMapSketch()
+    {
+        if (Player is null || !Player.Alive || Inventory is null || Chunks is null) return false;
+        if (!Inventory.Has("peta_sketsa"))
+        {
+            Hud?.Toast("Tidak punya peta sketsa — craft dari kertas arang + arang.");
+            return false;
+        }
+        Inventory.Remove("peta_sketsa");
+        var revealed = Chunks.RevealAround(Player.Position, 2);
+        Sfx?.Play("quest");
+        Hud?.Toast($"Peta sketsa dipakai · {revealed} area terbuka");
+        LogEvent("peta", $"{revealed} chunk");
+        Autosave("peta sketsa");
+        return true;
+    }
+
+    /// <summary>Pasang sekat api (B) di depan pemain.</summary>
+    public bool PlaceBarrier()
+    {
+        if (Player is null || !Player.Alive || Inventory is null || Fire is null) return false;
+        if (!Inventory.Has("sekat"))
+        {
+            Hud?.Toast("Tidak punya sekat api — craft: kain 1 + tali 3.");
+            return false;
+        }
+        var dir = Player.Facing == "left" ? new Vector2(-1, 0) : new Vector2(1, 0);
+        var target = Player.Position + dir * 12f;
+        if (!Fire.AddFirebreakAt(target))
+        {
+            Hud?.Toast("Tidak bisa memasang sekat di sini.");
+            return false;
+        }
+        Inventory.Remove("sekat");
+        Feel?.Burst(target, new Color(0.62f, 0.55f, 0.4f, 0.95f), 8);
+        Hud?.Toast("Sekat api terpasang — jalaran api terputus.");
+        Autosave("sekat api");
+        return true;
+    }
+
+    /// <summary>Tanam benih (N) di tanah bekas terbakar.</summary>
+    public bool PlantSeed()
+    {
+        if (Player is null || !Player.Alive || Inventory is null) return false;
+        if (!Inventory.Has("benih"))
+        {
+            Hud?.Toast("Tidak punya benih tunas.");
+            return false;
+        }
+        if (Ambience is null || !Ambience.InBurntZone(Player.Position))
+        {
+            Hud?.Toast("Benih hanya bisa ditanam di tanah bekas terbakar.");
+            return false;
+        }
+        Inventory.Remove("benih");
+        Ambience.ForceSproutAt(Player.Position);
+        Hud?.Toast("Benih ditanam — tunas akan tumbuh.");
+        LogEvent("tanam", ZoneId);
+        Autosave("tanam benih");
         return true;
     }
 

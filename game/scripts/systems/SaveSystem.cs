@@ -99,6 +99,7 @@ public sealed class SaveSystem
         game.Player.State.Checkpoint = state.Checkpoint;
         game.Player.State.Flags = state.Flags;
         game.Player.State.Defeated = state.Defeated;
+        game.Player.State.Inventory = state.Inventory;
         game.Player.State.Gold = state.Gold;
         game.Player.State.Potions = state.Potions;
         game.Player.State.Deaths = state.Deaths;

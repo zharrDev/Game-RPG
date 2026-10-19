@@ -113,6 +113,30 @@ public sealed class ChunkSystem
         Revision++;
     }
 
+    /// <summary>Buka area radius chunk tertentu (dipakai peta sketsa M5).</summary>
+    public int RevealAround(Vector2 playerPosition, int radiusChunks)
+    {
+        var index = IndexAt(playerPosition);
+        if (index < 0) return 0;
+        var centerCol = ColOf(index);
+        var centerRow = RowOf(index);
+        var revealed = 0;
+        for (var dy = -radiusChunks; dy <= radiusChunks; dy++)
+        {
+            for (var dx = -radiusChunks; dx <= radiusChunks; dx++)
+            {
+                var col = centerCol + dx;
+                var row = centerRow + dy;
+                if (col < 0 || row < 0 || col >= Cols || row >= Rows) continue;
+                if (!_explored.Add(row * Cols + col)) continue;
+                revealed++;
+                Revision++;
+                ChunkExplored?.Invoke(row * Cols + col);
+            }
+        }
+        return revealed;
+    }
+
     public void RevealAll()
     {
         for (var i = 0; i < TotalChunks; i++) _explored.Add(i);

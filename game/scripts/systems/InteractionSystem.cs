@@ -69,7 +69,11 @@ public sealed class InteractionSystem
         // percikan emas dari mulut peti (visual, tahap 2f)
         var chestPos = new Vector2((chest.Col + 0.5f) * World.TileSize, (chest.Row + 0.5f) * World.TileSize);
         game.Feel?.Burst(chestPos - new Vector2(0, 4), new Color(1f, 0.85f, 0.38f, 0.95f), 10);
-        game.Hud?.Toast($"Peti terbuka: +{chest.Gold} gold, +1 potion");
+        var loot = new List<string> { "kain", "tali", "arang" };
+        if (chest.Id == "chest_market") loot.Add("benih");
+        foreach (var item in loot) game.Inventory?.Add(item);
+        var lootText = string.Join(", ", loot.ConvertAll(i => ItemCatalog.NameOf(i)));
+        game.Hud?.Toast($"Peti terbuka: +{chest.Gold} gold, +1 potion, {lootText}");
         game.LogEvent("chest", chest.Id);
         game.Autosave("peti terbuka");
         return true;
