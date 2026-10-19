@@ -29,6 +29,8 @@ public sealed partial class Game : Node2D
     public SpawnSystem Spawn { get; private set; } = null!;
     public CombatSystem Combat { get; private set; } = null!;
     public DialogSystem Dialog { get; private set; } = null!;
+    public InteractionSystem InteractSystem { get; private set; } = null!;
+    public WorldManager Worlds { get; private set; } = null!;
 
     /// <summary>Kotak dialog sedang terbuka (permainan dijeda).</summary>
     public bool DialogOpen => Dialog.Open;
@@ -93,6 +95,8 @@ public sealed partial class Game : Node2D
         Spawn = new SpawnSystem(this);
         Combat = new CombatSystem(this);
         Dialog = new DialogSystem(this);
+        InteractSystem = new InteractionSystem(this);
+        Worlds = new WorldManager(this);
         BuildWorld();
 
         // pipeline FX (asap, bloom, grading) + heat haze di tiap titik api
@@ -234,18 +238,7 @@ public sealed partial class Game : Node2D
         UpdateZone(true);
     }
 
-    /// <summary>
-    /// Pasang heat haze di semua titik api dunia. Quad-nya ditaruh di node
-    /// terpisah yang tidak ikut y-sort supaya shimmer selalu di depan sprite.
-    /// </summary>
-    private void AttachFireFx()
-    {
-        if (World is null || Fx is null) return;
-        var heatRoot = new Node2D { Name = "HeatHaze", YSortEnabled = false };
-        World.Root.AddChild(heatRoot);
-        foreach (var (pos, phase, size) in World.HeatSources)
-            Fx.AttachHeat(heatRoot, pos, size, phase);
-    }
+    private void AttachFireFx() => Worlds.AttachFireFx();
 
     /// <summary>True kalau NPC ini punya quest yang belum selesai (penanda "!").</summary>
     public bool QuestPending(NpcInfo info) => Progress.QuestPending(info);
@@ -402,138 +395,27 @@ public sealed partial class Game : Node2D
         JumpPressed = Input.IsActionJustPressed("jump"),
     };
 
-    private void UpdateZone(bool force)
-    {
-        if (World is null || Player is null) return;
-        var zone = World.ZoneAt(Player.Position);
-        var id = zone?.Id ?? ZoneId;
-        var name = zone?.Name ?? ZoneName;
-        if (!force && id == ZoneId) return;
-        var first = ZoneId.Length == 0;
-        ZoneId = id;
-        ZoneName = name;
-        Player.State.Zone = id;
-        Sfx?.PlayMusic(id == "greenwood_vale" ? "music_village" : "music_wilds");
-        if (!first && Player.State.Zone != null)
-        {
-            Hud?.Toast($"Masuk zona: {name}");
-            LogEvent("zone", name);
-            Autosave("pindah zona");
-        }
-    }
+    private void UpdateZone(bool force) => Worlds.UpdateZone(force);
 
-    private void UpdateCheckpoint()
-    {
-        if (Player is null || World is null) return;
-        var checkpoint = World.CheckpointNear(Player.Position);
-        if (checkpoint is null || checkpoint.Id == Player.State.Checkpoint) return;
-        Player.State.Checkpoint = checkpoint.Id;
-        Hud?.Toast($"Checkpoint: {checkpoint.Name} — perjalanan disimpan");
-        LogEvent("checkpoint", checkpoint.Name);
-        Autosave("checkpoint");
-    }
+    private void UpdateCheckpoint() => Worlds.UpdateCheckpoint();
+
+    // ------------------------------------------------------- interaksi (facade)
 
     /// <summary>Aksi tombol E: bicara dengan NPC terdekat; kalau tidak ada, istirahat di checkpoint.</summary>
-    public bool Interact()
-    {
-        if (World is null || Player is null || !Player.Alive) return false;
-        var info = World.NpcNear(Player.Position);
-        if (info is not null)
-        {
-            OpenDialog(info);
-            return true;
-        }
-        var chest = ChestNear(Player.Position);
-        if (chest is not null)
-        {
-            if (ChestOpened(chest)) Hud?.Toast($"Peti {chest.Id} sudah kosong.");
-            else OpenChest(chest);
-            return true;
-        }
-        return RestAtCheckpoint();
-    }
+    public bool Interact() => InteractSystem.Interact();
 
-    // ------------------------------------------------------------- peti & item
+    public ChestInfo? ChestNear(Vector2 position) => InteractSystem.ChestNear(position);
 
-    public ChestInfo? ChestNear(Vector2 position)
-    {
-        if (World is null) return null;
-        ChestInfo? best = null;
-        var bestDistance = Rules.InteractRange;
-        foreach (var chest in World.Data.Chests)
-        {
-            var pos = new Vector2((chest.Col + 0.5f) * World.TileSize, (chest.Row + 0.5f) * World.TileSize);
-            var distance = pos.DistanceTo(position);
-            if (distance > bestDistance) continue;
-            bestDistance = distance;
-            best = chest;
-        }
-        return best;
-    }
-
-    public bool ChestOpened(ChestInfo chest) =>
-        Player?.State.Flags.GetValueOrDefault($"chest_{chest.Id}") ?? false;
+    public bool ChestOpened(ChestInfo chest) => InteractSystem.ChestOpened(chest);
 
     /// <summary>Buka peti: gold + 1 potion, flag tersimpan supaya tidak bisa dicuri dua kali.</summary>
-    public bool OpenChest(ChestInfo chest)
-    {
-        if (Player is null || ChestOpened(chest)) return false;
-        Player.State.Flags[$"chest_{chest.Id}"] = true;
-        Player.State.Gold += chest.Gold;
-        Player.State.Potions = Math.Min(Rules.MaxPotions, Player.State.Potions + 1);
-        World?.SetPropTile(chest.Col, chest.Row, "chest_open");
-        Sfx?.Play("quest");
-        // percikan emas dari mulut peti (visual, tahap 2f)
-        var chestPos = new Vector2((chest.Col + 0.5f) * World.TileSize, (chest.Row + 0.5f) * World.TileSize);
-        Feel?.Burst(chestPos - new Vector2(0, 4), new Color(1f, 0.85f, 0.38f, 0.95f), 10);
-        Hud?.Toast($"Peti terbuka: +{chest.Gold} gold, +1 potion");
-        LogEvent("chest", chest.Id);
-        Autosave("peti terbuka");
-        return true;
-    }
+    public bool OpenChest(ChestInfo chest) => InteractSystem.OpenChest(chest);
 
     /// <summary>Minum potion (tombol Q).</summary>
-    public bool DrinkPotion()
-    {
-        if (Player is null || !Player.Alive) return false;
-        if (Player.State.Potions <= 0)
-        {
-            Hud?.Toast("Tidak ada potion. Beli di menu (Esc) kalau gold cukup.");
-            return false;
-        }
-        if (Player.State.Hp >= Player.State.MaxHp)
-        {
-            Hud?.Toast("HP masih penuh — potion disimpan.");
-            return false;
-        }
-        Player.State.Potions--;
-        Player.State.Hp = Math.Min(Player.State.MaxHp, Player.State.Hp + Rules.PotionHeal);
-        Sfx?.Play("rest");
-        Hud?.Toast($"Potion: +{Rules.PotionHeal} HP · sisa {Player.State.Potions}");
-        return true;
-    }
+    public bool DrinkPotion() => InteractSystem.DrinkPotion();
 
     /// <summary>Beli potion di pasar (tombol di menu pause).</summary>
-    public bool BuyPotion()
-    {
-        if (Player is null) return false;
-        if (Player.State.Potions >= Rules.MaxPotions)
-        {
-            Hud?.Toast($"Persediaan potion penuh ({Rules.MaxPotions}).");
-            return false;
-        }
-        if (Player.State.Gold < Rules.PotionPrice)
-        {
-            Hud?.Toast($"Gold tidak cukup — butuh {Rules.PotionPrice}, punya {Player.State.Gold}.");
-            return false;
-        }
-        Player.State.Gold -= Rules.PotionPrice;
-        Player.State.Potions++;
-        Sfx?.Play("quest");
-        Hud?.Toast($"Beli potion: -{Rules.PotionPrice} gold · sisa {Player.State.Gold}");
-        Autosave("beli potion");
-        return true;
-    }
+    public bool BuyPotion() => InteractSystem.BuyPotion();
 
     public void OpenDialog(NpcInfo info) => Dialog.OpenWith(info);
 
@@ -542,18 +424,7 @@ public sealed partial class Game : Node2D
     public void CloseDialog() => Dialog.Close();
 
     /// <summary>Tombol E di checkpoint: istirahat memulihkan HP & energi, lalu simpan.</summary>
-    public bool RestAtCheckpoint()
-    {
-        if (World is null || Player is null || !Player.Alive) return false;
-        var checkpoint = World.CheckpointNear(Player.Position);
-        if (checkpoint is null) return false;
-        Player.State.Hp = Player.State.MaxHp;
-        Player.Energy = Rules.MaxEnergy;
-        Sfx?.Play("rest");
-        Hud?.Toast($"Beristirahat di {checkpoint.Name} — HP & energi pulih");
-        Autosave("istirahat");
-        return true;
-    }
+    public bool RestAtCheckpoint() => InteractSystem.RestAtCheckpoint();
 
     // ------------------------------------------------------------- tempur (facade)
 
