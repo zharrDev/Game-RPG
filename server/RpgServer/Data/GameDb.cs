@@ -38,6 +38,9 @@ public sealed class GameDb
 {
     public const int SlotCount = 3;
 
+    /// <summary>Versi skema DB. Naikkan bersama migrasi (Save v2 di M8).</summary>
+    public const int SchemaVersion = 1;
+
     public string DatabasePath { get; }
     private readonly string _connectionString;
 
@@ -91,8 +94,53 @@ public sealed class GameDb
                 created_at  TEXT NOT NULL
             );
             CREATE INDEX IF NOT EXISTS idx_events_profile ON events(profile_id, id DESC);
+            CREATE TABLE IF NOT EXISTS meta (
+                key         TEXT PRIMARY KEY,
+                value       TEXT NOT NULL
+            );
             """;
         command.ExecuteNonQuery();
+
+        // schema_version disimpan di DB supaya migrasi M8 bisa dibedakan per-file.
+        using var meta = connection.CreateCommand();
+        meta.CommandText = """
+            INSERT INTO meta (key, value) VALUES ('schema_version', $version)
+            ON CONFLICT(key) DO NOTHING;
+            """;
+        meta.Parameters.AddWithValue("$version", SchemaVersion.ToString());
+        meta.ExecuteNonQuery();
+    }
+
+    /// <summary>Versi skema yang tercatat di DB (untuk endpoint health & migrasi).</summary>
+    public int ReadSchemaVersion()
+    {
+        using var connection = Open();
+        using var command = connection.CreateCommand();
+        command.CommandText = "SELECT value FROM meta WHERE key = 'schema_version'";
+        return int.TryParse(command.ExecuteScalar() as string, out var version) ? version : 0;
+    }
+
+    /// <summary>
+    /// Salin DB ke <c>&lt;path&gt;.bak</c> memakai VACUUM INTO (aman saat WAL aktif,
+    /// menghasilkan file SQLite utuh). Dipanggil sekali saat startup sebelum
+    /// perubahan skema; kegagalan backup tidak boleh menggagalkan server.
+    /// </summary>
+    public bool BackupTo(string path)
+    {
+        try
+        {
+            if (File.Exists(path)) File.Delete(path);
+            using var connection = Open();
+            using var command = connection.CreateCommand();
+            command.CommandText = "VACUUM INTO $path";
+            command.Parameters.AddWithValue("$path", path);
+            command.ExecuteNonQuery();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     private static string Now() => DateTime.UtcNow.ToString("o");
