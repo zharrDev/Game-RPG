@@ -65,6 +65,18 @@
       "name": "Korek kuningan",
       "kind": "evidence",
       "description": "Korek berkarat; kebiasaan merokok pemiliknya."
+    },
+    {
+      "id": "sarung_tangan",
+      "name": "Sarung tangan berminyak",
+      "kind": "evidence",
+      "desc": "Bukti insiden; tahan untuk konfrontasi."
+    },
+    {
+      "id": "surat_sewa",
+      "name": "Surat sewa tanah",
+      "kind": "evidence",
+      "desc": "Bukti insiden; tahan untuk konfrontasi."
     }
   ],
   "recipes": [

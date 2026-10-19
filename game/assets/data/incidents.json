@@ -98,6 +98,72 @@
       ],
       "reward_xp": 70,
       "reward_gold": 25
+    },
+    {
+      "id": "pos_jembatan",
+      "name": "Pos Jembatan \u2014 Jalur Timur",
+      "zone": "old_road",
+      "col": 74,
+      "row": 32,
+      "discover_tiles": 16,
+      "radius_tiles": 5,
+      "fires": [
+        [
+          74,
+          32
+        ],
+        [
+          75,
+          32
+        ],
+        [
+          76,
+          32
+        ]
+      ],
+      "evidence": "sarung_tangan",
+      "evidence_text": "Sarung tangan berlumur oli",
+      "suspect": "sari",
+      "confront": [
+        "Sari: \"Sarung tangan itu milik penjual minyak. Aku cuma meracik obat luka.\"",
+        "Arga: \"Bekas oli bercampur tanah jembatan. Kau ada di sini saat api menyala, Sari.\"",
+        "Sari menyerah: \"Aku diperintah lewat surat. Upahnya benih impor \u2014 desa katanya tak butuh hutan lagi.\""
+      ],
+      "reward_xp": 70,
+      "reward_gold": 25
+    },
+    {
+      "id": "pos_gerbang",
+      "name": "Pos Gerbang \u2014 Pasar Timur",
+      "zone": "greenwood_vale",
+      "col": 64,
+      "row": 26,
+      "discover_tiles": 16,
+      "radius_tiles": 5,
+      "fires": [
+        [
+          64,
+          26
+        ],
+        [
+          65,
+          26
+        ],
+        [
+          66,
+          26
+        ]
+      ],
+      "evidence": "surat_sewa",
+      "evidence_text": "Surat sewa tanah bertanda tangan",
+      "suspect": "lena",
+      "confront": [
+        "Lena: \"Surat sewa?! Aku menandatanganinya karena diancam.\"",
+        "Arga: \"Ada lampiran nama pemilik tungku arang. Dia membeli jalur api, Lena.\"",
+        "Lena: \"Rangga. Pemilik tungku arang. Ia ingin hutan ini jadi kebun arangnya.\""
+      ],
+      "reward_xp": 80,
+      "reward_gold": 30
     }
   ]
 }

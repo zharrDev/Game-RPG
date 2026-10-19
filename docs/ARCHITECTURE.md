@@ -51,7 +51,7 @@ inisialisasi deterministik dan headless-testable.
 | `FireSystem` | api grid: bahan bakar, kelembapan, penjalaran angin, asap, sekat | Weather, Game |
 | `InventorySystem` | tas (GameState.Inventory), craft resep data-driven | Peti, Misi, HUD |
 | `ObjectiveSystem` | rantai misi data-driven; cek item/craft/explore/extinguish/flag/counter | Inventory, Fire, HUD |
-| `IncidentSystem` | banyak insiden data-driven: mulai per zona/jarak, api, bukti, konfrontasi, papan bukti (V) | Fire, Dialog, Misi |
+| `IncidentSystem` | banyak insiden data-driven: mulai per zona/jarak, api, bukti, konfrontasi, papan bukti (V), finale lewat Mira | Fire, Dialog, Misi |
 | `FireVisuals` / `RainOverlay` | nyala api gameplay & hujan layar | Fire, Hud |
 | `FogOfWar` / `MinimapFog` | overlay chunk belum dijelajahi (dunia & peta mini) | Game, Hud |
 

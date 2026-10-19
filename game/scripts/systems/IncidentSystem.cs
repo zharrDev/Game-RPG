@@ -38,6 +38,13 @@ public sealed class IncidentSystem
     public bool Started => _active is not null && Flag(StartedFlag(_active));
     public bool Done => _active is not null && Flag(DoneFlag(_active));
     public int ClosedCases => _incidents.Count(i => Flag(CasePrefix + i.Id));
+    public int DoneCount => _incidents.Count(i => Flag(DoneFlag(i)));
+    public int EvidenceCount => EvidenceKinds().Count;
+    public const string EndingFlag = "ending";
+
+    public List<string> EvidenceKinds() => _incidents
+        .Where(i => Flag(DoneFlag(i)) && i.Evidence.Length > 0)
+        .Select(i => i.Evidence).Distinct().ToList();
 
     public static string StartedFlag(Incident incident) => $"{FlagPrefix}{incident.Id}_started";
     public static string DoneFlag(Incident incident) => $"{FlagPrefix}{incident.Id}_done";
@@ -152,6 +159,47 @@ public sealed class IncidentSystem
         game.Objectives?.Advance();
         game.Autosave("konfrontasi");
         return incident.Confront;
+    }
+
+    /// <summary>
+    /// Finale: serahkan berkas ke Mira setelah minimal satu bukti terkumpul.
+    /// Tingkat ending mengikuti persentase bukti dari seluruh insiden.
+    /// </summary>
+    public bool TryFinale(NpcInfo info)
+    {
+        var game = _game;
+        if (info.Id != "mira" || game.Player is null) return false;
+        if (game.Player.State.Flags.GetValueOrDefault(EndingFlag)) return false;
+        if (game.Player.State.Flags.GetValueOrDefault("quest_slime_done") == false &&
+            info.Quest is not null) return false;
+        if (DoneCount <= 0) return false;
+
+        var percent = _incidents.Count == 0 ? 0f : EvidenceCount * 100f / _incidents.Count;
+        string tier, title, body;
+        if (percent < 40f)
+        {
+            tier = "dalang_lolos";
+            title = "ENDING — Dalang Lolos";
+            body = "Api padam, tetapi Rangga menghilang bersama arang terakhir.\nBukti yang tersisa tak cukup untuk menyeretnya ke pengadilan.";
+        }
+        else if (percent < 80f)
+        {
+            tier = "tertangkap";
+            title = "ENDING — Tertangkap";
+            body = "Rangga tertangkap di jembatan timur. Penyewa tanah dari luar desa lolos,\ntetapi Greenwood bisa bernapas lagi.";
+        }
+        else
+        {
+            tier = "hutan_pulih";
+            title = "ENDING — Hutan Pulih";
+            body = "Semua bukti menunjuk Rangga. Hutan Greenwoods pulih:\ntunas-tunas baru tumbuh di tanah bekas terbakar.";
+        }
+        game.Player.State.Flags[EndingFlag] = true;
+        game.Player.State.Flags[$"ending_{tier}"] = true;
+        game.LogEvent("ending", tier);
+        game.Autosave("finale");
+        game.ShowEnding(title, body);
+        return true;
     }
 
     public string StatusOf(Incident incident)

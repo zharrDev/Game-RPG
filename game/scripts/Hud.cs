@@ -11,9 +11,9 @@ public sealed partial class Hud : CanvasLayer
     private Label _hpText = null!, _statsText = null!, _zoneText = null!, _toast = null!, _hint = null!;
     private Label _clock = null!, _weather = null!, _questText = null!;
     private TextureRect _vignette = null!;
-    private Panel _pausePanel = null!, _profilePanel = null!, _craftPanel = null!, _boardPanel = null!;
+    private Panel _pausePanel = null!, _profilePanel = null!, _craftPanel = null!, _boardPanel = null!, _endingPanel = null!;
     private VBoxContainer _pauseBox = null!, _profileBox = null!, _craftBox = null!;
-    private Label _craftInv = null!, _craftStatus = null!, _boardText = null!;
+    private Label _craftInv = null!, _craftStatus = null!, _boardText = null!, _endingTitle = null!, _endingBody = null!;
     private readonly Dictionary<string, Button> _craftButtons = new();
     private Label _journalText = null!, _profileStatus = null!, _pauseSummary = null!;
     private Panel _dialogPanel = null!;
@@ -39,6 +39,7 @@ public sealed partial class Hud : CanvasLayer
     public bool ProfileMenuOpen => _profilePanel.Visible;
     public bool CraftOpen => _craftPanel.Visible;
     public bool BoardOpen => _boardPanel.Visible;
+    public bool EndingOpen => _endingPanel.Visible;
     public string CraftInventoryText => _craftInv.Text;
     public string BoardText => _boardText.Text;
     public bool DialogOpen => _dialogPanel.Visible;
@@ -138,6 +139,7 @@ public sealed partial class Hud : CanvasLayer
         BuildPauseMenu();
         BuildCraftMenu();
         BuildBoardPanel();
+        BuildEndingPanel();
         BuildProfileMenu();
         BuildDialog();
         BuildMinimap();
@@ -365,6 +367,35 @@ public sealed partial class Hud : CanvasLayer
         hint.Modulate = new Color(0.8f, 0.85f, 0.95f);
         _boardPanel.AddChild(hint);
     }
+
+    private void BuildEndingPanel()
+    {
+        _endingPanel = new Panel { Position = new Vector2(24, 60), Size = new Vector2(432, 150), Visible = false };
+        _endingPanel.Modulate = new Color(1, 1, 1, 0.96f);
+        AddChild(_endingPanel);
+        _endingTitle = MakeLabel(new Vector2(12, 10), 12);
+        _endingTitle.Modulate = new Color(1f, 0.85f, 0.45f);
+        _endingPanel.AddChild(_endingTitle);
+        _endingBody = MakeLabel(new Vector2(12, 38), 8);
+        _endingBody.Size = new Vector2(408, 76);
+        _endingPanel.AddChild(_endingBody);
+        var hint = MakeLabel(new Vector2(12, 122), 8);
+        hint.Text = "V tutup";
+        hint.Modulate = new Color(0.8f, 0.85f, 0.95f);
+        _endingPanel.AddChild(hint);
+    }
+
+    public void ShowEnding(string title, string body)
+    {
+        _endingTitle.Text = title;
+        _endingBody.Text = body;
+        _endingPanel.Visible = true;
+    }
+
+    public void HideEnding() => _endingPanel.Visible = false;
+
+    public string EndingTitle => _endingTitle.Text;
+    public string EndingBody => _endingBody.Text;
 
     public void ShowBoard(bool visible, string text)
     {

@@ -358,12 +358,15 @@ public sealed partial class Game : Node2D
         if (Input.IsActionJustPressed("craft") && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !DialogOpen)
             ToggleCraftMenu();
         if (Input.IsActionJustPressed("board") && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !DialogOpen)
-            ShowBoardMenu(!Hud.BoardOpen);
+        {
+            if (Hud.EndingOpen) Hud.HideEnding();
+            else ShowBoardMenu(!Hud.BoardOpen);
+        }
 
         if (DialogOpen && Input.IsActionJustPressed("interact")) AdvanceDialog();
 
         var playing = ProfileId is not null && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !Hud.CraftOpen &&
-            !Hud.BoardOpen && !DialogOpen;
+            !Hud.BoardOpen && !Hud.EndingOpen && !DialogOpen;
         if (playing && Input.IsActionJustPressed("interact") && !Interact())
             Hud.Toast("Tidak ada yang bisa diajak bicara di dekat sini");
         if (playing && Input.IsActionJustPressed("potion")) DrinkPotion();
@@ -546,6 +549,14 @@ public sealed partial class Game : Node2D
     {
         if (Hud is null || Player is null) return;
         ShowCraftMenu(!Hud.CraftOpen);
+    }
+
+    /// <summary>Tampilkan layar ending final (dipanggil IncidentSystem.TryFinale).</summary>
+    public void ShowEnding(string title, string body)
+    {
+        Hud?.ShowEnding(title, body);
+        Sfx?.Play("quest");
+        Bus.RaiseQuestFlagSet("ending");
     }
 
     /// <summary>Papan bukti (V): status insiden, bukti, tersangka.</summary>

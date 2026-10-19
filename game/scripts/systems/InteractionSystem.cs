@@ -23,7 +23,9 @@ public sealed class InteractionSystem
         var info = game.World.NpcNear(game.Player.Position);
         if (info is not null)
         {
-            game.OpenDialog(info, game.Incidents?.TryConfront(info));
+            var lines = game.Incidents?.TryConfront(info);
+            if (lines is null && game.Incidents?.TryFinale(info) == true) return true;
+            game.OpenDialog(info, lines);
             return true;
         }
         var chest = ChestNear(game.Player.Position);

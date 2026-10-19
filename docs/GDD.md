@@ -128,5 +128,8 @@ dan bukti yang saling mengunci. Pos 5 adalah panggung **finale**: pemain harus
   berisi status kasus/bukti/skor tersangka, konfrontasi tersangka data-driven,
   pemulihan tanah (tanam 3 benih → counter `restored`), resep benih, quest warga
   Tomas (4 kelelawar) di rantai misi.
-- **M8**: Pos 4–5, finale 3 ending, Save v2, cuaca penuh, polish, ekspor
-  (sisa M2: layar judul & intro).
+- **M8** (sebagian selesai): Pos 4–5 (Pos Jembatan/Sari/sarung tangan oli,
+  Pos Gerbang/Lena/surat sewa — mengungkap Rangga) dan finale 3 ending lewat
+  Mira (bukti <40% Dalang Lolos, 40–79% Tertangkap, ≥80% Hutan Pulih) +
+  overlay ending; rantai misi genap 18 tahap. Sisa: layar judul & intro (M2),
+  cuaca penuh, Save v2 bila perlu, polish, ekspor.

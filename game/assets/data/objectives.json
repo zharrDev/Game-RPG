@@ -122,8 +122,44 @@
       "hint": "Bicara dengan Tomas setelah bukti lengkap.",
       "type": "flag",
       "target": "kasus_pos_lembah",
-      "next": "pemulihan",
+      "next": "pos_jembatan",
       "reward_xp": 60
+    },
+    {
+      "id": "pos_jembatan",
+      "title": "Tangani kebakaran Pos Jembatan",
+      "hint": "Api di jalur timur dekat jembatan kayu.",
+      "type": "flag",
+      "target": "incident_pos_jembatan_done",
+      "next": "kasus_jembatan",
+      "reward_gold": 25
+    },
+    {
+      "id": "kasus_jembatan",
+      "title": "Konfrontasi tersangka Pos Jembatan",
+      "hint": "Bicara dengan Sari setelah bukti lengkap.",
+      "type": "flag",
+      "target": "kasus_pos_jembatan",
+      "next": "pos_gerbang",
+      "reward_xp": 60
+    },
+    {
+      "id": "pos_gerbang",
+      "title": "Tangani kebakaran Pos Gerbang",
+      "hint": "Api di tepi pasar timur; warga panik.",
+      "type": "flag",
+      "target": "incident_pos_gerbang_done",
+      "next": "kasus_gerbang",
+      "reward_gold": 30
+    },
+    {
+      "id": "kasus_gerbang",
+      "title": "Konfrontasi tersangka Pos Gerbang",
+      "hint": "Bicara dengan Lena setelah bukti lengkap.",
+      "type": "flag",
+      "target": "kasus_pos_gerbang",
+      "next": "pemulihan",
+      "reward_xp": 80
     },
     {
       "id": "pemulihan",
