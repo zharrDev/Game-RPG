@@ -124,6 +124,7 @@ public sealed class ObjectiveSystem
             "item" => game.Inventory?.Count(objective.Target) ?? 0,
             "craft" => game.Player.State.Flags.GetValueOrDefault($"crafted_{objective.Target}") ? 1 : 0,
             "explore" => (int)(game.Chunks?.ExploredPercent ?? 0),
+            "flag" => game.Player.State.Flags.GetValueOrDefault(objective.Target) ? 1 : 0,
             "extinguish" => _extinguishSession,
             _ => 0,
         };

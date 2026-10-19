@@ -47,6 +47,24 @@
       "name": "Peta sketsa",
       "kind": "investigation",
       "description": "Sketsa wilayah sekitar; pakai untuk membuka peta mini."
+    },
+    {
+      "id": "jerigen",
+      "name": "Jerigen minyak",
+      "kind": "evidence",
+      "description": "Jerigen tanpa label; bau minyak tanah. Bukti pembakaran sengaja."
+    },
+    {
+      "id": "nota_tanah",
+      "name": "Nota pembelian tanah",
+      "kind": "evidence",
+      "description": "Nota lama berisi nama dan luas lahan; motif ekspansi."
+    },
+    {
+      "id": "korek_kuningan",
+      "name": "Korek kuningan",
+      "kind": "evidence",
+      "description": "Korek berkarat; kebiasaan merokok pemiliknya."
     }
   ],
   "recipes": [

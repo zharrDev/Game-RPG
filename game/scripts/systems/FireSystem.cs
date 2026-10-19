@@ -283,6 +283,16 @@ public sealed class FireSystem
         _smokeAccumulator = 0;
     }
 
+    /// <summary>Jumlah sel api di dalam radius (dipakai insiden M6).</summary>
+    public int CountBurningNear(Vector2 center, float radius)
+    {
+        var count = 0;
+        var radiusSq = radius * radius;
+        foreach (var pair in _burning)
+            if (CellCenter(pair.Key).DistanceSquaredTo(center) <= radiusSq) count++;
+        return count;
+    }
+
     /// <summary>Sel api untuk visual: pusat sel + intensitas.</summary>
     public readonly record struct FireCell(Vector2 Position, float Intensity);
 

@@ -58,8 +58,36 @@
       "hint": "R menyemprot api; pakai pompa bila punya.",
       "type": "extinguish",
       "count": 1,
-      "next": "",
+      "next": "posloji",
       "reward_xp": 40
+    },
+    {
+      "id": "posloji",
+      "title": "Tangani kebakaran Pos Loji",
+      "hint": "Api menyala di ladang dekat desa.",
+      "type": "flag",
+      "target": "incident_pos_loji_done",
+      "next": "bukti",
+      "reward_gold": 20
+    },
+    {
+      "id": "bukti",
+      "title": "Kumpulkan bukti kebakaran",
+      "hint": "Ambil jerigen setelah api padam.",
+      "type": "item",
+      "target": "jerigen",
+      "count": 1,
+      "next": "kasus",
+      "reward_xp": 25
+    },
+    {
+      "id": "kasus",
+      "title": "Konfrontasi tersangka Pos Loji",
+      "hint": "Bicara dengan Lena setelah bukti lengkap.",
+      "type": "flag",
+      "target": "kasus_pos_loji",
+      "next": "",
+      "reward_xp": 50
     }
   ]
 }

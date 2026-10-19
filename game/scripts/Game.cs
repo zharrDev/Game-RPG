@@ -38,6 +38,7 @@ public sealed partial class Game : Node2D
     public FireVisuals FireVisuals { get; private set; } = null!;
     public InventorySystem Inventory { get; private set; } = null!;
     public ObjectiveSystem Objectives { get; private set; } = null!;
+    public IncidentSystem Incidents { get; private set; } = null!;
 
     /// <summary>Kotak dialog sedang terbuka (permainan dijeda).</summary>
     public bool DialogOpen => Dialog.Open;
@@ -123,6 +124,8 @@ public sealed partial class Game : Node2D
         Inventory = new InventorySystem(this);
         Objectives = new ObjectiveSystem(this);
         Objectives.Configure();
+        Incidents = new IncidentSystem(this);
+        Incidents.Configure();
 
         // pipeline FX (asap, bloom, grading) + heat haze di tiap titik api
         Fx = new Fx();
@@ -424,6 +427,7 @@ public sealed partial class Game : Node2D
 
         // chunk di sekitar pemain (aktivasi aktor + reveal fog)
         Chunks.Update(Player.Position);
+        Incidents?.Advance();
         Objectives?.Advance();
 
         // HUD selalu hidup (jam, minimap, tracker) — termasuk saat dialog/menu
@@ -482,7 +486,7 @@ public sealed partial class Game : Node2D
     /// <summary>Beli potion di pasar (tombol di menu pause).</summary>
     public bool BuyPotion() => InteractSystem.BuyPotion();
 
-    public void OpenDialog(NpcInfo info) => Dialog.OpenWith(info);
+    public void OpenDialog(NpcInfo info, IReadOnlyList<string>? lines = null) => Dialog.OpenWith(info, lines);
 
     public void AdvanceDialog() => Dialog.Advance();
 

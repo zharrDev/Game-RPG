@@ -1,0 +1,37 @@
+{
+  "incidents": [
+    {
+      "id": "pos_loji",
+      "name": "Pos Loji \u2014 Ladang Vale",
+      "zone": "greenwood_vale",
+      "col": 41,
+      "row": 44,
+      "discover_tiles": 18,
+      "radius_tiles": 5,
+      "fires": [
+        [
+          41,
+          44
+        ],
+        [
+          42,
+          44
+        ],
+        [
+          41,
+          45
+        ]
+      ],
+      "evidence": "jerigen",
+      "evidence_text": "Jerigen minyak tanpa label",
+      "suspect": "lena",
+      "confront": [
+        "Lena: \"Aku hanya membuka lahan. Api itu untuk membersihkan semak, bukan membakar rumah siapa pun.\"",
+        "Arga: \"Jerigen ini ditemukan di ladangmu, Lena. Kita bicara di Pos Loji, sekarang.\"",
+        "Lena menunduk. Ada yang menyuruhnya, tapi ia belum berani menyebut nama."
+      ],
+      "reward_xp": 80,
+      "reward_gold": 30
+    }
+  ]
+}

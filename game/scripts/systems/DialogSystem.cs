@@ -22,13 +22,13 @@ public sealed class DialogSystem
     public string Line => _index < _lines.Count ? _lines[_index] : "";
     public string? TalkingTo => _npc?.Info.Id;
 
-    public void OpenWith(NpcInfo info)
+    public void OpenWith(NpcInfo info, IReadOnlyList<string>? overrideLines = null)
     {
         var game = _game;
         if (game.Player is null) return;
         _lines.Clear();
-        _lines.AddRange(info.Lines);
-        var quest = info.Quest;
+        _lines.AddRange(overrideLines is { Count: > 0 } ? overrideLines : info.Lines);
+        var quest = overrideLines is { Count: > 0 } ? null : info.Quest;
         if (quest is not null && quest.Flag.Length > 0)
         {
             if (!game.Player.State.Flags.GetValueOrDefault(quest.Flag))
