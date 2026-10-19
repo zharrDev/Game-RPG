@@ -85,6 +85,9 @@ echo "== 2/7 verifikasi artefak aset =="
 echo "== 3/7 build backend C# =="
 dotnet build server/RpgServer/RpgServer.csproj -v quiet --nologo
 
+echo "== 3b/7 unit test server (harness konsol, tanpa NuGet) =="
+dotnet run --project server/RpgServer.Tests -v quiet --nologo
+
 echo "== 4/7 build game Godot (C#) =="
 dotnet build game/RpgGame.csproj -v quiet --nologo
 
