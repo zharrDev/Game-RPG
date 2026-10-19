@@ -59,6 +59,7 @@ public sealed class SpawnSystem
         foreach (var npc in _game.Npcs)
         {
             if (!GodotObject.IsInstanceValid(npc)) continue;
+            if (!_game.Chunks.IsActive(npc.Position)) continue;   // chunk streaming
             npc.Tick(delta, paused);
         }
     }

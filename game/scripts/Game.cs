@@ -31,6 +31,7 @@ public sealed partial class Game : Node2D
     public DialogSystem Dialog { get; private set; } = null!;
     public InteractionSystem InteractSystem { get; private set; } = null!;
     public WorldManager Worlds { get; private set; } = null!;
+    public ChunkSystem Chunks { get; private set; } = null!;
 
     /// <summary>Kotak dialog sedang terbuka (permainan dijeda).</summary>
     public bool DialogOpen => Dialog.Open;
@@ -97,6 +98,7 @@ public sealed partial class Game : Node2D
         Dialog = new DialogSystem(this);
         InteractSystem = new InteractionSystem(this);
         Worlds = new WorldManager(this);
+        Chunks = new ChunkSystem();
         BuildWorld();
 
         // pipeline FX (asap, bloom, grading) + heat haze di tiap titik api
@@ -236,6 +238,10 @@ public sealed partial class Game : Node2D
         Spawn.SpawnMobs();
         Spawn.SpawnNpcs();
         UpdateZone(true);
+
+        // chunk: aktivasi aktor + fog of war (peta 96x72 -> 12x9 chunk 8 tile)
+        Chunks.Configure(data.Width, data.Height);
+        Chunks.Update(Player.Position);
     }
 
     private void AttachFireFx() => Worlds.AttachFireFx();
@@ -360,6 +366,9 @@ public sealed partial class Game : Node2D
 
         if (playing && !Player.Alive && Player.DeathTimer >= Rules.DeathDuration)
             Combat.Respawn();
+
+        // chunk di sekitar pemain (aktivasi aktor + reveal fog)
+        Chunks.Update(Player.Position);
 
         // HUD selalu hidup (jam, minimap, tracker) — termasuk saat dialog/menu
         _ui.UpdateHud();

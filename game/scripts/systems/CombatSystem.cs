@@ -24,6 +24,8 @@ public sealed class CombatSystem
         foreach (var mob in game.Mobs.ToArray())
         {
             if (!GodotObject.IsInstanceValid(mob)) continue;
+            // chunk streaming: musuh jauh dibekukan supaya CPU & AI tetap murah
+            if (!game.Chunks.IsActive(mob.Position)) continue;
             mob.Tick(delta, game.Player.Center, game.Player.Alive && canAttack, game.World.Grid, OnMobHitsPlayer);
         }
     }
