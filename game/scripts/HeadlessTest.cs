@@ -875,6 +875,47 @@ public static class HeadlessTest
             deadApi.LocalStore.DeleteFile();
         }
 
+        GD.Print("=== sistem M1: bus, spawn, dialog, save ===");
+        Check("EventBus terpasang", game.Bus is not null);
+        Check("sistem inti terpasang (spawn/combat/progress/dialog/interaksi/world)",
+            game.Spawn is not null && game.Combat is not null && game.Progress is not null &&
+            game.Dialog is not null && game.InteractSystem is not null && game.Worlds is not null);
+
+        // determinisme bus: counter naik sesuai kejadian yang dipicu lewat jalur gameplay
+        game.Bus.ResetCounters();
+        var busMob = game.Mobs.FirstOrDefault(m => !m.Dead && GodotObject.IsInstanceValid(m));
+        if (busMob is not null)
+        {
+            var busKillsBefore = player.State.Kills;
+            var busHpBefore = busMob.Hp;
+            busMob.TakeDamage(9999);
+            game.MobsTickForTest(1.5);
+            Check("bus mencatat mob_killed saat musuh tumbang",
+                game.Bus.Count("mob_killed") == 1 && player.State.Kills == busKillsBefore + 1,
+                $"mob_killed={game.Bus.Count("mob_killed")} kills={player.State.Kills - busKillsBefore} hp={busHpBefore}");
+        }
+        else
+        {
+            Check("bus mencatat mob_killed saat musuh tumbang", false, "tidak ada mob hidup");
+        }
+        var zoneBefore = game.ZoneId;
+        game.Worlds.UpdateZone(true);
+        Check("bus mencatat zone_changed", game.Bus.Count("zone_changed") >= 1 && game.ZoneId == zoneBefore,
+            $"{game.Bus.Count("zone_changed")} {game.ZoneId}");
+
+        // dialog lewat facade sistem tetap sama bentuknya
+        var miraInfo = game.World!.Data.Npcs.First(n => n.Id == "mira");
+        game.OpenDialog(miraInfo);
+        Check("facade dialog membuka baris", game.DialogOpen && game.TalkingTo == "mira" && game.DialogLine.Length > 0,
+            $"{game.TalkingTo}: {game.DialogLine}");
+        while (game.DialogOpen) game.AdvanceDialog();
+        Check("facade dialog menutup bersih", !game.DialogOpen && game.TalkingTo is null);
+
+        // save facade membangun state dari posisi pemain saat ini
+        var builtState = game.BuildState();
+        Check("BuildState memakai posisi & zona terkini",
+            Math.Abs(builtState.X - player.Position.X) < 0.01 && builtState.Zone == game.ZoneId);
+
         GD.Print("");
         GD.Print($"=== hasil: {_pass} lulus, {Failures.Count} gagal ===");
         foreach (var failure in Failures) GD.Print($"  GAGAL: {failure}");
