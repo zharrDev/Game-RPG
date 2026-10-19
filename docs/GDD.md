@@ -120,7 +120,9 @@ dan bukti yang saling mengunci. Pos 5 adalah panggung **finale**: pemain harus
   (assets/data/items.json), rantai misi data-driven (assets/data/objectives.json),
   alat pemadaman (pompa/sekat), barang investigasi (kertas arang/peta sketsa),
   benih untuk tanah terbakar.
-- **M6**: vertical slice Pos Loji end-to-end (padam → bukti → tersangka).
+- **M6** (selesai): vertical slice Pos Loji — insiden kebakaran data-driven
+  (assets/data/incidents.json), api → bukti (jerigen) → konfrontasi Lena,
+  masuk rantai misi dan tersimpan lewat flag.
 - **M7**: investigasi penuh + papan bukti + building + quest warga.
 - **M8**: Pos 2–5, finale, Save v2, cuaca penuh, polish, ekspor
   (sisa M2: layar judul & intro).

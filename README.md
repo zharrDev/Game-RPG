@@ -149,7 +149,7 @@ game/                      proyek Godot 4 (.NET)
     Assets.cs / Data.cs    pemuat PNG & parser JSON aset
     HeadlessTest.cs        tes yang menjalankan kode game sungguhan
   assets/                  hasil generate (tileset, peta, atlas) + tekstur FX + shader
-  assets/data/             items.json (barang & resep), objectives.json (rantai misi)
+  assets/data/             items.json, objectives.json, incidents.json (insiden/vertical slice)
 
 server/RpgServer/          ASP.NET Core + SQLite (profil, 3 slot save, resume, journey)
   Endpoints/               Health, Profile, Save, Journey (minimal API per domain)
