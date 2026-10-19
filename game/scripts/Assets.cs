@@ -27,6 +27,7 @@ public static class Assets
     public const string FxFlamePng = "res://assets/fx/fx_flame.png";
     public const string FxSproutPng = "res://assets/fx/fx_sprout.png";
     public const string FxVignettePng = "res://assets/fx/fx_vignette.png";
+    public const string IconMaskerPng = "res://assets/ui/icon_masker.png";
     public const string FxSmokeShader = "res://assets/shaders/fx_smoke.gdshader";
     public const string FxGlowShader = "res://assets/shaders/fx_glow.gdshader";
     public const string FxGradeShader = "res://assets/shaders/fx_grade.gdshader";

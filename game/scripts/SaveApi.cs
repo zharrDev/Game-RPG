@@ -52,6 +52,10 @@ public sealed class GameState
     public int Deaths, Kills;
     public int Gold, Potions;
     public int Restored;
+    // Save v2 (F1): musim kemarau & dua meter konsekuensi.
+    public int Day = 1;
+    public float VillageSafety = 100f;
+    public float ForestHealth = 100f;
 
     public JsonObject ToJson()
     {
@@ -85,6 +89,9 @@ public sealed class GameState
             {
                 ["zone"] = Zone,
                 ["checkpoint"] = Checkpoint,
+                ["day"] = Day,
+                ["villageSafety"] = Math.Round(VillageSafety, 1),
+                ["forestHealth"] = Math.Round(ForestHealth, 1),
                 ["flags"] = flags,
                 ["defeated"] = defeated,
                 ["inventory"] = inventory,
@@ -122,6 +129,9 @@ public sealed class GameState
         {
             state.Zone = world.TryGetProperty("zone", out var z) ? z.GetString() ?? state.Zone : state.Zone;
             state.Checkpoint = world.TryGetProperty("checkpoint", out var c) ? c.GetString() ?? state.Checkpoint : state.Checkpoint;
+            state.Day = Math.Clamp(GetInt(world, "day", 1), 1, 365);
+            state.VillageSafety = Math.Clamp((float)GetDouble(world, "villageSafety", 100), 0f, 100f);
+            state.ForestHealth = Math.Clamp((float)GetDouble(world, "forestHealth", 100), 0f, 100f);
             if (world.TryGetProperty("flags", out var flags) && flags.ValueKind == JsonValueKind.Object)
                 foreach (var flag in flags.EnumerateObject()) state.Flags[flag.Name] = flag.Value.GetBoolean();
             if (world.TryGetProperty("defeated", out var defeated) && defeated.ValueKind == JsonValueKind.Object)

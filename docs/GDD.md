@@ -101,10 +101,21 @@ arang, peta sketsa (lihat `game/assets/data/items.json`).
 
 ## 8. Ending
 
-1. **Dalang Lolos** (bukti < 40%): api padam, tapi pembakaran berlanjut.
-2. **Tertangkap** (bukti 40–79%): Rangga tertangkap, penyewa desa lolos.
-3. **Hutan Pulih** (bukti ≥ 80% + buku catatan tanah): semua terungkap;
-   sistem pemulihan hutan penuh terbuka; epilog Greenwoods hijau kembali.
+Sejak F1, tingkat ending memakai **skor tertimbang**: bukti tetap syarat utama,
+tetapi kondisi desa & hutan ikut menilai perjalanan pemain.
+
+`skor = persen_bukti × (meters_floor + (1 − meters_floor) × rata_rata_meter / 100)`
+
+- `meters_floor = 0.65` (`assets/data/fire_season.json` → `ending.meters_floor`):
+  dengan desa & hutan hancur, 100% bukti hanya menghasilkan skor 65.
+- Meter penuh (100/100) menghasilkan skor = persen bukti, sama seperti M8.
+- Ambang tetap: skor < 40 **Dalang Lolos**, 40–79 **Tertangkap**, ≥ 80 **Hutan Pulih**.
+- Bukti & item misi tidak pernah hilang saat tumbang/terbakar (tidak ada soft-lock).
+
+1. **Dalang Lolos**: api padam, tapi pembakaran berlanjut.
+2. **Tertangkap**: Rangga tertangkap, penyewa desa lolos.
+3. **Hutan Pulih**: semua terungkap; sistem pemulihan hutan penuh terbuka;
+   epilog Greenwoods hijau kembali.
 
 ## 9. Roadmap Milestone
 
@@ -133,3 +144,43 @@ arang, peta sketsa (lihat `game/assets/data/items.json`).
   overlay ending, layar judul + intro (sisa M2), rantai misi genap 18 tahap.
   Ekspor rilis: `godot --headless --path game --export-release "Linux" build/linux/arga.x86_64`
   (butuh template ekspor Godot 4.7.2 mono terpasang di mesin pemain).
+
+## 10. Fase 2 — Tekanan & Konsekuensi (F1–F7)
+
+Fase 2 menutup celah antara dokumen ini dan build yang bisa dimainkan. Prioritas
+selalu gameplay (pemain FOKUS, PENASARAN, dan merasakan KONSEKUENSI), baru
+polish dan kerapian. Semua teks UI & dokumen berbahasa Indonesia.
+
+### F1 (selesai): musim kemarau 14 hari
+
+- **Hari**: 14 hari × 300 detik; HUD menampilkan `Hari X/14` dan tanda `!` saat
+  api berada dalam radius ancaman desa. Hari berganti hanya saat bermain.
+- **Api liar**: jadwal situs kurasi per hari (deterministik) di
+  `assets/data/fire_season.json`; hari tanpa jadwal memilih satu situs dari pool
+  memakai hash hari. Tidak ada RNG runtime yang tidak bisa diulang.
+- **Meter keselamatan desa** (oranye): turun saat sel api menyala dalam
+  `threat_tiles` dari desa, pulih saat aman. **Meter kesehatan hutan** (hijau):
+  turun saat api membakar, pulih saat padam, dan melonjak saat pemain menanam
+  tunas (`restored`).
+- **Ungsian warga** (konsekuensi lunak, tanpa game over): desa < 60 → Bram,
+  Sari, Tomas mengungsi; < 30 → semua termasuk Mira & Lena; ≥ 75 → semua
+  kembali. Warga yang mengungsi tidak bisa diajak bicara, misi inti tetap bisa
+  diselesaikan lewat jalur lain, dan tidak ada item/bukti yang hilang.
+- **Masker kain**: resep kain 2 + arang 1; kuras asap ×0.35; ikon di HUD.
+- **Hujan**: kesehatan hutan ≥ 70 mendorong stage cuaca berisi hujan; hujan
+  menyegarkan regen energi dan menekan penyebaran api.
+- **Ending**: skor bukti × kondisi meter (lihat bagian 8).
+- **Debug**: F1 hari berikutnya, F2 sulut api liar, F3 placeholder Echo (F2),
+  F4 overlay performa. Parameter lengkap: `docs/TUNING.md`.
+
+### Rencana milestone berikutnya
+
+- **F2**: Echo kematian (melihat 8 detik terakhir) + Kronik dari `/journey`,
+  event bertipe, validasi server.
+- **F3**: variasi musuh karhutla + boss data-driven per zona.
+- **F4**: audio adaptif (musik per hari/zona, sting bahaya) + ekspor `*.wav`.
+- **F5**: sprite top-down penuh untuk pemain & NPC.
+- **F6**: hardening backend (atomicitas save+journey, validasi ketat).
+- **F7**: kerapian (pecah file besar, project.godot 4.7, TUNING/CHANGELOG,
+  uji ekspor).
+- **F8** (opsional, butuh konfirmasi): dunia prosedural.

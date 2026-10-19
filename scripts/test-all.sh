@@ -77,6 +77,7 @@ echo "== 1/7 generate aset (tileset 16x16, peta, sprite, font, audio, fx) =="
 "$PY" tools/build_hero_sprites.py
 "$PY" tools/build_enemy_sprites.py
 "$PY" tools/build_npc_sprites.py
+"$PY" tools/build_item_icons.py
 "$PY" tools/preview_stages.py
 
 echo "== 2/7 verifikasi artefak aset =="

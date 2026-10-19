@@ -12,7 +12,7 @@ namespace RpgServer;
 /// </summary>
 public static class StateValidator
 {
-    public const string CurrentVersion = "1";
+    public const string CurrentVersion = "2";
     private const int MaxFlagEntries = 64;
     private const int MaxSkills = 16;
 
@@ -80,6 +80,10 @@ public static class StateValidator
             var inventory = NormalizeInventory(world["inventory"] as JsonObject);
             if (inventory is null) return Result.Fail("world.inventory harus berisi jumlah barang >= 0");
             var restored = ClampInt(world["restored"]?.GetValue<double>() ?? 0, 0, 10_000);
+            // Save v1 tidak punya field ini: default aman (hari 1, meter penuh).
+            var day = ClampInt(world["day"]?.GetValue<double>() ?? 1, 1, 365);
+            var villageSafety = ClampDouble(world["villageSafety"]?.GetValue<double>() ?? 100, 0, 100);
+            var forestHealth = ClampDouble(world["forestHealth"]?.GetValue<double>() ?? 100, 0, 100);
 
             var state = new JsonObject
             {
@@ -102,6 +106,9 @@ public static class StateValidator
                 {
                     ["zone"] = Slug(world["zone"]?.GetValue<string>(), "greenwood", 40),
                     ["checkpoint"] = Slug(world["checkpoint"]?.GetValue<string>(), "camp_start", 40),
+                    ["day"] = day,
+                    ["villageSafety"] = Math.Round(villageSafety, 1),
+                    ["forestHealth"] = Math.Round(forestHealth, 1),
                     ["flags"] = flags,
                     ["defeated"] = defeated,
                     ["inventory"] = inventory,

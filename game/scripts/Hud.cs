@@ -8,9 +8,10 @@ namespace RpgGame;
 public sealed partial class Hud : CanvasLayer
 {
     private ColorRect _hpBar = null!, _energyBar = null!, _xpBar = null!;
+    private ColorRect _villageBar = null!, _forestBar = null!;
     private Label _hpText = null!, _statsText = null!, _zoneText = null!, _toast = null!, _hint = null!;
-    private Label _clock = null!, _weather = null!, _questText = null!;
-    private TextureRect _vignette = null!;
+    private Label _clock = null!, _weather = null!, _questText = null!, _dayLabel = null!, _perf = null!;
+    private TextureRect _vignette = null!, _maskIcon = null!;
     private Panel _pausePanel = null!, _profilePanel = null!, _craftPanel = null!, _boardPanel = null!, _endingPanel = null!, _titlePanel = null!;
     private VBoxContainer _pauseBox = null!, _profileBox = null!, _craftBox = null!;
     private Label _craftInv = null!, _craftStatus = null!, _boardText = null!, _endingTitle = null!, _endingBody = null!;
@@ -52,6 +53,12 @@ public sealed partial class Hud : CanvasLayer
     public bool RainVisible => _rain.Visible;
     public string QuestTrackerText => _questText.Text;
     public string PauseSummaryText => _pauseSummary.Text;
+    public string DayText => _dayLabel.Text;
+    public string PerfText => _perf.Text;
+    public bool PerfOpen => _perf.Visible;
+    public float VillageBarWidth => _villageBar.Size.X;
+    public float ForestBarWidth => _forestBar.Size.X;
+    public bool MaskVisible => _maskIcon.Visible;
     public float VignetteAlpha { get; private set; }
     public double DamageFlashRemaining { get; private set; }
     public float HpRatio { get; private set; } = 1f;
@@ -110,6 +117,23 @@ public sealed partial class Hud : CanvasLayer
         _xpBar = MakeBar(new Vector2(8, 32), new Vector2(180, 4), new Color(0.85f, 0.75f, 0.3f));
         top.AddChild(_xpBar);
 
+        // F1: meter keselamatan desa (oranye) & kesehatan hutan (hijau)
+        _villageBar = MakeBar(new Vector2(8, 44), new Vector2(180, 3), new Color(0.82f, 0.42f, 0.2f));
+        AddChild(_villageBar);
+        _forestBar = MakeBar(new Vector2(8, 48), new Vector2(180, 3), new Color(0.35f, 0.7f, 0.35f));
+        AddChild(_forestBar);
+
+        _maskIcon = new TextureRect
+        {
+            Name = "MaskIcon",
+            Position = new Vector2(188, 24),
+            Size = new Vector2(10, 10),
+            StretchMode = TextureRect.StretchModeEnum.Scale,
+            MouseFilter = Control.MouseFilterEnum.Ignore,
+            Visible = false,
+        };
+        AddChild(_maskIcon);
+
         _statsText = MakeLabel(new Vector2(206, 6), 10);
         AddChild(_statsText);
         _zoneText = MakeLabel(new Vector2(206, 20), 10);
@@ -123,14 +147,23 @@ public sealed partial class Hud : CanvasLayer
         _weather.Modulate = new Color(0.72f, 0.86f, 0.95f);
         AddChild(_weather);
 
-        _questText = MakeLabel(new Vector2(206, 46), 8);
+        _dayLabel = MakeLabel(new Vector2(206, 46), 8);
+        _dayLabel.Modulate = new Color(0.95f, 0.88f, 0.6f);
+        AddChild(_dayLabel);
+
+        _questText = MakeLabel(new Vector2(206, 58), 8);
         _questText.Modulate = new Color(0.85f, 0.92f, 1f);
         _questText.Visible = false;
         AddChild(_questText);
 
-        _toast = MakeLabel(new Vector2(8, 48), 10);
+        _toast = MakeLabel(new Vector2(8, 54), 10);
         _toast.Modulate = new Color(1f, 0.9f, 0.5f);
         AddChild(_toast);
+
+        _perf = MakeLabel(new Vector2(8, 240), 8);
+        _perf.Modulate = new Color(0.65f, 0.92f, 0.7f);
+        _perf.Visible = false;
+        AddChild(_perf);
 
         _hint = MakeLabel(new Vector2(8, 252), 9);
         _hint.Modulate = new Color(0.85f, 0.85f, 0.9f, 0.85f);
@@ -189,6 +222,34 @@ public sealed partial class Hud : CanvasLayer
         if (_weather.Text != label) _weather.Text = label;
         _rain.SetAmount(rainAmount);
     }
+
+    /// <summary>F1: hari musim kemarau + tanda seru saat api mendekati desa.</summary>
+    public void SetDay(int day, int total, bool threatened)
+    {
+        var text = $"Hari {day}/{total}" + (threatened ? " !" : "");
+        if (_dayLabel.Text == text) return;
+        _dayLabel.Text = text;
+        _dayLabel.Modulate = threatened ? new Color(1f, 0.45f, 0.3f) : new Color(0.95f, 0.88f, 0.6f);
+    }
+
+    /// <summary>F1: bar keselamatan desa & kesehatan hutan (0..100).</summary>
+    public void SetMeters(float village, float forest)
+    {
+        _villageBar.Size = new Vector2(180f * Math.Clamp(village, 0f, 100f) / 100f, 3);
+        _forestBar.Size = new Vector2(180f * Math.Clamp(forest, 0f, 100f) / 100f, 3);
+    }
+
+    public void SetMaskTexture(Texture2D texture) => _maskIcon.Texture = texture;
+
+    /// <summary>Ikon masker muncul saat pemain memiliki masker kain (F1).</summary>
+    public void SetMask(bool owned)
+    {
+        if (_maskIcon.Visible != owned) _maskIcon.Visible = owned;
+    }
+
+    public void ShowPerf(bool open) => _perf.Visible = open;
+
+    public void SetPerf(string text) => _perf.Text = text;
 
     public void ConfigureMinimapFog(ChunkSystem chunks, Vector2 worldSize) =>
         _minimapFog.Configure(chunks, worldSize);

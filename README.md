@@ -63,6 +63,7 @@ bash scripts/shot.sh docs/shot-malam.png --time=0.05 --shot-ash=0.3
 | `Q` | minum potion (+40 HP) |
 | `F` | simpan cepat ke slot terakhir |
 | `Esc` | tutup dialog (saat bicara) · menu: simpan/muat 3 slot, catatan perjalanan, ganti profil, keluar |
+| `F1`–`F4` | debug Fase 2: hari berikutnya · sulut api liar · placeholder Echo · overlay performa (lihat `docs/TUNING.md`) |
 
 ### Alur bermain & penyimpanan
 

@@ -94,6 +94,8 @@ public sealed class World
     public required SpriteFrames HeroFrames;
     public readonly Dictionary<string, SpriteFrames> EnemyFrames = new();
     public readonly Dictionary<string, SpriteFrames> NpcFrames = new();
+    /// <summary>F1: NPC yang sedang mengungsi (tidak bisa diajak bicara).</summary>
+    public readonly HashSet<string> EvacuatedNpcs = new();
     /// <summary>Obor/lentera yang sinarnya berkedip (dipakai Game._Process).</summary>
     public readonly List<(Sprite2D Sprite, float Phase)> FlickerProps = new();
     /// <summary>Titik api nyata (obor, lentera, api unggun) untuk heat haze + PointLight2D.</summary>
@@ -479,6 +481,7 @@ public sealed class World
         var bestDistance = Rules.InteractRange;
         foreach (var npc in Data.Npcs)
         {
+            if (EvacuatedNpcs.Contains(npc.Id)) continue;
             var pos = new Vector2((npc.Col + 0.5f) * TileSize, (npc.Row + 1f) * TileSize);
             var distance = pos.DistanceTo(pixel);
             if (distance > bestDistance) continue;

@@ -26,6 +26,12 @@ public sealed class WeatherSystem
     public float WindStrength { get; private set; }
     public float RainAmount { get; private set; }
 
+    /// <summary>
+    /// F1: dorongan hujan 0..1 dari kesehatan hutan (DaySystem). Makin tinggi,
+    /// makin besar peluang stage berikutnya berisi hujan.
+    /// </summary>
+    public float RainBias { get; set; }
+
     private double _elapsed;
 
     public Vector2 WindVector => new(MathF.Cos(WindAngle) * WindStrength, MathF.Sin(WindAngle) * WindStrength);
@@ -70,7 +76,10 @@ public sealed class WeatherSystem
     {
         Stage = Math.Max(0, stage);
         var roll = Hash01((ulong)Stage * 0x9E3779B1UL + 0xA511E9B3UL);
-        var kind = roll < 0.5f ? WeatherKind.Dry : roll < 0.8f ? WeatherKind.Windy : WeatherKind.Rain;
+        var rainCut = Math.Clamp(RainBias, 0f, 1f) * 0.35f;
+        var kind = roll < 0.5f - rainCut ? WeatherKind.Dry
+            : roll < 0.8f - rainCut ? WeatherKind.Windy
+            : WeatherKind.Rain;
         var angle = Hash01((ulong)Stage * 0xC2B2AE35UL + 0x27D4EB2FUL) * MathF.Tau;
         var strength = kind switch
         {
@@ -106,7 +115,8 @@ public sealed class WeatherSystem
         };
     }
 
-    private static float Hash01(ulong value)
+    /// <summary>Hash deterministik 0..1 (dipakai cuaca; jangan diubah nilainya).</summary>
+    public static float Hash01(ulong value)
     {
         value ^= value >> 33;
         value *= 0xFF51AFD7ED558CCDUL;

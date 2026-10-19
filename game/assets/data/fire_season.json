@@ -1,0 +1,43 @@
+{
+  "day_count": 14,
+  "day_seconds": 300,
+  "wildfire": {
+    "first_day": 2,
+    "max_per_day": 2,
+    "intensity": 0.8,
+    "schedule": {
+      "2": [[50, 25]],
+      "4": [[40, 24]],
+      "6": [[70, 46]],
+      "8": [[56, 48]],
+      "10": [[36, 48], [62, 52]],
+      "12": [[56, 26], [68, 52]]
+    },
+    "pool": [[56, 26], [62, 52], [68, 52], [50, 25], [40, 24], [36, 48], [70, 46], [56, 48]]
+  },
+  "village": {
+    "rect": [48, 36, 16, 12],
+    "threat_tiles": 8,
+    "drain_per_cell_sec": 2.4,
+    "recover_per_sec": 0.8,
+    "evacuate_below": 60,
+    "full_evacuate_below": 30,
+    "return_above": 75
+  },
+  "forest": {
+    "drain_per_cell_sec": 0.5,
+    "recover_per_sec": 0.6,
+    "sprout_bonus": 3
+  },
+  "rain": {
+    "health_threshold": 70,
+    "bias": 0.35,
+    "energy_bonus": 0.5
+  },
+  "mask": {
+    "smoke_factor": 0.35
+  },
+  "ending": {
+    "meters_floor": 0.65
+  }
+}

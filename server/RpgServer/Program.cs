@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
     ContentRootPath = repoRoot,
 });
 builder.WebHost.UseUrls($"http://{options.Host}:{options.Port}");
-builder.Services.AddSingleton(new GameDb(options.DbPath));
+builder.Services.AddSingleton(_ => new GameDb(options.DbPath));
 builder.Services.ConfigureHttpJsonOptions(o => o.SerializerOptions.WriteIndented = true);
 
 // Rate limiter mutasi: klien liar tidak boleh membanjiri SQLite. Limit longgar
@@ -38,11 +38,11 @@ builder.Services.AddRateLimiter(limiter =>
 
 var app = builder.Build();
 
-// Backup + schema: salinan DB lama dibuat sebelum skema bisa berubah.
-var dbExisted = File.Exists(options.DbPath);
-var db = app.Services.GetRequiredService<GameDb>();
-if (dbExisted && db.BackupTo(options.DbPath + ".bak"))
+// Backup + schema: salinan DB lama dibuat SEBELUM GameDb membuka file dan
+// menjalankan migrasi skema (F1). Kegagalan backup tidak menggagalkan server.
+if (GameDb.BackupFile(options.DbPath))
     app.Logger.LogInformation("backup DB -> {Backup}", options.DbPath + ".bak");
+var db = app.Services.GetRequiredService<GameDb>();
 app.Logger.LogInformation("skema DB v{Version}", db.ReadSchemaVersion());
 
 app.UseRateLimiter();

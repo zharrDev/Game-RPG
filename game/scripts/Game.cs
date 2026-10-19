@@ -39,6 +39,7 @@ public sealed partial class Game : Node2D
     public InventorySystem Inventory { get; private set; } = null!;
     public ObjectiveSystem Objectives { get; private set; } = null!;
     public IncidentSystem Incidents { get; private set; } = null!;
+    public DaySystem Days { get; private set; } = null!;
 
     /// <summary>Kotak dialog sedang terbuka (permainan dijeda).</summary>
     public bool DialogOpen => Dialog.Open;
@@ -59,6 +60,7 @@ public sealed partial class Game : Node2D
     private bool _testPending;
     private double _stepTimer;
     private double _extinguishCooldown;
+    private double _perfTimer;
     private bool _airborne;
     private string? _shotPath;
     private double _shotDelay = 1.5;
@@ -127,6 +129,10 @@ public sealed partial class Game : Node2D
         Incidents = new IncidentSystem(this);
         Incidents.Configure();
 
+        // F1: musim kemarau 14 hari, api liar, meter desa/hutan, ungsian warga
+        Days = new DaySystem(this);
+        Days.Configure();
+
         // pipeline FX (asap, bloom, grading) + heat haze di tiap titik api
         Fx = new Fx();
         AddChild(Fx);
@@ -159,6 +165,7 @@ public sealed partial class Game : Node2D
 
         Hud = new Hud();
         AddChild(Hud);
+        Hud.SetMaskTexture(Assets.LoadTexture(Assets.IconMaskerPng));
         _ui = new UiManager(this);
         Hud.SaveSlot += SaveToSlot;
         Hud.LoadSlot += LoadFromSlot;
@@ -244,6 +251,10 @@ public sealed partial class Game : Node2D
         Register("barrier", Key.B);
         Register("plant", Key.N);
         Register("board", Key.V);
+        Register("debug_day", Key.F1);
+        Register("debug_wild", Key.F2);
+        Register("debug_echo", Key.F3);
+        Register("debug_perf", Key.F4);
         Register("menu", Key.Escape);
     }
 
@@ -375,6 +386,15 @@ public sealed partial class Game : Node2D
 
         var playing = ProfileId is not null && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !Hud.CraftOpen &&
             !Hud.BoardOpen && !Hud.EndingOpen && !DialogOpen;
+
+        // tombol debug F1–F4 (didokumentasikan di docs/TUNING.md)
+        if (Input.IsActionJustPressed("debug_perf")) Hud.ShowPerf(!Hud.PerfOpen);
+        if (playing && Input.IsActionJustPressed("debug_day")) Days.DebugNextDay();
+        if (playing && Input.IsActionJustPressed("debug_wild"))
+            Hud.Toast(Days.DebugIgnite() ? "Api liar dinyalakan (debug F2)." : "Tidak ada titik api liar (debug F2).");
+        if (playing && Input.IsActionJustPressed("debug_echo"))
+            Hud.Toast("Echo belum aktif — kejadian kematian hadir di F2.");
+
         if (ShouldStartInteraction(playing, interactPressed, dialogWasOpen) && !Interact())
             Hud.Toast("Tidak ada yang bisa diajak bicara di dekat sini");
         if (playing && Input.IsActionJustPressed("potion")) DrinkPotion();
@@ -386,7 +406,10 @@ public sealed partial class Game : Node2D
         {
             Weather.Advance(delta);
             Fire.Advance(delta);
+            Days.Advance(delta);
             Player.SmokeExposure = Fire.SmokeAt(Player.Position);
+            Player.SmokeDrainScale = SmokeDrainScaleForPlayer;
+            Player.EnergyRegenScale = 1f + (Weather.RainAmount > 0f ? Days.RainEnergyBonus : 0f);
             Player.Tick(delta, ReadInput(), World.Grid);
             Fire.TickPlayer(delta);
             if (Player.JumpTimer > 0)
@@ -426,6 +449,8 @@ public sealed partial class Game : Node2D
         else if (playing && !frozen)
         {
             Player.SmokeExposure = 0;
+            Player.SmokeDrainScale = 1f;
+            Player.EnergyRegenScale = 1f;
             Player.Tick(delta, default, World.Grid);
         }
 
@@ -447,6 +472,18 @@ public sealed partial class Game : Node2D
 
         // HUD selalu hidup (jam, minimap, tracker) — termasuk saat dialog/menu
         _ui.UpdateHud();
+
+        // overlay performa F4: cukup 4 sampel/detik supaya tidak mengganggu frame
+        if (Hud.PerfOpen)
+        {
+            _perfTimer += delta;
+            if (_perfTimer >= 0.25)
+            {
+                _perfTimer = 0;
+                Hud.SetPerf($"FPS {Engine.GetFramesPerSecond()} · {ZoneName} ({Player.Position.X:0},{Player.Position.Y:0}) · " +
+                    $"hari {Days.Day}/{Days.DayCount} · api {Days.BurningCells} · desa {Days.VillageSafety:0} hutan {Days.ForestHealth:0}");
+            }
+        }
     }
 
     /// <summary>
@@ -732,4 +769,11 @@ public sealed partial class Game : Node2D
     public void RefreshQuestTracker() => _ui.RefreshQuestTracker();
 
     public void CloseMenus() => _ui.CloseMenus();
+
+    /// <summary>F1: pengali kuras asap pemain saat ini (masker kain bila punya).</summary>
+    public float SmokeDrainScaleForPlayer =>
+        Inventory is not null && Inventory.Has("masker") ? Days.MaskSmokeFactor : 1f;
+
+    /// <summary>Segarkan HUD sekali tanpa menunggu frame (dipakai tes headless).</summary>
+    public void RefreshHud() => _ui.UpdateHud();
 }

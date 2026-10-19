@@ -17,6 +17,7 @@ public sealed class EventBus
     public event Action<string>? QuestFlagSet;
     public event Action<string, string>? ZoneChanged;
     public event Action<string>? SaveWritten;
+    public event Action<int>? DayAdvanced;
 
     private readonly Dictionary<string, int> _counts = new();
 
@@ -65,6 +66,12 @@ public sealed class EventBus
     {
         Bump("save_written");
         SaveWritten?.Invoke(reason);
+    }
+
+    public void RaiseDayAdvanced(int day)
+    {
+        Bump("day_advanced");
+        DayAdvanced?.Invoke(day);
     }
 
     /// <summary>Kosongkan counter (dipakai tes antar-seksi). Event tidak dicabut.</summary>

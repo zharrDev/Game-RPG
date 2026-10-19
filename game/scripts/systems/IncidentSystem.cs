@@ -175,14 +175,15 @@ public sealed class IncidentSystem
         if (DoneCount <= 0) return false;
 
         var percent = _incidents.Count == 0 ? 0f : EvidenceCount * 100f / _incidents.Count;
+        var score = ScoreFor(percent);
         string tier, title, body;
-        if (percent < 40f)
+        if (score < 40f)
         {
             tier = "dalang_lolos";
             title = "ENDING — Dalang Lolos";
             body = "Api padam, tetapi Rangga menghilang bersama arang terakhir.\nBukti yang tersisa tak cukup untuk menyeretnya ke pengadilan.";
         }
-        else if (percent < 80f)
+        else if (score < 80f)
         {
             tier = "tertangkap";
             title = "ENDING — Tertangkap";
@@ -200,6 +201,20 @@ public sealed class IncidentSystem
         game.Autosave("finale");
         game.ShowEnding(title, body);
         return true;
+    }
+
+    /// <summary>
+    /// F1: bukti tetap syarat utama, tetapi kondisi desa & hutan ikut menimbang
+    /// (meter menskalakan skor antara <c>meters_floor</c> dan 1). Meter penuh
+    /// menghasilkan skor yang sama dengan M8, jadi tes lama tetap valid.
+    /// </summary>
+    public float ScoreFor(float percent)
+    {
+        var days = _game.Days;
+        if (days is null) return percent;
+        var floor = Math.Clamp(days.MetersFloor, 0f, 1f);
+        var meters = (days.VillageSafety + days.ForestHealth) * 0.5f;
+        return percent * (floor + (1f - floor) * meters / 100f);
     }
 
     public string StatusOf(Incident incident)

@@ -38,8 +38,8 @@ public sealed class GameDb
 {
     public const int SlotCount = 3;
 
-    /// <summary>Versi skema DB. Naikkan bersama migrasi (Save v2 di M8).</summary>
-    public const int SchemaVersion = 1;
+    /// <summary>Versi skema DB. Naikkan bersama migrasi (Save v2 di F1).</summary>
+    public const int SchemaVersion = 2;
 
     public string DatabasePath { get; }
     private readonly string _connectionString;
@@ -101,11 +101,13 @@ public sealed class GameDb
             """;
         command.ExecuteNonQuery();
 
-        // schema_version disimpan di DB supaya migrasi M8 bisa dibedakan per-file.
+        // schema_version disimpan di DB supaya migrasi bisa dibedakan per-file.
+        // Baris lama dinaikkan ke versi sekarang setelah skema baru diterapkan.
         using var meta = connection.CreateCommand();
         meta.CommandText = """
             INSERT INTO meta (key, value) VALUES ('schema_version', $version)
-            ON CONFLICT(key) DO NOTHING;
+            ON CONFLICT(key) DO UPDATE SET value = excluded.value
+            WHERE CAST(meta.value AS INTEGER) < CAST(excluded.value AS INTEGER);
             """;
         meta.Parameters.AddWithValue("$version", SchemaVersion.ToString());
         meta.ExecuteNonQuery();
@@ -134,6 +136,35 @@ public sealed class GameDb
             using var command = connection.CreateCommand();
             command.CommandText = "VACUUM INTO $path";
             command.Parameters.AddWithValue("$path", path);
+            command.ExecuteNonQuery();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Backup file DB SEBELUM GameDb dibuka (jadi sebelum skema bisa berubah).
+    /// Mengembalikan false kalau file tidak ada atau backup gagal.
+    /// </summary>
+    public static bool BackupFile(string path)
+    {
+        if (!File.Exists(path)) return false;
+        var target = path + ".bak";
+        try
+        {
+            if (File.Exists(target)) File.Delete(target);
+            using var connection = new SqliteConnection(new SqliteConnectionStringBuilder
+            {
+                DataSource = path,
+                Mode = SqliteOpenMode.ReadWrite,
+            }.ToString());
+            connection.Open();
+            using var command = connection.CreateCommand();
+            command.CommandText = "VACUUM INTO $path";
+            command.Parameters.AddWithValue("$path", target);
             command.ExecuteNonQuery();
             return true;
         }

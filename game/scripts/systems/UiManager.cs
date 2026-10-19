@@ -25,6 +25,12 @@ public sealed class UiManager
         game.Hud.UpdateMinimap(game.Player.Position, game.World.Data.PixelSize);
         game.Hud.UpdateClock(game.Lighting?.TimeOfDay ?? 0.5f);
         if (game.Weather is not null) game.Hud.SetWeather(game.Weather.Label, game.Weather.RainAmount);
+        if (game.Days is not null)
+        {
+            game.Hud.SetDay(game.Days.Day, game.Days.DayCount, game.Days.VillageThreatened);
+            game.Hud.SetMeters(game.Days.VillageSafety, game.Days.ForestHealth);
+        }
+        if (game.Inventory is not null) game.Hud.SetMask(game.Inventory.Has("masker"));
         RefreshQuestTracker();
     }
 
@@ -33,9 +39,11 @@ public sealed class UiManager
         var game = _game;
         if (game.Hud is null || game.Player is null) return;
         var time = TimeSpan.FromSeconds(game.Playtime);
+        var days = game.Days is null ? "" :
+            $" · hari {game.Days.Day}/{game.Days.DayCount} · desa {game.Days.VillageSafety:0}% · hutan {game.Days.ForestHealth:0}%";
         game.Hud.SetPauseSummary($"{game.ProfileName} · Lv {game.Player.State.Level} · {game.Player.State.Gold} gold · " +
             $"bunuh {game.Player.State.Kills} · tumbang {game.Player.State.Deaths} · {time.Minutes:00}:{time.Seconds:00} · " +
-            $"{game.ZoneName} · peta {game.Chunks.ExploredPercent:0}%");
+            $"{game.ZoneName} · peta {game.Chunks.ExploredPercent:0}%{days}");
         game.Hud.ShowPauseMenu(true);
         if (game.ProfileId is not null && game.Api is not null) game.Hud.SetJournal(game.Api.Journey(game.ProfileId));
     }

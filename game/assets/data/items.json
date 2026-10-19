@@ -37,6 +37,12 @@
       "description": "Benih pohon keras untuk memulihkan tanah terbakar."
     },
     {
+      "id": "masker",
+      "name": "Masker kain",
+      "kind": "tool",
+      "description": "Kain berlapis arang; menahan asap hingga 65% saat menyemprot api."
+    },
+    {
       "id": "kertas_arang",
       "name": "Kertas arang",
       "kind": "investigation",
@@ -127,6 +133,16 @@
       "count": 1,
       "cost": {
         "kain": 1,
+        "arang": 1
+      }
+    },
+    {
+      "id": "masker",
+      "name": "Masker kain",
+      "result": "masker",
+      "count": 1,
+      "cost": {
+        "kain": 2,
         "arang": 1
       }
     }

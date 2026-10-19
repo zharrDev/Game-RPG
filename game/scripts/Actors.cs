@@ -23,6 +23,10 @@ public sealed partial class Player : Node2D
     public double Playtime;
     /// <summary>Paparan asap 0..1 dari FireSystem; menguras napas dan menahan regen.</summary>
     public float SmokeExposure;
+    /// <summary>F1: pengali kuras asap (&lt;1 saat memakai masker kain).</summary>
+    public float SmokeDrainScale = 1f;
+    /// <summary>F1: pengali regen energi (&gt;1 saat hujan menyegarkan).</summary>
+    public float EnergyRegenScale = 1f;
     private bool _exhausted;
 
     public double AttackTimer, SkillTimer, HurtTimer, InvulnerableTimer, DeathTimer, JumpTimer;
@@ -105,9 +109,9 @@ public sealed partial class Player : Node2D
         Playtime += delta;
         var runningNow = input.Run && input.AnyMovement && !_exhausted && Energy > 0;
         if (!runningNow && SmokeExposure <= 0.05f)
-            Energy = Math.Min(Rules.MaxEnergy, Energy + Rules.EnergyRegen * delta);
+            Energy = Math.Min(Rules.MaxEnergy, Energy + Rules.EnergyRegen * EnergyRegenScale * delta);
         if (SmokeExposure > 0.05f)
-            Energy = Math.Max(0, Energy - Rules.SmokeEnergyDrain * SmokeExposure * delta);
+            Energy = Math.Max(0, Energy - Rules.SmokeEnergyDrain * SmokeExposure * SmokeDrainScale * delta);
         AttackTimer = Math.Max(0, AttackTimer - delta);
         SkillTimer = Math.Max(0, SkillTimer - delta);
         HurtTimer = Math.Max(0, HurtTimer - delta);

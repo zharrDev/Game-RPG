@@ -55,6 +55,9 @@ public sealed class SaveSystem
         state.Zone = game.ZoneId;
         state.Playtime = game.Playtime;
         state.Explored = game.Chunks.Snapshot();
+        state.Day = game.Days.Day;
+        state.VillageSafety = game.Days.VillageSafety;
+        state.ForestHealth = game.Days.ForestHealth;
         return state;
     }
 
@@ -108,6 +111,7 @@ public sealed class SaveSystem
         game.Playtime = state.Playtime;
         game.Chunks.Restore(state.Explored);
         game.Player.ApplyState(state);
+        game.Days.Restore(state.Day, state.VillageSafety, state.ForestHealth);
         game.CloseDialog();
         // tampilkan peti yang sudah dibuka sesuai flag tersimpan
         foreach (var chest in game.World.Data.Chests)

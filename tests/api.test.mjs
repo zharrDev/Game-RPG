@@ -138,7 +138,10 @@ test("save slot: payload dari klien disimpan, dinormalkan, dan dibaca ulang utuh
   assert.equal(loaded.body.state.player.facing, -1);
   assert.deepEqual(loaded.body.state.player.skills, ["aura_slash"]);
   assert.equal(loaded.body.state.world.zone, "greenwood");
-  assert.equal(loaded.body.state.version, "1");
+  assert.equal(loaded.body.state.version, "2");
+  assert.equal(loaded.body.state.world.day, 1, "save v1 dimigrasikan ke hari 1");
+  assert.equal(loaded.body.state.world.villageSafety, 100);
+  assert.equal(loaded.body.state.world.forestHealth, 100);
   assert.ok(loaded.body.state.savedAt, "server menstempel waktu simpan");
 
   const resume = await call(`/api/profiles/${profileId}/resume`);
@@ -187,6 +190,28 @@ test("save slot: nilai ekstrem di-clamp server, JSON rusak ditolak", async () =>
 
   const ghostProfile = await call("/api/profiles/tidakada12345/slots/1", { method: "PUT", body: JSON.stringify(validState()) });
   assert.equal(ghostProfile.status, 404);
+});
+
+test("save v2: hari & meter bertahan, nilai liar dijepit", async () => {
+  const seasonal = validState({ world: { day: 7, villageSafety: 42.5, forestHealth: 88 } });
+  const saved = await call(`/api/profiles/${profileId}/slots/3`, { method: "PUT", body: JSON.stringify(seasonal) });
+  assert.equal(saved.status, 200);
+  const loaded = await call(`/api/profiles/${profileId}/slots/3`);
+  assert.equal(loaded.body.state.version, "2");
+  assert.equal(loaded.body.state.world.day, 7);
+  assert.equal(loaded.body.state.world.villageSafety, 42.5);
+  assert.equal(loaded.body.state.world.forestHealth, 88);
+
+  const wild = validState({ world: { day: -3, villageSafety: 150, forestHealth: -40 } });
+  await call(`/api/profiles/${profileId}/slots/3`, { method: "PUT", body: JSON.stringify(wild) });
+  const clamped = await call(`/api/profiles/${profileId}/slots/3`);
+  assert.equal(clamped.body.state.world.day, 1);
+  assert.equal(clamped.body.state.world.villageSafety, 100);
+  assert.equal(clamped.body.state.world.forestHealth, 0);
+
+  // bersihkan slot 3: tes berikutnya menguji slot kosong
+  const cleared = await call(`/api/profiles/${profileId}/slots/3`, { method: "DELETE" });
+  assert.equal(cleared.status, 200);
 });
 
 test("journey: perubahan progres tercatat otomatis (level, checkpoint, zone, boss)", async () => {

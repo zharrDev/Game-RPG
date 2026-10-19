@@ -1535,6 +1535,146 @@ public static class HeadlessTest
         game.CloseDialog();
         game.ShowBoardMenu(false);
 
+        GD.Print("=== F1: musim kemarau, api liar, meter & ungsian ===");
+        var savedInventory9 = new Dictionary<string, int>(player.State.Inventory);
+        var dayEvents9 = game.Bus.Count("day_advanced");
+        game.Fire.Clear();
+        game.Days.Restore(1, 100f, 100f);
+        Check("F1: 14 hari x 300 detik", game.Days.DayCount == 14 && Math.Abs(game.Days.DaySeconds - 300) < 0.01,
+            $"{game.Days.DayCount}/{game.Days.DaySeconds}");
+        var dayTwoSites = game.Days.SitesForDay(2);
+        Check("F1: jadwal hari 2 = satu titik di (50,25)",
+            dayTwoSites.Count == 1 && dayTwoSites[0] == new Vector2I(50, 25), string.Join(",", dayTwoSites));
+        var allSites9 = new List<Vector2I>();
+        for (var day9 = 2; day9 <= game.Days.DayCount; day9++) allSites9.AddRange(game.Days.SitesForDay(day9));
+        var badSites9 = allSites9.Where(site =>
+            !world.Grid.Walkable(site.X, site.Y) ||
+            FireSystem.FuelFor(world.Data.TerrainNames[world.Data.Terrain[site.Y][site.X]]) <= 0.1f).ToList();
+        Check("F1: semua situs api walkable & berbahan bakar", badSites9.Count == 0,
+            string.Join(",", badSites9.Select(site => $"({site.X},{site.Y})")));
+
+        game.Days.Advance(300.5);
+        Check("F1: hari maju & event DayAdvanced terkirim",
+            game.Days.Day == 2 && game.Bus.Count("day_advanced") == dayEvents9 + 1,
+            $"hari {game.Days.Day}, event {game.Bus.Count("day_advanced") - dayEvents9}");
+        Check("F1: api liar hari 2 menyala", game.Fire.BurningCount > 0, $"{game.Fire.BurningCount} sel");
+
+        game.Fire.Clear();
+        game.Days.Restore(1, 100f, 100f);
+        game.RefreshHud();
+        Check("F1: HUD menampilkan hari & meter penuh",
+            game.Hud.DayText == "Hari 1/14" && Math.Abs(game.Hud.VillageBarWidth - 180f) < 0.5f &&
+            Math.Abs(game.Hud.ForestBarWidth - 180f) < 0.5f, game.Hud.DayText);
+
+        game.Fire.IgniteCell(56, 48);
+        game.Days.Advance(1.0);
+        var villageBefore9 = game.Days.VillageSafety;
+        var forestBefore9 = game.Days.ForestHealth;
+        game.RefreshHud();
+        Check("F1: api dekat desa menurunkan keselamatan desa",
+            game.Days.ThreatCells == 1 && villageBefore9 < 100f, $"ancaman {game.Days.ThreatCells}, desa {villageBefore9:0.0}");
+        Check("F1: api menurunkan kesehatan hutan", forestBefore9 < 100f, $"hutan {forestBefore9:0.0}");
+        Check("F1: HUD memperingatkan desa terancam", game.Hud.DayText == "Hari 1/14 !", game.Hud.DayText);
+
+        game.Fire.Clear();
+        game.Days.Advance(1.0);
+        Check("F1: meter pulih saat api padam",
+            game.Days.VillageSafety > villageBefore9 && game.Days.ForestHealth > forestBefore9,
+            $"desa {game.Days.VillageSafety:0.0}, hutan {game.Days.ForestHealth:0.0}");
+
+        player.State.Inventory = new Dictionary<string, int>();
+        game.Inventory.Add("kain", 2);
+        game.Inventory.Add("arang", 1);
+        Check("F1: masker bisa di-craft (kain 2 + arang 1)", game.Inventory.CanCraft("masker"));
+        Check("F1: craft masker berhasil & bahannya terpakai",
+            game.Inventory.Craft("masker") && game.Inventory.Has("masker") && !game.Inventory.Has("kain"));
+        game.RefreshHud();
+        Check("F1: masker menahan asap 65% & ikon HUD muncul",
+            Math.Abs(game.SmokeDrainScaleForPlayer - game.Days.MaskSmokeFactor) < 0.001f && game.Hud.MaskVisible,
+            $"{game.SmokeDrainScaleForPlayer:0.00}/{game.Days.MaskSmokeFactor:0.00}");
+        game.Inventory.Remove("masker");
+        Check("F1: tanpa masker kuras asap normal", Math.Abs(game.SmokeDrainScaleForPlayer - 1f) < 0.001f);
+
+        game.Days.DebugSetMeters(55f, 100f);
+        Check("F1: desa < 60 → warga non-inti mengungsi",
+            game.Days.IsEvacuated("bram") && game.Days.IsEvacuated("sari") && game.Days.IsEvacuated("tomas") &&
+            !game.Days.IsEvacuated("mira"), "bram/sari/tomas");
+        var bramNode9 = game.Npcs.First(npc => npc.Info.Id == "bram");
+        var bramPos9 = new Vector2((bramNode9.Info.Col + 0.5f) * World.TileSize, (bramNode9.Info.Row + 1f) * World.TileSize);
+        Check("F1: warga mengungsi tidak bisa diajak bicara",
+            !bramNode9.Visible && world.EvacuatedNpcs.Contains("bram") && world.NpcNear(bramPos9)?.Id != "bram");
+
+        game.Days.DebugSetMeters(25f, 100f);
+        Check("F1: desa < 30 → semua warga mengungsi",
+            DaySystem.Villagers.All(game.Days.IsEvacuated), "semua warga");
+        game.Days.DebugSetMeters(65f, 100f);
+        Check("F1: histeresis 60..75 tidak memulangkan warga", game.Days.IsEvacuated("mira"));
+        game.Days.DebugSetMeters(80f, 100f);
+        Check("F1: desa >= 75 → warga kembali & bisa diajak bicara",
+            DaySystem.Villagers.All(id => !game.Days.IsEvacuated(id)) && bramNode9.Visible &&
+            world.NpcNear(bramPos9)?.Id == "bram");
+
+        game.Days.DebugSetMeters(50f, 25f);
+        game.RefreshHud();
+        Check("F1: bar HUD mengikuti meter",
+            Math.Abs(game.Hud.VillageBarWidth - 90f) < 0.5f && Math.Abs(game.Hud.ForestBarWidth - 45f) < 0.5f,
+            $"{game.Hud.VillageBarWidth:0.0}/{game.Hud.ForestBarWidth:0.0}");
+
+        game.Days.DebugSetMeters(100f, 60f);
+        game.Days.Advance(0.05);
+        var dryBias9 = game.Weather.RainBias;
+        game.Days.DebugSetMeters(100f, 80f);
+        game.Days.Advance(0.05);
+        Check("F1: hutan sehat mendorong hujan, hutan rusak tidak",
+            dryBias9 < 0.001f && Math.Abs(game.Weather.RainBias - 0.35f) < 0.001f,
+            $"{dryBias9:0.00}/{game.Weather.RainBias:0.00}");
+        var dryWeather9 = new WeatherSystem();
+        var wetWeather9 = new WeatherSystem { RainBias = 1f };
+        var dryRain9 = 0;
+        var wetRain9 = 0;
+        for (var stage9 = 0; stage9 < 80; stage9++)
+        {
+            dryWeather9.SetStage(stage9);
+            wetWeather9.SetStage(stage9);
+            if (dryWeather9.Kind == WeatherKind.Rain) dryRain9++;
+            if (wetWeather9.Kind == WeatherKind.Rain) wetRain9++;
+        }
+        Check("F1: bias hujan menambah stage hujan", wetRain9 > dryRain9, $"{dryRain9} vs {wetRain9}");
+
+        game.Days.Restore(14, 100f, 100f);
+        game.Days.AdvanceDay();
+        Check("F1: hari berhenti di 14 (tidak lewat musim)", game.Days.Day == 14);
+        game.Days.DebugIgnite();
+        Check("F1: debug F2 menyalakan api liar", game.Fire.BurningCount > 0);
+        game.Fire.Clear();
+
+        var seasonal9 = new GameState { Day = 9, VillageSafety = 41.5f, ForestHealth = 77f };
+        using var seasonalDoc9 = JsonDocument.Parse(seasonal9.ToJson().ToJsonString());
+        var seasonalBack9 = GameState.FromJson(seasonalDoc9.RootElement);
+        Check("F1: save v2 menyimpan hari & meter",
+            seasonalBack9.Day == 9 && Math.Abs(seasonalBack9.VillageSafety - 41.5f) < 0.01f &&
+            Math.Abs(seasonalBack9.ForestHealth - 77f) < 0.01f);
+        using var legacyDoc9 = JsonDocument.Parse("{\"player\":{\"hp\":90}}");
+        var legacyBack9 = GameState.FromJson(legacyDoc9.RootElement);
+        Check("F1: save v1 lama dimigrasikan (hari 1, meter penuh)",
+            legacyBack9.Day == 1 && legacyBack9.VillageSafety == 100f && legacyBack9.ForestHealth == 100f);
+
+        game.Days.DebugSetMeters(50f, 50f);
+        Check("F1: skor ending ikut meter (100 bukti, meter 50% → 82.5)",
+            Math.Abs(game.Incidents.ScoreFor(100f) - 82.5f) < 0.01f, $"{game.Incidents.ScoreFor(100f):0.0}");
+        game.Days.DebugSetMeters(0f, 0f);
+        Check("F1: desa & hutan hancur menahan skor (100 → 65)",
+            Math.Abs(game.Incidents.ScoreFor(100f) - 65f) < 0.01f, $"{game.Incidents.ScoreFor(100f):0.0}");
+        game.Days.DebugSetMeters(100f, 100f);
+        Check("F1: meter penuh = skor bukti murni",
+            Math.Abs(game.Incidents.ScoreFor(37f) - 37f) < 0.01f, $"{game.Incidents.ScoreFor(37f):0.0}");
+
+        foreach (var villager9 in DaySystem.Villagers)
+            player.State.Flags.Remove(DaySystem.EvacFlagPrefix + villager9);
+        game.Days.Restore(1, 100f, 100f);
+        player.State.Inventory = savedInventory9;
+        game.RefreshHud();
+
         GD.Print("");
         GD.Print($"=== hasil: {_pass} lulus, {Failures.Count} gagal ===");
         foreach (var failure in Failures) GD.Print($"  GAGAL: {failure}");

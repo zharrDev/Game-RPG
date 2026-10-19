@@ -544,6 +544,59 @@ def verify_fx() -> None:
           "uniform float night" in grade_text and "night_tint" in grade_text)
 
 
+def verify_item_icons() -> None:
+    """Ikon item HUD (F1): 16x16, alpha biner, palet kecil."""
+    print("== ikon item ==")
+    path = ROOT / "game/assets/ui/icon_masker.png"
+    check("ikon: icon_masker.png ada", path.exists())
+    if not path.exists():
+        return
+    image = Image.open(path).convert("RGBA")
+    check("ikon: masker berukuran 16x16", image.size == (16, 16), str(image.size))
+    pixels = list(image.getdata())
+    alphas = {pixel[3] for pixel in pixels}
+    check("ikon: alpha biner", alphas <= {0, 255}, str(sorted(alphas)))
+    opaque = sum(1 for pixel in pixels if pixel[3] > 0)
+    check("ikon: berisi gambar (>48 px)", opaque > 48, str(opaque))
+    colors = {pixel for pixel in pixels if pixel[3] > 0}
+    check("ikon: palet kecil (<=32 warna)", len(colors) <= 32, str(len(colors)))
+    check("ikon: ada arang gelap", any(max(pixel[:3]) < 100 for pixel in colors))
+
+
+def verify_fire_season() -> None:
+    """Data F1: situs api liar harus bisa menyala (walkable + punya bahan bakar)."""
+    print("== data musim kemarau (F1) ==")
+    path = ROOT / "game/assets/data/fire_season.json"
+    check("musim: fire_season.json ada", path.exists())
+    if not path.exists():
+        return
+    season = json.loads(path.read_text())
+    world = json.loads((WORLD / "overworld.json").read_text())
+    walkable = world["walkable"]
+    names = world["terrain_names"]
+    terrain = world["terrain"]
+    height = len(walkable)
+    width = len(walkable[0])
+    check("musim: 14 hari x 300 detik",
+          season["day_count"] == 14 and season["day_seconds"] == 300,
+          f"{season['day_count']}x{season['day_seconds']}")
+
+    sites = [tuple(site) for site in season["wildfire"]["pool"]]
+    for day_sites in season["wildfire"]["schedule"].values():
+        sites += [tuple(site) for site in day_sites]
+    bad = [s for s in sites if not (0 <= s[0] < width and 0 <= s[1] < height and walkable[s[1]][s[0]])]
+    check("musim: semua situs api walkable", not bad, str(bad[:3]))
+    no_fuel = [s for s in sites
+               if names[terrain[s[1]][s[0]]] in {"water", "stone", "rock", "cobble", "cave", "bridge"}]
+    check("musim: semua situs api punya bahan bakar", not no_fuel, str(no_fuel[:3]))
+    check("musim: jadwal api dalam rentang hari",
+          all(2 <= int(day) <= season["day_count"] for day in season["wildfire"]["schedule"]))
+    village = season["village"]
+    check("musim: ambang ungsian urut",
+          0 < village["full_evacuate_below"] < village["evacuate_below"] < village["return_above"] <= 100)
+    check("musim: masker menahan asap", 0 < season["mask"]["smoke_factor"] < 1)
+
+
 def verify_export_preset() -> None:
     """Aset dibaca game sebagai byte mentah, jadi harus masuk include_filter ekspor."""
     print("== preset ekspor ==")
@@ -572,6 +625,8 @@ def main() -> int:
     verify_font()
     verify_audio()
     verify_fx()
+    verify_item_icons()
+    verify_fire_season()
     verify_export_preset()
     print()
     print(f"=== aset: {CHECKS - len(FAILURES)} lulus, {len(FAILURES)} gagal ===")

@@ -34,8 +34,24 @@ static string ValidState(int hp = 80, int level = 1) => $$"""
 Console.WriteLine("== StateValidator ==");
 var okState = StateValidator.Normalize(Json(ValidState()));
 Check("state valid diterima", okState.Ok && okState.Json is not null, okState.Error ?? "");
-Check("version dinormalkan ke 1",
-    okState.Json is not null && JsonDocument.Parse(okState.Json).RootElement.GetProperty("version").GetString() == "1");
+Check("version dinormalkan ke 2",
+    okState.Json is not null && JsonDocument.Parse(okState.Json).RootElement.GetProperty("version").GetString() == "2");
+
+var migrated = okState.Json is null ? default : JsonDocument.Parse(okState.Json).RootElement.GetProperty("world");
+Check("save v1 dimigrasikan: hari 1 & meter penuh",
+    migrated.GetProperty("day").GetInt32() == 1 &&
+    Math.Abs(migrated.GetProperty("villageSafety").GetDouble() - 100) < 0.01 &&
+    Math.Abs(migrated.GetProperty("forestHealth").GetDouble() - 100) < 0.01);
+
+var clampedMeters = StateValidator.Normalize(Json("""
+{ "version": "2", "world": { "day": 0, "villageSafety": 150, "forestHealth": -20 } }
+"""));
+var metersJson = clampedMeters.Ok ? JsonDocument.Parse(clampedMeters.Json!).RootElement.GetProperty("world") : default;
+Check("meter & hari dijepit (day 1, meter 0..100)",
+    clampedMeters.Ok && metersJson.GetProperty("day").GetInt32() == 1 &&
+    Math.Abs(metersJson.GetProperty("villageSafety").GetDouble() - 100) < 0.01 &&
+    Math.Abs(metersJson.GetProperty("forestHealth").GetDouble() - 0) < 0.01,
+    clampedMeters.Error ?? "");
 
 var clampedHp = StateValidator.Normalize(Json(ValidState(hp: 999)));
 Check("hp di atas maxHp dijepit",
@@ -72,7 +88,7 @@ try
 {
     var db = new GameDb(dbPath);
     Check("DB dibuat di disk", File.Exists(dbPath));
-    Check("schema_version = 1", db.ReadSchemaVersion() == GameDb.SchemaVersion, $"{db.ReadSchemaVersion()}");
+    Check("schema_version = 2", db.ReadSchemaVersion() == GameDb.SchemaVersion, $"{db.ReadSchemaVersion()}");
 
     var profileId = db.CreateProfile("Unit Tester");
     Check("profil dibuat & terdaftar", db.ProfileExists(profileId) && db.ListProfiles().Any(p => p.Id == profileId));

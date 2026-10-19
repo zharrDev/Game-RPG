@@ -38,7 +38,7 @@ public static class HealthEndpoints
             status = "ok",
             version = Version,
             character = "arga",
-            schemaVersion = GameDb.SchemaVersion,
+            schemaVersion = db.ReadSchemaVersion(),
             database = db.DatabasePath,
             slots = GameDb.SlotCount,
             serverTime = DateTime.UtcNow.ToString("o"),
