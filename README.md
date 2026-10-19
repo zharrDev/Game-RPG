@@ -49,11 +49,12 @@ bash scripts/shot.sh docs/shot-malam.png --time=0.05 --shot-ash=0.3
 | Tombol | Aksi |
 |---|---|
 | `WASD` / `←↑↓→` | gerak 4 arah (maju, mundur, kiri, kanan) |
-| `Shift` | lari |
+| `Shift` | lari (menguras napas) |
 | `J` | serang (pedang) |
 | `Spasi` | lompat (frame pose `jump_1`→`jump_3`) |
 | `K` | skill **Aura Slash** — terbuka di level 3, memakai energi |
-| `E` | bicara dengan NPC · buka peti harta · istirahat di api unggun (HP+energi penuh, otomatis simpan) |
+| `E` | bicara dengan NPC · buka peti harta · istirahat di api unggun (HP+napas penuh, otomatis simpan) |
+| `R` | semprot air: padamkan api sekitar (biaya napas) |
 | `Q` | minum potion (+40 HP) |
 | `F` | simpan cepat ke slot terakhir |
 | `Esc` | menu: simpan/muat 3 slot, catatan perjalanan, ganti profil, keluar |
@@ -139,6 +140,8 @@ game/                      proyek Godot 4 (.NET)
     Particles.cs           pooling partikel: nyala 4-frame, bara, abu, tunas pulih
     GameFeel.cs            game feel: camera shake, hit-stop, debu langkah, percikan
     FogOfWar.cs            overlay chunk belum dijelajahi + MinimapFog di peta mini
+    FireVisuals.cs         nyala api gameplay (pool sprite) + bara
+    RainOverlay.cs         hujan layar penuh saat cuaca hujan
     Assets.cs / Data.cs    pemuat PNG & parser JSON aset
     HeadlessTest.cs        tes yang menjalankan kode game sungguhan
   assets/                  hasil generate (tileset, peta, atlas) + tekstur FX + shader

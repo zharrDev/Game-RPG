@@ -47,6 +47,9 @@ inisialisasi deterministik dan headless-testable.
 | `UiManager` | pause menu, journal, quest tracker, HUD update | Game |
 | `CameraRig` | kamera + offset game feel | Game |
 | `ChunkSystem` | grid chunk 8x8 tile: aktivasi aktor + fog of war | Combat, Spawn, Fog |
+| `WeatherSystem` | cuaca (kemarau/berangin/hujan), arah & kekuatan angin | Fire, HUD |
+| `FireSystem` | api grid: bahan bakar, kelembapan, penjalaran angin, asap | Weather, Game |
+| `FireVisuals` / `RainOverlay` | nyala api gameplay & hujan layar | Fire, Hud |
 | `FogOfWar` / `MinimapFog` | overlay chunk belum dijelajahi (dunia & peta mini) | Game, Hud |
 
 Kontrak `EventBus` (M1):
@@ -69,13 +72,23 @@ dalam sistem. Ini yang membuat `CombatSystem` bisa dites tanpa HUD.
 Feel.Advance          → hit-stop & shake (paling awal, memutus tick lain)
 Lighting.Advance      → jam dunia
 Ambience.Advance      → bara/abu/tunas (visual)
+Weather.Advance       → cuaca & angin (hanya saat bermain)
+Fire.Advance          → penjalaran api + konsumsi bahan bakar
+Fire.SmokeAt          → paparan asap pemain (sebelum Player.Tick)
 input & dialog        → UiManager/InteractionSystem
-Player.Tick           → gerak, aksi, strike (event)
+Player.Tick           → gerak, napas, aksi, strike (event)
+Fire.TickPlayer       → damage api, sesak asap
 CombatSystem.TickMobs → mob berpikir/menyerang
 SpawnSystem.TickNpcs  → warga mondar-mandir
 TimeSystem.Advance    → kedip & riak
-UiManager.Update      → HUD, tracker, pause
+UiManager.Update      → HUD, tracker, cuaca, pause
 ```
+
+Aturan api (M4): api hanya menyala lewat `FireSystem.IgniteCell/At` (nanti dipicu
+event M6). Bahan bakar dari `terrain` (rumput/meadow 1, dirt 0.4, sand 0.15,
+air/batu 0). Angin mempercepat penjalaran searah, hujan menaikkan kelembapan +
+memadamkan. `R` menyemprot radius `Rules.ExtinguishRange` dengan biaya napas;
+berlari menguras napas; asap menahan regen dan menguras napas.
 
 ## 2. Backend (server/RpgServer)
 

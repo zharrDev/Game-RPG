@@ -113,8 +113,9 @@ dan bukti yang saling mengunci. Pos 5 adalah panggung **finale**: pemain harus
   tes otomatis per sistem. (Gameplay belum berubah.)
 - **M3** (selesai): dunia chunk (8 tile, aktivasi aktor), biome + musik per zona,
   fog of war dunia & peta mini, progres jelajah tersimpan di save.
-- **M4**: api/asap sebagai gameplay + angin + napas + cuaca
-  (sisa polish M2: grading/haze menyatu di sini).
+- **M4** (selesai): api/asap gameplay (bahan bakar, kelembapan, angin, hujan,
+  asap), napas (lari/semprot/asap), cuaca deterministik, HUD cuaca + hujan;
+  grading/haze M2 menyatu di pipeline Fx.
 - **M5**: inventory, crafting, objective/misi data-driven.
 - **M6**: vertical slice Pos Loji end-to-end (padam → bukti → tersangka).
 - **M7**: investigasi penuh + papan bukti + building + quest warga.

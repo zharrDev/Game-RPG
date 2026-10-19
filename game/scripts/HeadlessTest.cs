@@ -25,6 +25,24 @@ public static class HeadlessTest
         return 70;
     }
 
+    private static bool HasFuelNeighbors(WorldData data, int col, int row)
+    {
+        for (var dy = -1; dy <= 1; dy++)
+        {
+            for (var dx = -1; dx <= 1; dx++)
+            {
+                if (dx == 0 && dy == 0) continue;
+                var nc = col + dx;
+                var nr = row + dy;
+                if (nc < 0 || nr < 0 || nc >= data.Width || nr >= data.Height) return false;
+                if (data.Terrain.Length <= nr) return false;
+                var name = data.TerrainNames[data.Terrain[nr][nc]];
+                if (FireSystem.FuelFor(name) <= 0.1f) return false;
+            }
+        }
+        return true;
+    }
+
     private static void Check(string name, bool ok, string detail = "")
     {
         if (ok)
@@ -952,6 +970,128 @@ public static class HeadlessTest
         player.Position = spawnPos;
         game.Chunks.Update(player.Position);
         game.BuildState();
+
+        GD.Print("=== M4: api, asap, angin & cuaca ===");
+        var fire = game.Fire;
+        var weather = game.Weather;
+        fire.Clear();
+        weather.SetStage(0);
+        var stageBefore = weather.Stage;
+        weather.Advance(WeatherSystem.StageSeconds + 0.1);
+        Check("cuaca berganti tiap tahap", weather.Stage == stageBefore + 1, $"{stageBefore} -> {weather.Stage}");
+
+        weather.Force(WeatherKind.Windy, 0f, 0.9f);
+        Check("angin punya arah & kekuatan", Math.Abs(weather.WindVector.Length() - 0.9f) < 0.01f &&
+            weather.Label.Contains("Berangin") && weather.Label.Contains("→"), weather.Label);
+
+        weather.Force(WeatherKind.Rain, 1.2f, 0.4f);
+        Check("hujan menaikkan kelembapan", weather.RainAmount > 0.7f && weather.MoistureBoost > 0.4f &&
+            weather.Label.Contains("Hujan"), $"{weather.RainAmount:0.00}");
+
+        var data = game.World!.Data;
+        var grassCol = -1;
+        var grassRow = -1;
+        var waterCol = -1;
+        var waterRow = -1;
+        for (var row = 1; row < data.Height - 1; row++)
+        {
+            for (var col = 1; col < data.Width - 1; col++)
+            {
+                if (data.Terrain.Length <= row) continue;
+                var name = data.TerrainNames[data.Terrain[row][col]];
+                if (grassCol < 0 && (name == "grass" || name == "meadow") && HasFuelNeighbors(data, col, row))
+                {
+                    grassCol = col;
+                    grassRow = row;
+                }
+                if (waterCol < 0 && name == "water")
+                {
+                    waterCol = col;
+                    waterRow = row;
+                }
+            }
+        }
+        Check("terrain bahan bakar terbaca", grassCol >= 0 && waterCol >= 0, $"grass={grassCol},{grassRow} water={waterCol},{waterRow}");
+
+        fire.Configure(game);
+        if (waterCol >= 0) Check("air tidak bisa terbakar", !fire.IgniteCell(waterCol, waterRow));
+        if (grassCol >= 0) Check("rumput bisa terbakar", fire.IgniteCell(grassCol, grassRow, 1f));
+
+        weather.Force(WeatherKind.Windy, 0f, 1f);
+        fire.Configure(game);
+        if (grassCol >= 0) fire.IgniteCell(grassCol, grassRow, 1f);
+        fire.Advance(10);
+        Check("api menjalar mengikuti angin", fire.BurningCount > 1, $"{fire.BurningCount} sel");
+
+        weather.Force(WeatherKind.Rain, 1.2f, 0.4f);
+        fire.Advance(10);
+        Check("hujan memadamkan api", fire.BurningCount == 0, $"{fire.BurningCount} sel");
+
+        var savedPos = player.Position;
+        var savedHp = player.State.Hp;
+        var savedEnergy = player.Energy;
+        weather.Force(WeatherKind.Dry, 0f, 0.2f);
+        fire.Configure(game);
+        var firePos = new Vector2((grassCol + 0.5f) * World.TileSize, (grassRow + 0.5f) * World.TileSize);
+        player.Position = firePos;
+        fire.IgniteCell(grassCol, grassRow, 1f);
+        player.Energy = 100;
+        var extinguished = game.TryExtinguish();
+        Check("semprot air memadamkan api & memakai napas",
+            extinguished && fire.BurningCount == 0 && player.Energy < 100,
+            $"padam={extinguished} sisa={fire.BurningCount} napas={player.Energy:0}");
+
+        fire.Configure(game);
+        for (var dy = -1; dy <= 1; dy++)
+            for (var dx = -1; dx <= 1; dx++)
+                fire.IgniteCell(grassCol + dx, grassRow + dy, 1f);
+        player.State.Hp = player.State.MaxHp;
+        player.InvulnerableTimer = 0;
+        fire.TickPlayer(0.7);
+        Check("berdiri di api kehilangan HP", player.State.Hp < player.State.MaxHp,
+            $"{player.State.Hp}/{player.State.MaxHp}");
+
+        player.HurtTimer = 0;
+        player.InvulnerableTimer = 0;
+        player.Tick(0.05, default, game.World.Grid);
+        var smoke = fire.SmokeAt(player.Position);
+        player.SmokeExposure = smoke;
+        player.Energy = 50;
+        player.Tick(1.0, default, game.World.Grid);
+        Check("asap menguras napas", smoke > 0.2f && player.Energy < 50, $"asap={smoke:0.00} napas={player.Energy:0.0}");
+
+        player.SmokeExposure = 0;
+        player.HurtTimer = 0;
+        player.InvulnerableTimer = 0;
+        player.Energy = 50;
+        for (var i = 0; i < 10; i++) player.Tick(0.1, new InputState { X = 1, Run = true }, game.World.Grid);
+        var runEnergy = player.Energy;
+        Check("berlari memakai napas", runEnergy < 50 && player.Action == "run", $"napas={runEnergy:0.0} aksi={player.Action}");
+        for (var i = 0; i < 10; i++) player.Tick(0.1, default, game.World.Grid);
+        Check("diam mengisi napas", player.Energy > runEnergy, $"{runEnergy:0.0} -> {player.Energy:0.0}");
+
+        fire.Configure(game);
+        fire.IgniteCell(grassCol, grassRow, 1f);
+        game.FireVisuals.Sync();
+        Check("api gameplay punya nyala visual", game.FireVisuals.VisibleFlames >= 1, $"{game.FireVisuals.VisibleFlames}");
+        fire.Clear();
+        game.FireVisuals.Sync();
+        Check("visual api hilang saat padam", game.FireVisuals.VisibleFlames == 0);
+
+        game.Hud.SetWeather(weather.Label, 0.8f);
+        Check("HUD menampilkan cuaca & hujan", game.Hud.WeatherText.Contains("Kemarau") && game.Hud.RainVisible,
+            game.Hud.WeatherText);
+        game.Hud.SetWeather("Kemarau · angin lemah", 0f);
+        Check("overlay hujan mati saat kering", !game.Hud.RainVisible);
+
+        fire.Clear();
+        player.Position = savedPos;
+        player.State.Hp = savedHp;
+        player.Energy = savedEnergy;
+        player.SmokeExposure = 0;
+        player.HurtTimer = 0;
+        player.InvulnerableTimer = 0;
+        weather.SetStage(0);
 
         GD.Print("");
         GD.Print($"=== hasil: {_pass} lulus, {Failures.Count} gagal ===");
