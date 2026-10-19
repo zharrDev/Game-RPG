@@ -116,7 +116,10 @@ dan bukti yang saling mengunci. Pos 5 adalah panggung **finale**: pemain harus
 - **M4** (selesai): api/asap gameplay (bahan bakar, kelembapan, angin, hujan,
   asap), napas (lari/semprot/asap), cuaca deterministik, HUD cuaca + hujan;
   grading/haze M2 menyatu di pipeline Fx.
-- **M5**: inventory, crafting, objective/misi data-driven.
+- **M5** (selesai): inventory (tas ikut save), crafting data-driven
+  (assets/data/items.json), rantai misi data-driven (assets/data/objectives.json),
+  alat pemadaman (pompa/sekat), barang investigasi (kertas arang/peta sketsa),
+  benih untuk tanah terbakar.
 - **M6**: vertical slice Pos Loji end-to-end (padam → bukti → tersangka).
 - **M7**: investigasi penuh + papan bukti + building + quest warga.
 - **M8**: Pos 2–5, finale, Save v2, cuaca penuh, polish, ekspor

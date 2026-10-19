@@ -48,7 +48,9 @@ inisialisasi deterministik dan headless-testable.
 | `CameraRig` | kamera + offset game feel | Game |
 | `ChunkSystem` | grid chunk 8x8 tile: aktivasi aktor + fog of war | Combat, Spawn, Fog |
 | `WeatherSystem` | cuaca (kemarau/berangin/hujan), arah & kekuatan angin | Fire, HUD |
-| `FireSystem` | api grid: bahan bakar, kelembapan, penjalaran angin, asap | Weather, Game |
+| `FireSystem` | api grid: bahan bakar, kelembapan, penjalaran angin, asap, sekat | Weather, Game |
+| `InventorySystem` | tas (GameState.Inventory), craft resep data-driven | Peti, Misi, HUD |
+| `ObjectiveSystem` | rantai misi data-driven; cek item/craft/explore/extinguish | Inventory, Fire, HUD |
 | `FireVisuals` / `RainOverlay` | nyala api gameplay & hujan layar | Fire, Hud |
 | `FogOfWar` / `MinimapFog` | overlay chunk belum dijelajahi (dunia & peta mini) | Game, Hud |
 
@@ -115,6 +117,8 @@ Prinsip:
 
 ## 3. Kontrak State & Versi
 
+- `world.inventory` menyimpan tas (id slug, jumlah 0..99, maks 40 jenis);
+  dinormalisasi server dan ikut semua save.
 - `world.explored` menyimpan indeks chunk yang sudah dijelajahi (fog of war).
   Nilainya dinormalisasi server (unik, urut, maks 2048) dan ikut semua save.
 - `state.version == "1"` sekarang; Save v2 (M8) menaikkan ke `"2"` dengan

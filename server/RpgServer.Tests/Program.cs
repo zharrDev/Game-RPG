@@ -50,6 +50,21 @@ Check("skill tak dikenal ditolak", !StateValidator.Normalize(Json("""
 { "player": { "skills": ["pedang_ajaib"] } }
 """)).Ok);
 
+var inventoryState = StateValidator.Normalize(Json("""
+{ "version": "1", "player": { "hp": 50 }, "world": { "inventory": { "kain": 3, "tali": 999 } } }
+"""));
+var inventoryJson = inventoryState.Ok ? JsonDocument.Parse(inventoryState.Json!).RootElement.GetProperty("world").GetProperty("inventory") : default;
+Check("inventory dinormalkan (jepit 99)",
+    inventoryState.Ok && inventoryJson.GetProperty("kain").GetInt32() == 3 &&
+    inventoryJson.GetProperty("tali").GetInt32() == 99,
+    inventoryState.Error ?? "");
+Check("id barang tidak valid ditolak", !StateValidator.Normalize(Json("""
+{ "version": "1", "world": { "inventory": { "id aneh": 1 } } }
+""")).Ok);
+Check("inventory bukan angka ditolak", !StateValidator.Normalize(Json("""
+{ "version": "1", "world": { "inventory": { "kain": "tiga" } } }
+""")).Ok);
+
 Console.WriteLine("== GameDb ==");
 var dbPath = Path.Combine(Path.GetTempPath(), $"rpg-unit-{Guid.NewGuid():n}.db");
 var backupPath = dbPath + ".bak";

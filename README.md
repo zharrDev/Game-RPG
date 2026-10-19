@@ -54,7 +54,11 @@ bash scripts/shot.sh docs/shot-malam.png --time=0.05 --shot-ash=0.3
 | `Spasi` | lompat (frame pose `jump_1`→`jump_3`) |
 | `K` | skill **Aura Slash** — terbuka di level 3, memakai energi |
 | `E` | bicara dengan NPC · buka peti harta · istirahat di api unggun (HP+napas penuh, otomatis simpan) |
-| `R` | semprot air: padamkan api sekitar (biaya napas) |
+| `R` | semprot air: padamkan api sekitar (biaya napas; pompa memperluas) |
+| `C` | crafting: tas + resep (bahan dari peti: kain/tali/arang) |
+| `M` | pakai peta sketsa: buka fog sekitar |
+| `B` | pasang sekat api (memutus jalaran api) |
+| `N` | tanam benih di tanah bekas terbakar |
 | `Q` | minum potion (+40 HP) |
 | `F` | simpan cepat ke slot terakhir |
 | `Esc` | menu: simpan/muat 3 slot, catatan perjalanan, ganti profil, keluar |
@@ -145,6 +149,7 @@ game/                      proyek Godot 4 (.NET)
     Assets.cs / Data.cs    pemuat PNG & parser JSON aset
     HeadlessTest.cs        tes yang menjalankan kode game sungguhan
   assets/                  hasil generate (tileset, peta, atlas) + tekstur FX + shader
+  assets/data/             items.json (barang & resep), objectives.json (rantai misi)
 
 server/RpgServer/          ASP.NET Core + SQLite (profil, 3 slot save, resume, journey)
   Endpoints/               Health, Profile, Save, Journey (minimal API per domain)

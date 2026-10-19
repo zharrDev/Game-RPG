@@ -77,6 +77,8 @@ public static class StateValidator
             if (defeated is null) return Result.Fail("world.defeated harus berisi angka >= 0");
             var explored = NormalizeIndexList(world["explored"] as JsonArray, 2048);
             if (explored is null) return Result.Fail("world.explored harus berisi indeks chunk angka");
+            var inventory = NormalizeInventory(world["inventory"] as JsonObject);
+            if (inventory is null) return Result.Fail("world.inventory harus berisi jumlah barang >= 0");
 
             var state = new JsonObject
             {
@@ -101,6 +103,7 @@ public static class StateValidator
                     ["checkpoint"] = Slug(world["checkpoint"]?.GetValue<string>(), "camp_start", 40),
                     ["flags"] = flags,
                     ["defeated"] = defeated,
+                    ["inventory"] = inventory,
                     ["explored"] = explored,
                 },
                 ["stats"] = new JsonObject
@@ -143,6 +146,21 @@ public static class StateValidator
             if (!IsSlug(key, 60)) throw new InvalidOperationException($"defeated: nama '{key}' tidak valid");
             var count = value is null ? 0 : ClampInt(value.GetValue<double>(), 0, 1_000_000);
             result[key] = count;
+        }
+        return result;
+    }
+
+    /// <summary>Isi tas: id slug, jumlah 0..99, maks 40 jenis.</summary>
+    private static JsonObject? NormalizeInventory(JsonObject? source)
+    {
+        var result = new JsonObject();
+        if (source is null) return result;
+        foreach (var pair in source.OrderBy(p => p.Key, StringComparer.Ordinal))
+        {
+            if (result.Count >= 40) break;
+            if (!IsSlug(pair.Key, 40) || pair.Value is null) return null;
+            if (!pair.Value.AsValue().TryGetValue<int>(out var count)) return null;
+            result[pair.Key] = Math.Clamp(count, 0, 99);
         }
         return result;
     }
