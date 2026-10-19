@@ -86,8 +86,54 @@
       "hint": "Bicara dengan Lena setelah bukti lengkap.",
       "type": "flag",
       "target": "kasus_pos_loji",
-      "next": "",
+      "next": "pos_bukit",
       "reward_xp": 50
+    },
+    {
+      "id": "pos_bukit",
+      "title": "Tangani kebakaran Pos Bukit",
+      "hint": "Api di punggung bukit utara; angin kencang.",
+      "type": "flag",
+      "target": "incident_pos_bukit_done",
+      "next": "kasus_bukit",
+      "reward_gold": 25
+    },
+    {
+      "id": "kasus_bukit",
+      "title": "Konfrontasi tersangka Pos Bukit",
+      "hint": "Bicara dengan Bram setelah bukti lengkap.",
+      "type": "flag",
+      "target": "kasus_pos_bukit",
+      "next": "pos_lembah",
+      "reward_xp": 60
+    },
+    {
+      "id": "pos_lembah",
+      "title": "Tangani kebakaran Pos Lembah",
+      "hint": "Api kecil di tepi lembah utara.",
+      "type": "flag",
+      "target": "incident_pos_lembah_done",
+      "next": "kasus_lembah",
+      "reward_gold": 25
+    },
+    {
+      "id": "kasus_lembah",
+      "title": "Konfrontasi tersangka Pos Lembah",
+      "hint": "Bicara dengan Tomas setelah bukti lengkap.",
+      "type": "flag",
+      "target": "kasus_pos_lembah",
+      "next": "pemulihan",
+      "reward_xp": 60
+    },
+    {
+      "id": "pemulihan",
+      "title": "Pulihkan tanah terbakar",
+      "hint": "Tanam 3 benih di tanah bekas terbakar (N).",
+      "type": "counter",
+      "target": "restored",
+      "count": 3,
+      "next": "",
+      "reward_xp": 80
     }
   ]
 }

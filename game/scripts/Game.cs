@@ -243,6 +243,7 @@ public sealed partial class Game : Node2D
         Register("sketch", Key.M);
         Register("barrier", Key.B);
         Register("plant", Key.N);
+        Register("board", Key.V);
         Register("menu", Key.Escape);
     }
 
@@ -356,16 +357,20 @@ public sealed partial class Game : Node2D
         if (Input.IsActionJustPressed("quick_save") && ProfileId is not null) SaveToSlot(CurrentSlot);
         if (Input.IsActionJustPressed("craft") && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !DialogOpen)
             ToggleCraftMenu();
+        if (Input.IsActionJustPressed("board") && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !DialogOpen)
+            ShowBoardMenu(!Hud.BoardOpen);
 
         if (DialogOpen && Input.IsActionJustPressed("interact")) AdvanceDialog();
 
-        var playing = ProfileId is not null && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !Hud.CraftOpen && !DialogOpen;
+        var playing = ProfileId is not null && !Hud.MenuOpen && !Hud.ProfileMenuOpen && !Hud.CraftOpen &&
+            !Hud.BoardOpen && !DialogOpen;
         if (playing && Input.IsActionJustPressed("interact") && !Interact())
             Hud.Toast("Tidak ada yang bisa diajak bicara di dekat sini");
         if (playing && Input.IsActionJustPressed("potion")) DrinkPotion();
         if (playing && Input.IsActionJustPressed("sketch")) UseMapSketch();
         if (playing && Input.IsActionJustPressed("barrier")) PlaceBarrier();
         if (playing && Input.IsActionJustPressed("plant")) PlantSeed();
+        if (playing && Input.IsActionJustPressed("board")) ShowBoardMenu(!Hud.BoardOpen);
         if (playing && Player.Alive && !frozen && Input.IsActionJustPressed("extinguish")) TryExtinguish();
         if (playing && Player.Alive && !frozen)
         {
@@ -543,6 +548,13 @@ public sealed partial class Game : Node2D
         ShowCraftMenu(!Hud.CraftOpen);
     }
 
+    /// <summary>Papan bukti (V): status insiden, bukti, tersangka.</summary>
+    public void ShowBoardMenu(bool visible)
+    {
+        if (Hud is null) return;
+        Hud.ShowBoard(visible, Incidents?.BoardText() ?? "Papan bukti kosong.");
+    }
+
     public void ShowCraftMenu(bool visible)
     {
         if (Hud is null) return;
@@ -605,6 +617,7 @@ public sealed partial class Game : Node2D
             return false;
         }
         Inventory.Remove("benih");
+        Player.State.Restored++;
         Ambience.ForceSproutAt(Player.Position);
         Hud?.Toast("Benih ditanam — tunas akan tumbuh.");
         LogEvent("tanam", ZoneId);

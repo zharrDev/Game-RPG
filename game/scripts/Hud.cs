@@ -11,9 +11,9 @@ public sealed partial class Hud : CanvasLayer
     private Label _hpText = null!, _statsText = null!, _zoneText = null!, _toast = null!, _hint = null!;
     private Label _clock = null!, _weather = null!, _questText = null!;
     private TextureRect _vignette = null!;
-    private Panel _pausePanel = null!, _profilePanel = null!, _craftPanel = null!;
+    private Panel _pausePanel = null!, _profilePanel = null!, _craftPanel = null!, _boardPanel = null!;
     private VBoxContainer _pauseBox = null!, _profileBox = null!, _craftBox = null!;
-    private Label _craftInv = null!, _craftStatus = null!;
+    private Label _craftInv = null!, _craftStatus = null!, _boardText = null!;
     private readonly Dictionary<string, Button> _craftButtons = new();
     private Label _journalText = null!, _profileStatus = null!, _pauseSummary = null!;
     private Panel _dialogPanel = null!;
@@ -38,7 +38,9 @@ public sealed partial class Hud : CanvasLayer
     public bool MenuOpen => _pausePanel.Visible;
     public bool ProfileMenuOpen => _profilePanel.Visible;
     public bool CraftOpen => _craftPanel.Visible;
+    public bool BoardOpen => _boardPanel.Visible;
     public string CraftInventoryText => _craftInv.Text;
+    public string BoardText => _boardText.Text;
     public bool DialogOpen => _dialogPanel.Visible;
     public string DialogText => _dialogText.Text;
     public string DialogSpeaker => _dialogSpeaker.Text;
@@ -135,6 +137,7 @@ public sealed partial class Hud : CanvasLayer
 
         BuildPauseMenu();
         BuildCraftMenu();
+        BuildBoardPanel();
         BuildProfileMenu();
         BuildDialog();
         BuildMinimap();
@@ -347,6 +350,26 @@ public sealed partial class Hud : CanvasLayer
         var close = MakeButton("Tutup crafting (C)", 284);
         close.Pressed += () => CraftRequested?.Invoke("");
         _craftBox.AddChild(close);
+    }
+
+    private void BuildBoardPanel()
+    {
+        _boardPanel = new Panel { Position = new Vector2(64, 14), Size = new Vector2(352, 242), Visible = false };
+        AddChild(_boardPanel);
+        _boardText = MakeLabel(new Vector2(12, 8), 8);
+        _boardText.Size = new Vector2(328, 200);
+        _boardText.Modulate = new Color(0.92f, 0.88f, 0.74f);
+        _boardPanel.AddChild(_boardText);
+        var hint = MakeLabel(new Vector2(12, 214), 8);
+        hint.Text = "V tutup papan bukti";
+        hint.Modulate = new Color(0.8f, 0.85f, 0.95f);
+        _boardPanel.AddChild(hint);
+    }
+
+    public void ShowBoard(bool visible, string text)
+    {
+        _boardPanel.Visible = visible;
+        if (visible) _boardText.Text = text;
     }
 
     public void ShowCraft(bool visible, string? inventory = null, string? status = null)

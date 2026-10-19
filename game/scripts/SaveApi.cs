@@ -51,6 +51,7 @@ public sealed class GameState
     public double Playtime;
     public int Deaths, Kills;
     public int Gold, Potions;
+    public int Restored;
 
     public JsonObject ToJson()
     {
@@ -88,6 +89,7 @@ public sealed class GameState
                 ["defeated"] = defeated,
                 ["inventory"] = inventory,
                 ["explored"] = explored,
+                ["restored"] = Restored,
             },
             ["stats"] = new JsonObject
             {
@@ -127,6 +129,8 @@ public sealed class GameState
             if (world.TryGetProperty("inventory", out var inventory) && inventory.ValueKind == JsonValueKind.Object)
                 foreach (var item in inventory.EnumerateObject())
                     if (item.Value.ValueKind == JsonValueKind.Number) state.Inventory[item.Name] = item.Value.GetInt32();
+            if (world.TryGetProperty("restored", out var restored) && restored.ValueKind == JsonValueKind.Number)
+                state.Restored = Math.Clamp(restored.GetInt32(), 0, 10000);
             if (world.TryGetProperty("explored", out var explored) && explored.ValueKind == JsonValueKind.Array)
                 foreach (var chunk in explored.EnumerateArray())
                     if (chunk.ValueKind == JsonValueKind.Number) state.Explored.Add(chunk.GetInt32());

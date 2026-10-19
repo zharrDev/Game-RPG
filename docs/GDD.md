@@ -123,6 +123,10 @@ dan bukti yang saling mengunci. Pos 5 adalah panggung **finale**: pemain harus
 - **M6** (selesai): vertical slice Pos Loji — insiden kebakaran data-driven
   (assets/data/incidents.json), api → bukti (jerigen) → konfrontasi Lena,
   masuk rantai misi dan tersimpan lewat flag.
-- **M7**: investigasi penuh + papan bukti + building + quest warga.
-- **M8**: Pos 2–5, finale, Save v2, cuaca penuh, polish, ekspor
+- **M7** (selesai): investigasi penuh — 3 insiden data-driven (Pos Loji,
+  Pos Bukit/Bram/korek kuningan, Pos Lembah/Tomas/nota tanah), papan bukti (V)
+  berisi status kasus/bukti/skor tersangka, konfrontasi tersangka data-driven,
+  pemulihan tanah (tanam 3 benih → counter `restored`), resep benih, quest warga
+  Tomas (4 kelelawar) di rantai misi.
+- **M8**: Pos 4–5, finale 3 ending, Save v2, cuaca penuh, polish, ekspor
   (sisa M2: layar judul & intro).

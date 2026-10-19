@@ -32,6 +32,72 @@
       ],
       "reward_xp": 80,
       "reward_gold": 30
+    },
+    {
+      "id": "pos_bukit",
+      "name": "Pos Bukit \u2014 Punggung Utara",
+      "zone": "north_woods",
+      "col": 72,
+      "row": 6,
+      "discover_tiles": 16,
+      "radius_tiles": 5,
+      "fires": [
+        [
+          72,
+          6
+        ],
+        [
+          73,
+          6
+        ],
+        [
+          72,
+          7
+        ]
+      ],
+      "evidence": "korek_kuningan",
+      "evidence_text": "Korek kuningan berkarat",
+      "suspect": "bram",
+      "confront": [
+        "Bram: \"Korek itu jatuh dari saku seragamku. Aku merokok di pos, bukan membakar bukit.\"",
+        "Arga: \"Jalur sekat rusak tepat di arah angin. Ada yang mengatur, Bram.\"",
+        "Bram menghela napas: \"Ada orang menyewa jasa bawahan pos. Aku menolak. Tanya Tomas.\""
+      ],
+      "reward_xp": 70,
+      "reward_gold": 25
+    },
+    {
+      "id": "pos_lembah",
+      "name": "Pos Lembah \u2014 Tepi Jurang",
+      "zone": "ancient_ruins",
+      "col": 27,
+      "row": 23,
+      "discover_tiles": 15,
+      "radius_tiles": 5,
+      "fires": [
+        [
+          27,
+          23
+        ],
+        [
+          28,
+          23
+        ],
+        [
+          27,
+          22
+        ]
+      ],
+      "evidence": "nota_tanah",
+      "evidence_text": "Nota pembelian tanah lama",
+      "suspect": "tomas",
+      "confront": [
+        "Tomas: \"Aku cuma melihat mesin di malam hari... aku tidak menyalakan apa pun!\"",
+        "Arga: \"Nota ini jatuh di jalur api. Nama di belakangnya bukan namamu, Tomas. Siapa?\"",
+        "Tomas gemetar: \"Pemilik arang. Ia bilang api membersihkan lahan untuk kebun baru.\""
+      ],
+      "reward_xp": 70,
+      "reward_gold": 25
     }
   ]
 }

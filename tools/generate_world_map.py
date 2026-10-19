@@ -479,7 +479,15 @@ NPC_SPECS = [
             "Aku lihat api besar di hutan utara! Bram bilang itu bukan api unggun biasa.",
             "Kalau aku besar nanti, aku mau jadi penjaga gerbang seperti Bram. Tapi aku takut warden.",
         ],
-        "quest": None,
+        "quest": {
+            "type": "kill",
+            "target": "bat",
+            "count": 4,
+            "reward_xp": 150,
+            "flag": "quest_tomas_done",
+            "intro": "Kelelawar utara makin berani sejak kebakaran. Kalahkan 4, aku beri simpanan arangku.",
+            "done_line": "Kau hebat! Ini arang simpananku. Jangan bilang Bram aku menyerahkan ini.",
+        },
     },
 ]
 

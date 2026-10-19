@@ -58,7 +58,8 @@ bash scripts/shot.sh docs/shot-malam.png --time=0.05 --shot-ash=0.3
 | `C` | crafting: tas + resep (bahan dari peti: kain/tali/arang) |
 | `M` | pakai peta sketsa: buka fog sekitar |
 | `B` | pasang sekat api (memutus jalaran api) |
-| `N` | tanam benih di tanah bekas terbakar |
+| `N` | tanam benih di tanah bekas terbakar (progres pemulihan) |
+| `V` | papan bukti: status insiden, bukti terkumpul, skor tersangka |
 | `Q` | minum potion (+40 HP) |
 | `F` | simpan cepat ke slot terakhir |
 | `Esc` | menu: simpan/muat 3 slot, catatan perjalanan, ganti profil, keluar |

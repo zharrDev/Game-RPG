@@ -7,15 +7,14 @@ using Godot;
 namespace RpgGame;
 
 /// <summary>
-/// Kejadian kebakaran data-driven (assets/data/incidents.json). Satu insiden
-/// dimulai saat pemain mendekat: beberapa tile dibakar, lalu setelah api padam
-/// pemain mendapat barang bukti dan bisa mengonfrontasi tersangka.
+/// Kejadian kebakaran data-driven (assets/data/incidents.json). Tiap insiden
+/// dimulai saat pemain mendekat di zonanya: beberapa tile dibakar; setelah api
+/// padam pemain mendapat barang bukti, lalu bisa mengonfrontasi tersangkanya.
 /// </summary>
 public sealed class IncidentSystem
 {
     public const string Path = "res://assets/data/incidents.json";
-    public const string StartedPrefix = "incident_";
-    public const string DonePrefix = "incident_";
+    public const string FlagPrefix = "incident_";
     public const string CasePrefix = "kasus_";
 
     public sealed class Incident
@@ -33,10 +32,16 @@ public sealed class IncidentSystem
 
     public IncidentSystem(Game game) => _game = game;
 
-    public string? ActiveId => _active?.Id;
+    public IReadOnlyList<Incident> All => _incidents;
     public Incident? Active => _active;
-    public bool Started => _active is not null && Flag(StartedPrefix + _active.Id + "_started");
-    public bool Done => _active is not null && Flag(DonePrefix + _active.Id + "_done");
+    public string? ActiveId => _active?.Id;
+    public bool Started => _active is not null && Flag(StartedFlag(_active));
+    public bool Done => _active is not null && Flag(DoneFlag(_active));
+    public int ClosedCases => _incidents.Count(i => Flag(CasePrefix + i.Id));
+
+    public static string StartedFlag(Incident incident) => $"{FlagPrefix}{incident.Id}_started";
+    public static string DoneFlag(Incident incident) => $"{FlagPrefix}{incident.Id}_done";
+    public static string CaseFlag(Incident incident) => $"{CasePrefix}{incident.Id}";
 
     public void Configure()
     {
@@ -72,6 +77,8 @@ public sealed class IncidentSystem
     public Vector2 Center(Incident incident) =>
         new((incident.Col + 0.5f) * World.TileSize, (incident.Row + 0.5f) * World.TileSize);
 
+    public Incident? Find(string id) => _incidents.FirstOrDefault(i => i.Id == id);
+
     private bool Flag(string name) =>
         _game.Player is not null && _game.Player.State.Flags.GetValueOrDefault(name);
 
@@ -83,10 +90,10 @@ public sealed class IncidentSystem
     /// <summary>Mulai insiden tertentu (dipakai tes/debug); id kosong = insiden pertama.</summary>
     public bool Start(string id = "")
     {
-        var incident = id.Length == 0 ? _active : _incidents.FirstOrDefault(i => i.Id == id);
+        var incident = id.Length == 0 ? _active : Find(id);
         if (incident is null || _game.Player is null || _game.Fire is null) return false;
         _active = incident;
-        SetFlag(StartedPrefix + incident.Id + "_started");
+        SetFlag(StartedFlag(incident));
         foreach (var (col, row) in incident.Fires) _game.Fire.IgniteCell(col, row, 0.85f);
         _game.Hud?.Toast($"Asap mengepul dari {incident.Name}! Api menjalar — R untuk menyemprot.");
         _game.Sfx?.Play("hurt", -8f);
@@ -99,51 +106,96 @@ public sealed class IncidentSystem
     public void Advance()
     {
         var game = _game;
-        if (game.Player is null || game.Fire is null || _active is null) return;
-        var incident = _active;
-        var started = Flag(StartedPrefix + incident.Id + "_started");
-        var done = Flag(DonePrefix + incident.Id + "_done");
-
-        if (!started)
+        if (game.Player is null || game.Fire is null) return;
+        foreach (var incident in _incidents)
         {
-            var distance = game.Player.Position.DistanceTo(Center(incident));
-            if (game.ZoneId == incident.Zone && distance <= incident.DiscoverTiles * World.TileSize)
-                Start(incident.Id);
-            return;
+            var started = Flag(StartedFlag(incident));
+            var done = Flag(DoneFlag(incident));
+            if (!started)
+            {
+                var distance = game.Player.Position.DistanceTo(Center(incident));
+                if (game.ZoneId == incident.Zone && distance <= incident.DiscoverTiles * World.TileSize)
+                    Start(incident.Id);
+                continue;
+            }
+            if (done) continue;
+            var radius = incident.RadiusTiles * World.TileSize;
+            if (game.Fire.CountBurningNear(Center(incident), radius) > 0) continue;
+
+            SetFlag(DoneFlag(incident));
+            if (incident.Evidence.Length > 0) game.Inventory?.Add(incident.Evidence);
+            var evidence = incident.EvidenceText.Length > 0 ? incident.EvidenceText : ItemCatalog.NameOf(incident.Evidence);
+            game.Hud?.Toast($"Api {incident.Name} padam. Bukti ditemukan: {evidence}.");
+            game.Sfx?.Play("quest");
+            game.LogEvent("bukti", incident.Evidence);
+            game.Objectives?.Advance();
+            game.Autosave("bukti ditemukan");
         }
-        if (done) return;
-
-        var radius = incident.RadiusTiles * World.TileSize;
-        if (game.Fire.CountBurningNear(Center(incident), radius) > 0) return;
-
-        SetFlag(DonePrefix + incident.Id + "_done");
-        if (incident.Evidence.Length > 0) game.Inventory?.Add(incident.Evidence);
-        var evidence = incident.EvidenceText.Length > 0 ? incident.EvidenceText : ItemCatalog.NameOf(incident.Evidence);
-        game.Hud?.Toast($"Api Pos Loji padam. Bukti ditemukan: {evidence}.");
-        game.Sfx?.Play("quest");
-        game.LogEvent("bukti", incident.Evidence);
-        game.Objectives?.Advance();
-        game.Autosave("bukti ditemukan");
     }
 
     /// <summary>Dialog konfrontasi untuk tersangka (null = pakai dialog biasa).</summary>
     public IReadOnlyList<string>? TryConfront(NpcInfo info)
     {
         var game = _game;
-        if (_active is null || game.Player is null) return null;
-        var incident = _active;
-        if (info.Id != incident.Suspect) return null;
-        if (!Flag(DonePrefix + incident.Id + "_done")) return null;
-        if (Flag(CasePrefix + incident.Id)) return null;
+        if (game.Player is null) return null;
+        var incident = _incidents.FirstOrDefault(i => i.Suspect == info.Id &&
+            Flag(DoneFlag(i)) && !Flag(CaseFlag(i)));
+        if (incident is null) return null;
 
-        SetFlag(CasePrefix + incident.Id);
+        _active = incident;
+        SetFlag(CaseFlag(incident));
         if (incident.RewardGold > 0) game.Player.State.Gold += incident.RewardGold;
         if (incident.RewardXp > 0) game.Player.AddXp(incident.RewardXp);
         game.Sfx?.Play("quest");
         game.LogEvent("konfrontasi", incident.Suspect);
-        game.Bus.RaiseQuestFlagSet(CasePrefix + incident.Id);
+        game.Bus.RaiseQuestFlagSet(CaseFlag(incident));
         game.Objectives?.Advance();
         game.Autosave("konfrontasi");
         return incident.Confront;
+    }
+
+    public string StatusOf(Incident incident)
+    {
+        if (Flag(CaseFlag(incident))) return "kasus ditutup";
+        if (Flag(DoneFlag(incident))) return "bukti didapat, cari tersangka";
+        if (Flag(StartedFlag(incident))) return "api menyala";
+        return "belum ditemukan";
+    }
+
+    /// <summary>Skor kecurigaan per warga dari insiden yang menunjuk dirinya.</summary>
+    public int SuspicionScore(string npcId) => _incidents.Count(i => i.Suspect == npcId &&
+        (Flag(DoneFlag(i)) || Flag(CaseFlag(i))));
+
+    /// <summary>Teks papan bukti (M7) untuk panel HUD "V".</summary>
+    public string BoardText()
+    {
+        var lines = new List<string> { "PAPAN BUKTI — Pos Pantau", "" };
+        foreach (var incident in _incidents)
+        {
+            var suspect = _game.World?.Data.Npcs.FirstOrDefault(n => n.Id == incident.Suspect)?.Name ?? incident.Suspect;
+            lines.Add($"• {incident.Name} [{StatusOf(incident)}] — tersangka: {suspect}");
+        }
+        lines.Add("");
+        lines.Add("BUKTI TERKUMPUL:");
+        var evidence = _game.Player?.State.Inventory
+            .Where(p => ItemCatalog.Get(p.Key)?.Kind == "evidence" && p.Value > 0).OrderBy(p => p.Key).ToList()
+            ?? new List<KeyValuePair<string, int>>();
+        if (evidence.Count == 0) lines.Add("  (belum ada — padamkan api insiden)");
+        foreach (var (id, count) in evidence)
+            lines.Add($"  - {ItemCatalog.NameOf(id)} x{count}");
+        lines.Add("");
+        lines.Add("TERSANGKA:");
+        if (_game.World is not null)
+        {
+            foreach (var npc in _game.World.Data.Npcs)
+            {
+                var score = SuspicionScore(npc.Id);
+                if (score <= 0) continue;
+                lines.Add($"  - {npc.Name}: {score} petunjuk");
+            }
+        }
+        lines.Add("");
+        lines.Add($"Tanah dipulihkan: {_game.Player?.State.Restored ?? 0} tunas");
+        return string.Join("\n", lines);
     }
 }

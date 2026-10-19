@@ -79,6 +79,7 @@ public static class StateValidator
             if (explored is null) return Result.Fail("world.explored harus berisi indeks chunk angka");
             var inventory = NormalizeInventory(world["inventory"] as JsonObject);
             if (inventory is null) return Result.Fail("world.inventory harus berisi jumlah barang >= 0");
+            var restored = ClampInt(world["restored"]?.GetValue<double>() ?? 0, 0, 10_000);
 
             var state = new JsonObject
             {
@@ -105,6 +106,7 @@ public static class StateValidator
                     ["defeated"] = defeated,
                     ["inventory"] = inventory,
                     ["explored"] = explored,
+                    ["restored"] = restored,
                 },
                 ["stats"] = new JsonObject
                 {

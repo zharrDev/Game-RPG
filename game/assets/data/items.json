@@ -107,6 +107,16 @@
         "kertas_arang": 1,
         "arang": 1
       }
+    },
+    {
+      "id": "benih",
+      "name": "Benih tunas",
+      "result": "benih",
+      "count": 1,
+      "cost": {
+        "kain": 1,
+        "arang": 1
+      }
     }
   ]
 }

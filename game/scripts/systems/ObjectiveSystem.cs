@@ -125,6 +125,7 @@ public sealed class ObjectiveSystem
             "craft" => game.Player.State.Flags.GetValueOrDefault($"crafted_{objective.Target}") ? 1 : 0,
             "explore" => (int)(game.Chunks?.ExploredPercent ?? 0),
             "flag" => game.Player.State.Flags.GetValueOrDefault(objective.Target) ? 1 : 0,
+            "counter" => objective.Target == "restored" ? game.Player.State.Restored : 0,
             "extinguish" => _extinguishSession,
             _ => 0,
         };
