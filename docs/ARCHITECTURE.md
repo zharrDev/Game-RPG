@@ -46,6 +46,8 @@ inisialisasi deterministik dan headless-testable.
 | `TimeSystem` | jam dunia, kedip obor, fase riak air | Game |
 | `UiManager` | pause menu, journal, quest tracker, HUD update | Game |
 | `CameraRig` | kamera + offset game feel | Game |
+| `ChunkSystem` | grid chunk 8x8 tile: aktivasi aktor + fog of war | Combat, Spawn, Fog |
+| `FogOfWar` / `MinimapFog` | overlay chunk belum dijelajahi (dunia & peta mini) | Game, Hud |
 
 Kontrak `EventBus` (M1):
 
@@ -100,6 +102,8 @@ Prinsip:
 
 ## 3. Kontrak State & Versi
 
+- `world.explored` menyimpan indeks chunk yang sudah dijelajahi (fog of war).
+  Nilainya dinormalisasi server (unik, urut, maks 2048) dan ikut semua save.
 - `state.version == "1"` sekarang; Save v2 (M8) menaikkan ke `"2"` dengan
   migrasi otomatis `v1 → v2` di `StateValidator` **dan** di klien
   (`SaveApi.Load`). Tes lama harus tetap lulus tanpa perubahan bentuk.

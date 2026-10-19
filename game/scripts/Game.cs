@@ -32,6 +32,7 @@ public sealed partial class Game : Node2D
     public InteractionSystem InteractSystem { get; private set; } = null!;
     public WorldManager Worlds { get; private set; } = null!;
     public ChunkSystem Chunks { get; private set; } = null!;
+    public FogOfWar Fog { get; private set; } = null!;
 
     /// <summary>Kotak dialog sedang terbuka (permainan dijeda).</summary>
     public bool DialogOpen => Dialog.Open;
@@ -101,6 +102,11 @@ public sealed partial class Game : Node2D
         Chunks = new ChunkSystem();
         BuildWorld();
 
+        // fog of war dunia: chunk belum dijelajahi digelapkan (di atas dunia, di bawah HUD)
+        Fog = new FogOfWar();
+        World.Root.AddChild(Fog);
+        Fog.Configure(Chunks);
+
         // pipeline FX (asap, bloom, grading) + heat haze di tiap titik api
         Fx = new Fx();
         AddChild(Fx);
@@ -149,7 +155,11 @@ public sealed partial class Game : Node2D
         // umpan balik damage: sistem mengirim event, efek visual/audio dipasang di sini
         Bus.PlayerDamaged += OnPlayerDamagedFeedback;
 
-        if (World is not null) Hud.SetMinimap(World.Minimap);
+        if (World is not null)
+        {
+            Hud.SetMinimap(World.Minimap);
+            Hud.ConfigureMinimapFog(Chunks, World.Data.PixelSize);
+        }
 
         if (Api.Offline && !TestMode)
         {

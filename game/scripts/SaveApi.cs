@@ -46,6 +46,7 @@ public sealed class GameState
     public string Checkpoint = "village_square";
     public Dictionary<string, bool> Flags = new();
     public Dictionary<string, int> Defeated = new();
+    public List<int> Explored = new();
     public double Playtime;
     public int Deaths, Kills;
     public int Gold, Potions;
@@ -58,6 +59,8 @@ public sealed class GameState
         foreach (var (key, value) in Flags) flags[key] = value;
         var defeated = new JsonObject();
         foreach (var (key, value) in Defeated) defeated[key] = value;
+        var explored = new JsonArray();
+        foreach (var index in Explored) explored.Add(index);
         return new JsonObject
         {
             ["player"] = new JsonObject
@@ -80,6 +83,7 @@ public sealed class GameState
                 ["checkpoint"] = Checkpoint,
                 ["flags"] = flags,
                 ["defeated"] = defeated,
+                ["explored"] = explored,
             },
             ["stats"] = new JsonObject
             {
@@ -116,6 +120,9 @@ public sealed class GameState
                 foreach (var flag in flags.EnumerateObject()) state.Flags[flag.Name] = flag.Value.GetBoolean();
             if (world.TryGetProperty("defeated", out var defeated) && defeated.ValueKind == JsonValueKind.Object)
                 foreach (var mob in defeated.EnumerateObject()) state.Defeated[mob.Name] = mob.Value.GetInt32();
+            if (world.TryGetProperty("explored", out var explored) && explored.ValueKind == JsonValueKind.Array)
+                foreach (var chunk in explored.EnumerateArray())
+                    if (chunk.ValueKind == JsonValueKind.Number) state.Explored.Add(chunk.GetInt32());
         }
         if (root.TryGetProperty("stats", out var stats))
         {

@@ -111,7 +111,8 @@ dan bukti yang saling mengunci. Pos 5 adalah panggung **finale**: pemain harus
 
 - **M1** (selesai): refactor sistem, dokumen ini, arsitektur, backend rapi,
   tes otomatis per sistem. (Gameplay belum berubah.)
-- **M3**: dunia chunk + biome + fog of war + peta lintas-pos.
+- **M3** (selesai): dunia chunk (8 tile, aktivasi aktor), biome + musik per zona,
+  fog of war dunia & peta mini, progres jelajah tersimpan di save.
 - **M4**: api/asap sebagai gameplay + angin + napas + cuaca
   (sisa polish M2: grading/haze menyatu di sini).
 - **M5**: inventory, crafting, objective/misi data-driven.

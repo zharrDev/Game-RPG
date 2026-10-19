@@ -75,6 +75,8 @@ public static class StateValidator
             if (flags is null) return Result.Fail("world.flags harus berisi nilai true/false");
             var defeated = NormalizeCountMap(world["defeated"] as JsonObject);
             if (defeated is null) return Result.Fail("world.defeated harus berisi angka >= 0");
+            var explored = NormalizeIndexList(world["explored"] as JsonArray, 2048);
+            if (explored is null) return Result.Fail("world.explored harus berisi indeks chunk angka");
 
             var state = new JsonObject
             {
@@ -99,6 +101,7 @@ public static class StateValidator
                     ["checkpoint"] = Slug(world["checkpoint"]?.GetValue<string>(), "camp_start", 40),
                     ["flags"] = flags,
                     ["defeated"] = defeated,
+                    ["explored"] = explored,
                 },
                 ["stats"] = new JsonObject
                 {
@@ -140,6 +143,27 @@ public static class StateValidator
             if (!IsSlug(key, 60)) throw new InvalidOperationException($"defeated: nama '{key}' tidak valid");
             var count = value is null ? 0 : ClampInt(value.GetValue<double>(), 0, 1_000_000);
             result[key] = count;
+        }
+        return result;
+    }
+
+    /// <summary>Daftar indeks (chunk fog): unik, urut, dibatasi jumlahnya.</summary>
+    private static JsonArray? NormalizeIndexList(JsonArray? source, int maxEntries)
+    {
+        var result = new JsonArray();
+        if (source is null) return result;
+        var seen = new SortedSet<int>();
+        foreach (var item in source)
+        {
+            if (item is null) continue;
+            if (!item.AsValue().TryGetValue<double>(out var number) || !double.IsFinite(number)) return null;
+            var index = (int)Math.Clamp(Math.Round(number), 0, 100_000);
+            seen.Add(index);
+        }
+        foreach (var index in seen)
+        {
+            if (result.Count >= maxEntries) break;
+            result.Add(index);
         }
         return result;
     }

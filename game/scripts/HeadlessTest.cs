@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using Godot;
 
 namespace RpgGame;
@@ -915,6 +916,42 @@ public static class HeadlessTest
         var builtState = game.BuildState();
         Check("BuildState memakai posisi & zona terkini",
             Math.Abs(builtState.X - player.Position.X) < 0.01 && builtState.Zone == game.ZoneId);
+
+        GD.Print("=== M3: chunk, biome & fog of war ===");
+        Check("grid chunk 12x9 (8 tile/chunk)",
+            game.Chunks.Cols == 12 && game.Chunks.Rows == 9 && game.Chunks.TotalChunks == 108,
+            $"{game.Chunks.Cols}x{game.Chunks.Rows}");
+        Check("chunk 0 berukuran 128x128 px", game.Chunks.RectPx(0).Size == new Vector2(128, 128),
+            game.Chunks.RectPx(0).Size.ToString());
+        var spawnPx = new Vector2((game.World!.Data.Spawn.X + 0.5f) * World.TileSize,
+            (game.World.Data.Spawn.Y + 1f) * World.TileSize);
+        var spawnChunk = game.Chunks.IndexAt(spawnPx);
+        game.Chunks.Update(spawnPx);
+        Check("chunk spawn terbuka + radius reveal", game.Chunks.IsExplored(spawnChunk) &&
+            game.Chunks.ExploredCount >= 9, $"{game.Chunks.ExploredCount} chunk");
+        Check("fog dunia terpasang", game.Fog is not null);
+        Check("aktor jauh tidak aktif, posisi spawn aktif",
+            game.Chunks.IsActive(spawnPx) && !game.Chunks.IsActive(new Vector2(4, 4)),
+            $"current={game.Chunks.Current}");
+
+        var spawnPos = player.Position;
+        var exploredBefore = game.Chunks.ExploredCount;
+        player.Position = new Vector2(4 * World.TileSize, 4 * World.TileSize);
+        game.Chunks.Update(player.Position);
+        Check("menjelajah chunk baru menambah fog terbuka",
+            game.Chunks.ExploredCount > exploredBefore, $"{exploredBefore} -> {game.Chunks.ExploredCount}");
+
+        var builtExplored = game.BuildState();
+        Check("BuildState memuat daftar chunk dijelajahi",
+            builtExplored.Explored.Count == game.Chunks.ExploredCount &&
+            builtExplored.Explored.SequenceEqual(game.Chunks.Snapshot()));
+        var roundtrip = GameState.FromJson(JsonDocument.Parse(builtExplored.ToJson().ToJsonString()).RootElement);
+        Check("explored bertahan lewat JSON save",
+            roundtrip.Explored.SequenceEqual(builtExplored.Explored), $"{roundtrip.Explored.Count} chunk");
+
+        player.Position = spawnPos;
+        game.Chunks.Update(player.Position);
+        game.BuildState();
 
         GD.Print("");
         GD.Print($"=== hasil: {_pass} lulus, {Failures.Count} gagal ===");

@@ -54,6 +54,7 @@ public sealed class SaveSystem
         state.Y = game.Player.Position.Y;
         state.Zone = game.ZoneId;
         state.Playtime = game.Playtime;
+        state.Explored = game.Chunks.Snapshot();
         return state;
     }
 
@@ -103,6 +104,7 @@ public sealed class SaveSystem
         game.Player.State.Deaths = state.Deaths;
         game.Player.State.Kills = state.Kills;
         game.Playtime = state.Playtime;
+        game.Chunks.Restore(state.Explored);
         game.Player.ApplyState(state);
         game.CloseDialog();
         // tampilkan peti yang sudah dibuka sesuai flag tersimpan
@@ -111,6 +113,7 @@ public sealed class SaveSystem
             if (game.ChestOpened(chest)) game.World.SetPropTile(chest.Col, chest.Row, "chest_open");
         }
         game.World.ZoneAt(game.Player.Position);
+        game.Chunks.Update(game.Player.Position);
         game.ZoneId = state.Zone;
         game.ZoneName = game.World.Data.Zones.FirstOrDefault(z => z.Id == state.Zone)?.Name ?? state.Zone;
     }

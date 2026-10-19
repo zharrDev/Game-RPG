@@ -17,6 +17,7 @@ public sealed partial class Hud : CanvasLayer
     private Panel _dialogPanel = null!;
     private Label _dialogSpeaker = null!, _dialogText = null!;
     private TextureRect _minimap = null!;
+    private MinimapFog _minimapFog = null!;
     private ColorRect _minimapDot = null!;
     private LineEdit _nameInput = null!;
     private double _toastTimer;
@@ -131,6 +132,14 @@ public sealed partial class Hud : CanvasLayer
         };
         AddChild(_minimap);
 
+        _minimapFog = new MinimapFog
+        {
+            Name = "Fog",
+            Size = _minimap.Size,
+            MouseFilter = Control.MouseFilterEnum.Ignore,
+        };
+        _minimap.AddChild(_minimapFog);
+
         _minimapDot = new ColorRect
         {
             Name = "PlayerDot",
@@ -143,6 +152,9 @@ public sealed partial class Hud : CanvasLayer
     }
 
     public void SetMinimap(Texture2D texture) => _minimap.Texture = texture;
+
+    public void ConfigureMinimapFog(ChunkSystem chunks, Vector2 worldSize) =>
+        _minimapFog.Configure(chunks, worldSize);
 
     public void UpdateMinimap(Vector2 playerPosition, Vector2 worldSize)
     {

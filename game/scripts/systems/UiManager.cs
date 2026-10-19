@@ -33,7 +33,8 @@ public sealed class UiManager
         if (game.Hud is null || game.Player is null) return;
         var time = TimeSpan.FromSeconds(game.Playtime);
         game.Hud.SetPauseSummary($"{game.ProfileName} · Lv {game.Player.State.Level} · {game.Player.State.Gold} gold · " +
-            $"bunuh {game.Player.State.Kills} · tumbang {game.Player.State.Deaths} · {time.Minutes:00}:{time.Seconds:00} · {game.ZoneName}");
+            $"bunuh {game.Player.State.Kills} · tumbang {game.Player.State.Deaths} · {time.Minutes:00}:{time.Seconds:00} · " +
+            $"{game.ZoneName} · peta {game.Chunks.ExploredPercent:0}%");
         game.Hud.ShowPauseMenu(true);
         if (game.ProfileId is not null && game.Api is not null) game.Hud.SetJournal(game.Api.Journey(game.ProfileId));
     }

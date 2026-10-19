@@ -138,6 +138,7 @@ game/                      proyek Godot 4 (.NET)
     Lighting.cs            siklus siang/malam + PointLight2D hangat di titik api
     Particles.cs           pooling partikel: nyala 4-frame, bara, abu, tunas pulih
     GameFeel.cs            game feel: camera shake, hit-stop, debu langkah, percikan
+    FogOfWar.cs            overlay chunk belum dijelajahi + MinimapFog di peta mini
     Assets.cs / Data.cs    pemuat PNG & parser JSON aset
     HeadlessTest.cs        tes yang menjalankan kode game sungguhan
   assets/                  hasil generate (tileset, peta, atlas) + tekstur FX + shader
