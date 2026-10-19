@@ -28,14 +28,12 @@ public sealed partial class Game : Node2D
     public ProgressSystem Progress { get; private set; } = null!;
     public SpawnSystem Spawn { get; private set; } = null!;
     public CombatSystem Combat { get; private set; } = null!;
-    private readonly List<string> _dialog = new();
-    private Npc? _dialogNpc;
-    private int _dialogIndex;
+    public DialogSystem Dialog { get; private set; } = null!;
 
     /// <summary>Kotak dialog sedang terbuka (permainan dijeda).</summary>
-    public bool DialogOpen => _dialog.Count > 0;
-    public string DialogLine => _dialogIndex < _dialog.Count ? _dialog[_dialogIndex] : "";
-    public string? TalkingTo => _dialogNpc?.Info.Id;
+    public bool DialogOpen => Dialog.Open;
+    public string DialogLine => Dialog.Line;
+    public string? TalkingTo => Dialog.TalkingTo;
     public string? ProfileId;
     public string ProfileName = "";
     public int CurrentSlot = 1;
@@ -94,6 +92,7 @@ public sealed partial class Game : Node2D
         Progress = new ProgressSystem(this);
         Spawn = new SpawnSystem(this);
         Combat = new CombatSystem(this);
+        Dialog = new DialogSystem(this);
         BuildWorld();
 
         // pipeline FX (asap, bloom, grading) + heat haze di tiap titik api
@@ -536,72 +535,11 @@ public sealed partial class Game : Node2D
         return true;
     }
 
-    public void OpenDialog(NpcInfo info)
-    {
-        if (Player is null) return;
-        _dialog.Clear();
-        _dialog.AddRange(info.Lines);
-        var quest = info.Quest;
-        if (quest is not null && quest.Flag.Length > 0)
-        {
-            if (!Player.State.Flags.GetValueOrDefault(quest.Flag))
-            {
-                var reached = Player.State.Defeated.GetValueOrDefault(quest.Target) >= quest.Count;
-                if (reached)
-                {
-                    _dialog.Add(quest.DoneLine);
-                    GrantQuestReward(quest, info);
-                }
-                else
-                {
-                    _dialog.Add(quest.Intro);
-                }
-            }
-            else
-            {
-                _dialog.Add("Terima kasih sudah menolong desa ini.");
-            }
-        }
+    public void OpenDialog(NpcInfo info) => Dialog.OpenWith(info);
 
-        _dialogNpc = Npcs.FirstOrDefault(n => n.Info.Id == info.Id);
-        _dialogNpc?.Face(Player.Position);
-        _dialogIndex = 0;
-        if (_dialog.Count == 0)
-        {
-            Hud?.Toast($"{info.Name} hanya tersenyum.");
-            return;
-        }
-        ShowDialogLine();
-    }
+    public void AdvanceDialog() => Dialog.Advance();
 
-    private void GrantQuestReward(NpcQuestSpec quest, NpcInfo giver)
-    {
-        Progress.CompleteQuest(quest, giver);
-        RefreshNpcMarkers();
-    }
-
-    private void ShowDialogLine()
-    {
-        if (_dialogNpc is null) return;
-        Hud?.ShowDialog($"{_dialogNpc.Info.Name} — {_dialogNpc.Info.Role}", DialogLine);
-    }
-
-    public void AdvanceDialog()
-    {
-        if (!DialogOpen) return;
-        _dialogIndex++;
-        if (_dialogIndex >= _dialog.Count) CloseDialog();
-        else ShowDialogLine();
-    }
-
-    public void CloseDialog()
-    {
-        _dialog.Clear();
-        _dialogNpc = null;
-        _dialogIndex = 0;
-        Hud?.HideDialog();
-        RefreshNpcMarkers();
-    }
+    public void CloseDialog() => Dialog.Close();
 
     /// <summary>Tombol E di checkpoint: istirahat memulihkan HP & energi, lalu simpan.</summary>
     public bool RestAtCheckpoint()
